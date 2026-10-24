@@ -1,0 +1,69 @@
+---
+import Base from '../layouts/Base.astro';
+import { notes } from '../content/notes';
+import { works } from '../content/works';
+import { t, href, type Lang } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const d = t(lang);
+const n = d.notes;
+const workName = (id?: string) => works.find((w) => w.id === id)?.name;
+---
+
+<Base title={d.nav.notes} description={n.intro} path="/notes">
+  <div class="page-lead">
+    <div><p class="eyebrow">DECISIONS / REVISIONS / EVIDENCE</p><h1 set:html={n.headline} /></div>
+    <p>{n.intro}</p>
+  </div>
+
+  <div class="journal-layout">
+    <aside>
+      <ul class="journal-index">
+        {notes.map((x, i) => (
+          <li><a href={`#${x.id}`}><span>{String(i + 1).padStart(2, '0')} · {x.date}</span>{x.title[lang]}</a></li>
+        ))}
+      </ul>
+    </aside>
+    <div>
+      {notes.map((x, i) => (
+        <article class="record" id={x.id}>
+          <p class="eyebrow">RECORD {String(i + 1).padStart(2, '0')} / {x.date}{x.work && <> / <a href={`${href(lang, '/works')}#${x.work}`}>{workName(x.work)}</a></>} / {x.tags.join(' · ')}</p>
+          <h2>{x.title[lang]}</h2>
+          <p class="hook">{x.hook[lang]}</p>
+          <ol class="record-flow">
+            <li><h4><span class="mono accent">01</span><br />{n.what}</h4><p>{x.what[lang]}</p></li>
+            <li><h4><span class="mono accent">02</span><br />{n.changed}</h4><p>{x.changed[lang]}</p></li>
+            <li><h4 class="verify-label"><span class="mono">03</span><br />{n.evidence}</h4>
+              <p class="mono small">
+                {x.facts.map((f) => f.href ? <a href={f.href} rel="noopener">[{f.label}]</a> : <span class="muted">[{f.label}]</span>)}
+              </p>
+            </li>
+          </ol>
+        </article>
+      ))}
+    </div>
+  </div>
+</Base>
+
+<style>
+  .journal-layout { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 40px; padding: 32px 0 48px; border-top: 1px solid var(--line-strong); }
+  .journal-index { list-style: none; padding: 0; font-size: 0.875rem; position: sticky; top: 24px; }
+  .journal-index li + li { margin-top: 14px; }
+  .journal-index a { display: block; padding-block: 4px; color: var(--text); text-decoration: none; }
+  .journal-index a:hover { color: var(--accent); }
+  .journal-index span { display: block; color: var(--muted); font-family: var(--mono); font-size: 0.75rem; }
+  .record { max-width: 44rem; padding: 8px 0 40px; }
+  .record + .record { border-top: 1px solid var(--line-strong); padding-top: 32px; }
+  .record h2 { font-size: 1.75rem; margin: 12px 0 16px; line-height: 1.5; }
+  .hook { font-size: 1.05rem; }
+  .record-flow { list-style: none; padding: 0; margin-top: 26px; }
+  .record-flow li { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 20px; padding: 18px 0; border-top: 1px solid var(--line); }
+  .record-flow h4 { font-size: 0.875rem; line-height: 1.8; margin: 0; font-weight: 500; }
+  .record-flow p { line-height: 1.9; }
+  .record-flow li:last-child { border-top: 1px solid var(--line-strong); }
+  .verify-label { color: var(--accent); }
+  .small { font-size: 0.85rem; } .small a { margin-right: 12px; }
+  @media (max-width: 900px) { .journal-layout { grid-template-columns: 1fr; gap: 24px; } .journal-index { position: static; display: flex; flex-wrap: wrap; gap: 16px; } .journal-index li + li { margin: 0; } }
+  @media (max-width: 650px) { .record-flow li { grid-template-columns: 1fr; gap: 8px; } .record h2 { font-size: 1.5rem; } }
+</style>

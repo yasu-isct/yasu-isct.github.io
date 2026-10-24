@@ -1,0 +1,138 @@
+---
+// Build-time SVG: routes | directions | themes, with organisational edges.
+// Status (ordinal, 4 levels) is encoded as a validated single-hue ramp AND as a text badge,
+// so colour never carries the meaning alone.
+import { routes, directions, themes, routesOfDirection, themesOfDirection, STATUS_ORDER, type Node } from '../lib/research';
+import { label, shortId } from '../lib/labels';
+import { t, type Lang } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const d = t(lang).research;
+
+const W = 1000, rowH = 60, padY = 28;
+const colX = { route: 30, dir: 300, theme: 640 };
+const colW = { route: 210, dir: 290, theme: 340 };
+const H = padY * 2 + rowH * Math.max(directions.length, 1);
+
+const yFor = (i: number, n: number) => padY + (H - padY * 2) * ((i + 0.5) / n);
+const pos = new Map<string, { x: number; y: number; w: number }>();
+routes.forEach((r, i) => pos.set(r.node_id, { x: colX.route, y: yFor(i, routes.length), w: colW.route }));
+directions.forEach((n, i) => pos.set(n.node_id, { x: colX.dir, y: yFor(i, directions.length), w: colW.dir }));
+themes.forEach((n, i) => pos.set(n.node_id, { x: colX.theme, y: yFor(i, themes.length), w: colW.theme }));
+
+const boxH = 40;
+type Link = { from: string; to: string; x1: number; y1: number; x2: number; y2: number };
+const links: Link[] = [];
+for (const dir of directions) {
+  const p = pos.get(dir.node_id)!;
+  for (const r of routesOfDirection(dir)) {
+    const q = pos.get(r.node_id)!;
+    links.push({ from: dir.node_id, to: r.node_id, x1: p.x, y1: p.y, x2: q.x + q.w, y2: q.y });
+  }
+  for (const th of themesOfDirection(dir)) {
+    const q = pos.get(th.node_id)!;
+    links.push({ from: dir.node_id, to: th.node_id, x1: p.x + p.w, y1: p.y, x2: q.x, y2: q.y });
+  }
+}
+const curve = (l: Link) => {
+  const mx = (l.x1 + l.x2) / 2;
+  return `M${l.x1},${l.y1} C${mx},${l.y1} ${mx},${l.y2} ${l.x2},${l.y2}`;
+};
+const stIndex = (n: Node) => (n.status ? STATUS_ORDER.indexOf(n.status) + 1 : 0);
+const sid = (id: string) => id.replace(/[^a-zA-Z0-9_-]/g, '_');
+// SVG text does not wrap: clip long labels (the full text stays in <title> for hover / a11y).
+const cjk = lang !== 'en';
+const clip = (s: string, w: number) => {
+  const max = Math.floor((w - 24) / (cjk ? 12.5 : 6.6));
+  return s.length > max ? s.slice(0, max - 1) + '…' : s;
+};
+---
+
+<figure class="map card">
+  <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby="map-title map-desc" class="map-svg">
+    <title id="map-title">{d.title}</title>
+    <desc id="map-desc">{d.mapCaption}</desc>
+    <g class="col-labels" aria-hidden="true">
+      <text x={colX.route} y="14">{d.routes}</text>
+      <text x={colX.dir} y="14">{d.directions}</text>
+      <text x={colX.theme} y="14">{d.themes}</text>
+    </g>
+    <g class="links">
+      {links.map((l) => (
+        <path d={curve(l)} data-from={sid(l.from)} data-to={sid(l.to)} class="link" />
+      ))}
+    </g>
+    <g class="nodes">
+      {[...routes, ...directions, ...themes].map((n) => {
+        const p = pos.get(n.node_id)!;
+        const st = stIndex(n);
+        return (
+          <g class={`node node-${n.object_type}`} data-id={sid(n.node_id)} transform={`translate(${p.x},${p.y - boxH / 2})`} tabindex="0" role="group">
+            <title>{shortId(n, lang)} · {label(n, lang)}{n.status ? ` · ${d.status[n.status]}` : ''}</title>
+            <rect width={p.w} height={boxH} rx="6" class="box" />
+            {st > 0 && <rect width="6" height={boxH} rx="3" class={`stbar st-${st}`} />}
+            <text x={st > 0 ? 14 : 10} y="17" class="id">{shortId(n, lang)}</text>
+            <text x={st > 0 ? 14 : 10} y="32" class="lbl">{clip(label(n, lang), p.w - (st > 0 ? 70 : 0))}</text>
+            {st > 0 && (
+              <text x={p.w - 8} y="17" text-anchor="end" class={`stlabel stfg-${st}`}>{d.status[n.status!]}</text>
+            )}
+          </g>
+        );
+      })}
+    </g>
+  </svg>
+  <figcaption class="small muted">{d.mapCaption}</figcaption>
+</figure>
+
+<script>
+  // Hover/focus a node → emphasise its edges and their other ends.
+  const svg = document.querySelector('.map-svg');
+  if (svg) {
+    const links = [...svg.querySelectorAll<SVGPathElement>('.link')];
+    const nodes = [...svg.querySelectorAll<SVGGElement>('.node')];
+    const clear = () => {
+      links.forEach((l) => l.classList.remove('on', 'off'));
+      nodes.forEach((n) => n.classList.remove('on', 'off'));
+    };
+    const on = (id: string) => {
+      const touched = new Set<string>([id]);
+      links.forEach((l) => {
+        const hit = l.dataset.from === id || l.dataset.to === id;
+        l.classList.toggle('on', hit);
+        l.classList.toggle('off', !hit);
+        if (hit) { touched.add(l.dataset.from!); touched.add(l.dataset.to!); }
+      });
+      nodes.forEach((n) => {
+        const hit = touched.has(n.dataset.id!);
+        n.classList.toggle('on', hit);
+        n.classList.toggle('off', !hit);
+      });
+    };
+    nodes.forEach((n) => {
+      n.addEventListener('mouseenter', () => on(n.dataset.id!));
+      n.addEventListener('focus', () => on(n.dataset.id!));
+      n.addEventListener('mouseleave', clear);
+      n.addEventListener('blur', clear);
+    });
+  }
+</script>
+
+<style>
+  .map { margin: 16px 0 8px; padding: 8px 12px 10px; }
+  .map-svg { width: 100%; height: auto; display: block; font-family: inherit; }
+  .col-labels text { font-size: 12px; fill: var(--muted); letter-spacing: 0.04em; }
+  .link { fill: none; stroke: var(--line); stroke-width: 1.5; opacity: 0.75; transition: opacity 120ms, stroke 120ms; }
+  .link.on { stroke: var(--accent); stroke-width: 2; opacity: 1; }
+  .link.off { opacity: 0.15; }
+  .node { cursor: default; outline: none; transition: opacity 120ms; }
+  .node.off { opacity: 0.35; }
+  .node:focus .box, .node.on .box { stroke: var(--accent); }
+  .box { fill: var(--surface); stroke: var(--line); stroke-width: 1; }
+  .node-route .box { fill: var(--page); }
+  .stbar.st-1 { fill: var(--st-1); } .stbar.st-2 { fill: var(--st-2); } .stbar.st-3 { fill: var(--st-3); } .stbar.st-4 { fill: var(--st-4); }
+  .id { font-size: 11px; font-weight: 700; fill: var(--ink-2); letter-spacing: 0.03em; }
+  .lbl { font-size: 12.5px; fill: var(--ink); }
+  .stlabel { font-size: 10.5px; font-weight: 600; fill: var(--ink-2); }
+  @media (max-width: 640px) { .map { padding: 4px; } }
+</style>

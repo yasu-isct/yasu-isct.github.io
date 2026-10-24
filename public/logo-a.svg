@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" role="img" aria-labelledby="title">
+  <title id="title">Structure proof — 校样括角</title>
+  <style>
+    :root{color:#141413;--accent:#2166b5}
+    @media(prefers-color-scheme:dark){:root{color:#f0efe7;--accent:#8abaff}}
+  </style>
+  <path d="M1 5V1h4M11 15h4v-4" fill="none" stroke="currentColor" stroke-width="2"/>
+  <path d="M4 5h8" fill="none" stroke="var(--accent)" stroke-width="2"/>
+  <path d="M4 9h5M4 12h7" fill="none" stroke="currentColor" stroke-width="2"/>
+</svg>

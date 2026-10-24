@@ -1,0 +1,146 @@
+---
+import Base from '../layouts/Base.astro';
+import { t, href, type Lang } from '../i18n/ui';
+import { works } from '../content/works';
+import { notes } from '../content/notes';
+import { themes, counts, STATUS_ORDER, copyOf } from '../lib/research';
+import { label, shortId } from '../lib/labels';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const d = t(lang);
+const h = d.home;
+const latestNotes = notes.slice(0, 3);
+const updated = '2026-10-25';
+const stIndex = (s: string | null) => (s ? STATUS_ORDER.indexOf(s as any) + 1 : 0);
+---
+
+<Base title={d.nav.home} description={h.positioning} path="/">
+  <section class="hero">
+    <div>
+      <p class="eyebrow">NLP / DOCUMENT UNDERSTANDING</p>
+      <h1 set:html={h.headline} />
+      <p class="intro">{h.positioning}</p>
+      <p class="identity" set:html={h.who} />
+      <div class="hero-actions">
+        <a class="action" href={href(lang, '/works')}>{h.ctaWorks} <span aria-hidden="true">↗</span></a>
+        <a class="action" href={href(lang, '/research')}>{h.ctaResearch} <span aria-hidden="true">↓</span></a>
+        <a class="action" href="https://github.com/yasu-isct" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+
+    <figure class="hero-figure">
+      <div class="figure-top"><span class="figure-number">FIG. 01</span><span class="meta">APPEARANCE → STRUCTURE</span></div>
+      <fieldset class="type-control">
+        <legend class="sr-only">{h.figLegend}</legend>
+        <input type="radio" id="ts-rich" name="typesetting" checked /><label for="ts-rich">{h.figRich}</label>
+        <input type="radio" id="ts-flat" name="typesetting" /><label for="ts-flat">{h.figFlat}</label>
+        <div class="diagram">
+          <div class="paper" lang="ja">
+            <p class="paper-heading">募集要項</p>
+            <p class="paper-sub">出願について</p>
+            <hr />
+            <p>必要な書類を、<br />期限までに提出する。</p>
+          </div>
+          <span class="diagram-arrow" aria-hidden="true">→</span>
+          <div class="struct">
+            <span>{h.structDoc}</span>
+            <span class="child">└ {h.structHeading} <em class="rich">0.97</em><em class="flat">0.41</em></span>
+            <span class="child">　└ {h.structBody}</span>
+            <span class="child">　└ {h.structCond}</span>
+          </div>
+        </div>
+      </fieldset>
+      <figcaption class="figure-caption" set:html={h.figCaption} />
+    </figure>
+  </section>
+
+  <div class="section-heading"><h2><span class="mono">01</span>{d.nav.works}</h2><a class="note" href={href(lang, '/works')}>{h.toWorks} ↗</a></div>
+  <div class="projects">
+    {works.map((w, i) => (
+      <article class="project-item">
+        <div class="project-index"><span class="eyebrow">PROJECT {String(i + 1).padStart(2, '0')}</span><span class="state">{w.status[lang]}</span></div>
+        <h3 lang="en">{w.name}</h3>
+        <p>{w.tagline[lang]}</p>
+        <div class="project-footer">
+          <a class="action" href={`${href(lang, '/works')}#${w.id}`}>{h.readProject} ↗</a>
+          <span class="tag mono">{w.number.value}</span>
+        </div>
+      </article>
+    ))}
+  </div>
+
+  <div class="section-heading"><h2><span class="mono">02</span>{d.nav.research}</h2><span class="note">{h.researchNote}</span></div>
+  <p class="reading" lang="ja">{copyOf('research.question', lang)}</p>
+  <div class="map-preview" role="group">
+    {themes.map((th) => (
+      <a class="map-node" href={`${href(lang, '/research')}#${th.node_id.split(':')[1]}`}>
+        <span class="eyebrow">{shortId(th, lang)}</span>
+        <b>{label(th, lang)}</b>
+        {th.status && <span class={`st st-${stIndex(th.status)}`}>{d.research.status[th.status]}</span>}
+      </a>
+    ))}
+  </div>
+  <p class="note" style="margin-bottom:36px">{d.research.honesty} · {counts.papers} papers · {counts.edges} relations</p>
+
+  <div class="section-heading"><h2><span class="mono">03</span>{d.nav.notes}</h2><a class="note" href={href(lang, '/notes')}>{h.toNotes} ↗</a></div>
+  <div class="split-note">
+    <p>{h.notesBlurb}</p>
+    <div>
+      <p class="eyebrow">RECORD FORMAT</p>
+      <p>{d.notes.flow}</p>
+      <ul class="notelist">
+        {latestNotes.map((x) => (
+          <li><span class="mono muted">{x.date}</span> <a href={`${href(lang, '/notes')}#${x.id}`}>{x.title[lang]}</a></li>
+        ))}
+      </ul>
+    </div>
+  </div>
+
+  <p class="note updated mono">{h.updated} {updated}</p>
+</Base>
+
+<style>
+  .hero { display: grid; grid-template-columns: 1.3fr 1fr; gap: 56px; padding: 64px 0 56px; align-items: center; }
+  .hero h1 { font-size: var(--display); line-height: 1.45; letter-spacing: -0.025em; margin-top: 20px; font-weight: 600; }
+  .hero .intro { margin-top: 26px; max-width: 37em; }
+  .identity { margin-top: 24px; color: var(--muted); font-size: 0.875rem; line-height: 1.9; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 24px; align-items: center; margin-top: 28px; }
+  .action { display: inline-flex; align-items: center; gap: 12px; min-height: 44px; font-weight: 500; }
+  .hero-figure { border-top: 2px solid var(--text); padding-top: 12px; }
+  .figure-top { display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+  .type-control { border: 0; margin: 0; padding: 0; min-width: 0; }
+  .type-control input { accent-color: var(--accent); width: 1rem; height: 1rem; vertical-align: middle; }
+  .type-control label { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 12px 0 4px; cursor: pointer; font-size: 0.875rem; color: var(--muted); }
+  .diagram { display: grid; grid-template-columns: 1fr 28px 1fr; align-items: center; gap: 6px; margin-top: 12px; }
+  .paper { border: 1px solid var(--line-strong); background: var(--bg); padding: 20px 16px; min-height: 200px; font-size: 0.875rem; }
+  .paper .paper-heading { font-size: 1.25rem; font-weight: 700; line-height: 1.5; }
+  .paper p { line-height: 1.9; margin-top: 12px; } .paper hr { border: 0; border-top: 1px solid var(--line); margin: 12px 0; }
+  #ts-flat:checked ~ .diagram .paper .paper-heading, #ts-flat:checked ~ .diagram .paper .paper-sub { font-size: 0.875rem; font-weight: 400; }
+  #ts-flat:checked ~ .diagram .paper hr { border-color: transparent; }
+  .struct { padding-left: 14px; border-left: 2px solid var(--accent); font-size: 0.875rem; line-height: 2; }
+  .struct span { display: block; } .struct .child { margin-left: 14px; color: var(--muted); }
+  .struct em { font: 400 0.75rem var(--mono); color: var(--accent); margin-left: 6px; font-style: normal; }
+  .struct .flat { display: none; }
+  #ts-flat:checked ~ .diagram .struct .rich { display: none; } #ts-flat:checked ~ .diagram .struct .flat { display: inline; color: #b5541f; }
+  .diagram-arrow { color: var(--accent); text-align: center; font-size: 1.5rem; }
+  .figure-caption { font-size: 0.875rem; color: var(--muted); line-height: 1.9; margin-top: 16px; }
+  .projects { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 52px; }
+  .project-item { padding-top: 24px; border-top: 1px solid var(--line); }
+  .project-item h3 { font-size: 1.5rem; line-height: 1.45; margin: 12px 0; }
+  .project-item p { max-width: 36em; }
+  .project-index { display: flex; justify-content: space-between; gap: 12px; }
+  .tag { font-size: 0.8rem; color: var(--muted); }
+  .project-footer { margin-top: 22px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+  .map-preview { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin: 24px 0 16px; padding: 24px 0 0; }
+  .map-node { border-left: 2px solid var(--line-strong); padding-left: 16px; min-width: 0; color: var(--text); text-decoration: none; }
+  .map-node:hover { border-color: var(--accent); }
+  .map-node b { display: block; font-size: 1.05rem; font-weight: 500; margin: 8px 0 10px; line-height: 1.5; }
+  .split-note { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+  .split-note p { max-width: 35em; }
+  .notelist { list-style: none; padding: 0; margin: 12px 0 0; font-size: 0.95rem; }
+  .notelist li { padding: 6px 0; border-top: 1px solid var(--line); }
+  .updated { margin-top: 24px; }
+  @media (max-width: 900px) { .hero { gap: 28px; padding-top: 44px; } .map-preview { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 650px) { .hero { grid-template-columns: 1fr; gap: 36px; padding: 40px 0; } .hero h1 { font-size: clamp(1.625rem, 7vw, 2rem); } .projects, .split-note, .map-preview { grid-template-columns: 1fr; gap: 24px; } }
+</style>

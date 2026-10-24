@@ -1,0 +1,64 @@
+---
+import Base from '../layouts/Base.astro';
+import { works } from '../content/works';
+import { t, href, type Lang } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const d = t(lang);
+const f = d.works;
+const categories: Record<string, string> = { 'j-grad': 'RAG<br>DOCUMENT RETRIEVAL', coach: 'JAPANESE LEARNING<br>CLAUDE SKILL + GPU' };
+---
+
+<Base title={d.nav.works} description={f.intro} path="/works">
+  <div class="page-lead">
+    <div><p class="eyebrow">SELECTED WORK / {works.length} PROJECTS</p><h1 set:html={f.headline} /></div>
+    <p>{f.intro}</p>
+  </div>
+
+  {works.map((w, i) => (
+    <article class="work-entry" id={w.id}>
+      <aside class="work-aside">
+        <p class="project-no mono">{String(i + 1).padStart(2, '0')}</p>
+        <p class="meta" set:html={categories[w.id] ?? ''} />
+        <p class="state">{w.status[lang]}</p>
+        <p class="meta">{w.period}</p>
+      </aside>
+      <div class="work-main">
+        <h2 lang="en">{w.name}</h2>
+        <p class="project-summary">{w.tagline[lang]}</p>
+        <dl class="work-facts">
+          <div><dt>{f.problem}</dt><dd>{w.problem[lang]}</dd></div>
+          <div><dt>{f.role}</dt><dd>{w.role[lang]}</dd></div>
+          <div><dt>{f.verification}</dt><dd>{w.verification[lang]}</dd></div>
+          <div><dt>{f.change}</dt><dd>{w.change[lang]}</dd></div>
+          <div><dt>{f.number}</dt><dd><a class="num" href={w.number.href} rel="noopener">{w.number.value}</a><br /><span class="note">{w.number.label[lang]}</span></dd></div>
+          <div><dt>{f.stack}</dt><dd class="stack">{w.stack.map((s) => <span class="chip mono">{s}</span>)}</dd></div>
+        </dl>
+        <div class="links">
+          {w.links.map((l) => <a class="action" href={l.href} rel="noopener">{l.label} ↗</a>)}
+          {w.noteId && <a class="action" href={`${href(lang, '/notes')}#${w.noteId}`}>{f.noteLink} →</a>}
+        </div>
+      </div>
+    </article>
+  ))}
+</Base>
+
+<style>
+  .work-entry { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 40px; border-top: 1px solid var(--line-strong); padding: 32px 0 48px; }
+  .project-no { font: 400 3rem/1.2 var(--mono); color: var(--muted); }
+  .work-aside .meta { margin: 14px 0; }
+  .work-main h2 { font-size: 2rem; line-height: 1.45; margin-bottom: 14px; }
+  .project-summary { max-width: 43em; }
+  .work-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 28px 0; }
+  .work-facts div { border-top: 1px solid var(--line); padding-top: 12px; }
+  .work-facts dt { font: 400 0.8rem/1.6 var(--mono); color: var(--muted); margin-bottom: 8px; letter-spacing: 0.03em; }
+  .work-facts dd { margin: 0; }
+  .num { font-weight: 600; font-variant-numeric: tabular-nums; }
+  .stack { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { font-size: 0.78rem; padding: 1px 8px; border: 1px solid var(--line); background: var(--surface); }
+  .links { display: flex; gap: 24px; flex-wrap: wrap; border-top: 1px solid var(--line); padding-top: 16px; }
+  .action { display: inline-flex; align-items: center; min-height: 44px; font-weight: 500; }
+  @media (max-width: 900px) { .work-entry { grid-template-columns: 140px minmax(0, 1fr); gap: 24px; } .work-facts { grid-template-columns: 1fr; } }
+  @media (max-width: 650px) { .work-entry { grid-template-columns: 1fr; } .work-aside { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; } .project-no { font-size: 2rem; } .work-aside .meta { margin: 0; } .work-main h2 { font-size: 1.625rem; } }
+</style>
