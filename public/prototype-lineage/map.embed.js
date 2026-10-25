@@ -5,10 +5,10 @@
   const labels = {
     ja: {
       skip:'マップへ移動', researchMap:'研究マップ', prototype:'LOCAL PROTOTYPE', language:'言語', appearance:'配色', system:'システム', light:'ライト', dark:'ダーク',
-      eyebrow:'RESEARCH ATLAS / 01', title:'研究の脈絡を、たどる。', intro:'文献から問いへ。4つのテーマを、時間と根拠から読み解く。', mapTab:'A + C　テーマと来路', storyTab:'B　ストーリーを読む',
+      eyebrow:'RESEARCH ATLAS / 01', title:'研究のつながりを、たどる。', intro:'文献から問いへ、4つのテーマを年代と根拠からたどります。', mapTab:'A + C　テーマと年代', storyTab:'B　読む順序をたどる',
       search:'論文・問い・実験を検索', reset:'選択を解除', citations:'実際の引用を表示', expandAll:'すべて展開', collapseAll:'すべて折りたたむ', figureTitle:'4つのテーマ、文献から問いへ', paper:'論文', rq:'研究の問い', experiment:'実験', extends:'設定・方法の拡張', addresses:'限界への対処', contrasts:'対照する方法',
-      yearHint:'出版年 / OpenAlex優先', mapHint:'色帯をクリックして展開。主幹12関係を初期選択。ほかの関係はノードから1〜2世代たどれます。', fit:'全体を表示', theme:'テーマ', story:'分岐', prev:'前へ', next:'次へ', play:'自動再生', pause:'一時停止', readingOrder:'読む順序', corePapers:'先に読む文献', depth:'たどる深さ', upstream:'上流', downstream:'下流', reachableRqs:'この先にある問い', edgeEvidence:'関係の説明と根拠', sources:'出典', close:'閉じる', internal:'内部用の研究資料', footer:'暫定の問いと開発段階の観察を含みます。正式な結論はまだありません。',
-      unknownYear:'年未登録', undated:'日付なし', rqColumn:'問い', expColumn:'実験', density:'論文密度', expand:'展開', collapse:'折りたたむ', nodes:'ノード', lineage:'展開の関係', citationsCount:'引用', noResults:'一致するノードがありません', noNeighbors:'この範囲に関係はありません', noRq:'既存の有向関係から到達する問いはありません', original:'中国語の原文', claim:'説明 / claim', limitation:'限界 / limitation', confidence:'根拠の区分 / confidence', notRecorded:'記載なし', stated:'stated · カードに明記', inferred:'inferred · 対応から推定', confidenceNote:'原論文や歴史的影響を検証済みという意味ではありません。', association:'実験 → 問い（回答の計画・開発診断）', motivates:'問いの動機', originalDirection:'原関係の方向', chronology:'接続は問題の展開を示します。出版年の前後や因果を保証しません。', reverseReading:'この箇所は原関係を逆向きに読む順序です。実験 → 問いを保持します。', storyNote:'4テーマ・5分岐。読む順序は因果関係ではありません。短い物語も、現存する関係だけで表示します。', yearBasis:'年の出典', citedBy:'引用数', unavailable:'未取得', bib:'書誌情報', noDateNote:'問い・実験には出版年を割り当てず、独立した欄に置きます。', searchOutside:'このノードにはテーマ内の配置がありません。既存の関係を下で確認できます。', generation:'世代', candidate:'候補', preparation:'準備中', observation:'開発段階の観察あり', conclusion:'正式な結論', unassigned:'状態未設定', selected:'選択中', readingCaption:'各ステップの説明は提供された中国語原文です。', sizeNote:'点の半径：引用数の log(1+n)、4–18px。未取得は最小径。', duplicateNote:'細い破線は、複数テーマに現れる同じ論文です。', step:'ステップ', ready:'マップを読み込みました', loadError:'読み込めませんでした。HTTP サーバーで開き、D3 と layout.json の読み込みを確認してください。', extraBranch:'別の分岐', allNodes:'全ノード', sourceCopy:'研究紹介',
+      yearHint:'出版年（OpenAlex を優先）', mapHint:'テーマの帯を選ぶと展開します。主幹は{trunk}件です。その他の関係はノードから1〜2段階たどれます。', fit:'全体を表示', theme:'テーマ', story:'分岐', prev:'前へ', next:'次へ', play:'自動再生', pause:'一時停止', readingOrder:'読む順序', corePapers:'先に読む文献', depth:'たどる深さ', upstream:'上流', downstream:'下流', reachableRqs:'この先にある問い', edgeEvidence:'関係の説明と根拠', sources:'出典', close:'閉じる', internal:'内部用の研究資料', footer:'問いの準備状況や開発段階の観察も含め、各記録の状態を表示しています。',
+      unknownYear:'年未登録', undated:'日付なし', rqColumn:'問い', expColumn:'実験', density:'論文密度', expand:'展開', collapse:'折りたたむ', nodes:'ノード', lineage:'展開の関係', citationsCount:'引用', noResults:'一致するノードがありません。', noNeighbors:'この範囲には関係がありません。', noRq:'既存の有向関係から到達できる問いはありません。', original:'日本語の説明', claim:'関係の説明', limitation:'この関係の限界', confidence:'記述の根拠', notRecorded:'記載なし', stated:'stated · 文献カードに明記', inferred:'inferred · 記述の対応から推定', confidenceNote:'原論文や歴史的な影響関係を検証したことは意味しません。', association:'実験 → 問い（回答の計画・開発診断）', motivates:'問いの動機', originalDirection:'原関係の方向', chronology:'つながりは問題の展開を示し、出版順や因果関係を保証するものではありません。', reverseReading:'この箇所は原関係を逆向きに読む順序です。実験 → 問いを保持します。', storyNote:'読む順序は、研究上の因果関係ではありません。短い分岐も、現存する関係だけで表示します。', yearBasis:'年の出典', citedBy:'引用数', unavailable:'未取得', bib:'書誌情報', noDateNote:'問い・実験には出版年を割り当てず、独立した欄に置きます。', searchOutside:'このノードにはテーマ内の配置がありません。既存の関係を下で確認できます。', generation:'段階', candidate:'候補', preparation:'準備中', observation:'開発段階の観察あり', conclusion:'正式な結論', unassigned:'状態未設定', selected:'選択中', readingCaption:'各ステップは、原資料に基づく日本語の説明です。', sizeNote:'点の半径は引用数の log(1+n) に応じて4〜18 px としています。未取得は最小径で示します。', duplicateNote:'細い破線は、複数テーマに現れる同じ論文です。', step:'ステップ', ready:'マップを読み込みました', loadError:'研究マップを読み込めませんでした。ページを再読み込みしてください。', extraBranch:'別の分岐', allNodes:'全ノード', sourceCopy:'研究紹介',
     },
     zh: {
       skip:'跳到地图',researchMap:'研究地图',prototype:'本地原型',language:'语言',appearance:'配色',system:'跟随系统',light:'浅色',dark:'深色',eyebrow:'RESEARCH ATLAS / 01',title:'沿着线索，读懂研究。',intro:'从文献到问题，按年份与证据阅读四个主题。',mapTab:'A + C　主题与来路',storyTab:'B　逐步阅读故事',search:'搜索论文、问题、实验',reset:'清除选择',citations:'显示真实引用',expandAll:'全部展开',collapseAll:'全部折叠',figureTitle:'四个主题，从文献走向问题',paper:'论文',rq:'研究问题',experiment:'实验',extends:'设定／方法扩展',addresses:'回应局限',contrasts:'方法对照',yearHint:'出版年 / 优先 OpenAlex',mapHint:'点击色带展开；默认选中 12 条主干关系，其余从节点展开 1–2 代。',fit:'显示全图',theme:'主题',story:'分支',prev:'上一步',next:'下一步',play:'自动播放',pause:'暂停',readingOrder:'阅读顺序',corePapers:'建议先读',depth:'展开代数',upstream:'上游',downstream:'下游',reachableRqs:'最终通往哪个 RQ',edgeEvidence:'关系解释与证据',sources:'来源',close:'关闭',internal:'内部研究资料',footer:'包含临时问题和开发观察，目前没有正式结论。',unknownYear:'年份未登记',undated:'无日期',rqColumn:'问题',expColumn:'实验',density:'论文密度',expand:'展开',collapse:'折叠',nodes:'节点',lineage:'推进关系',citationsCount:'引用',noResults:'没有匹配节点',noNeighbors:'此范围内没有关系',noRq:'沿已有有向关系未找到可达 RQ',original:'中文原文',claim:'claim / 关系说明',limitation:'limitation / 局限',confidence:'confidence / 依据类型',notRecorded:'未记录',stated:'stated · 卡片明说',inferred:'inferred · 对应推断',confidenceNote:'不表示原论文或历史影响已核实。',association:'实验 → RQ（拟回答／开发诊断）',motivates:'引出问题',originalDirection:'原关系方向',chronology:'关系表示问题衔接，不能保证发表先后或因果。',reverseReading:'此步按原关系的反向顺序阅读，保留实验 → RQ。',storyNote:'四主题、五分支。阅读顺序不是因果关系，短故事也只使用已有连接。',yearBasis:'年份依据',citedBy:'被引次数',unavailable:'未取得',bib:'书目信息',noDateNote:'问题和实验未分配出版年，放在独立栏内。',searchOutside:'此节点无主题内位置，可在下方查看已有关系。',generation:'代',candidate:'候选',preparation:'准备中',observation:'有开发观察',conclusion:'正式结论',unassigned:'未设状态',selected:'已选',readingCaption:'每步说明保留数据中的中文原文。',sizeNote:'节点半径：引用数 log(1+n)，4–18px；缺失取最小径。',duplicateNote:'细虚线连接跨主题重复出现的同一论文。',step:'步骤',ready:'地图已载入',loadError:'载入失败，请通过 HTTP 服务器打开并检查 D3 与 layout.json。',extraBranch:'另一分支',allNodes:'全部节点',sourceCopy:'研究介绍',
@@ -20,9 +20,9 @@
   let data, nodes, copies, allEdges, incoming, outgoing, svg, world, zoom, positions = [], chartHeight = 520;
   const state = {lang:(document.documentElement.lang||'ja').startsWith('zh')?'zh':(document.documentElement.lang||'ja').startsWith('en')?'en':'ja',view:'map',expanded:new Set(),selected:null,selectedTheme:null,depth:1,storyId:null,step:0,citations:true,playing:false};
   let timer;
-  const t = key => labels[state.lang][key] ?? labels.ja[key] ?? key;
+  const t = key => (labels[state.lang][key] ?? labels.ja[key] ?? key).replace('{trunk}', String(data?.trunkEdgeIds?.length ?? ''));
   const sourceCopy = key => copies?.get(key)?.ja ?? '';
-  const fullName = node => node?.title_ja || node?.title || node?.node_id || '';
+  const fullName = node => node?.object_type === 'paper' ? node.title || node.node_id : node?.title_ja || node?.title || node?.node_id || '';
   const shortId = id => id.split(':').slice(1).join(':');
   const themeCode = id => id?.split(':').at(-1) || '';
   const themeColor = id => `var(--${themeCode(id).toLowerCase()}, ${['#2166b5','#267b70','#9b772e','#ad6151'][Number(themeCode(id).slice(1))-1] || '#2166b5'})`;
@@ -41,7 +41,7 @@
     $('expand-all').textContent=t(state.expanded.size===data.themes.length?'collapseAll':'expandAll');
     $('map-hint').textContent=`${t('mapHint')} ${t('sizeNote')} ${t('duplicateNote')} ${t('chronology')}`;
     $('story-note').textContent=`${t('storyNote')} ${t('readingCaption')}`;
-    $('stats').textContent=`65 ${t('paper')}  /  4 ${t('theme')}  /  ${data.lineage.length} ${t('lineage')}  /  ${data.citations.length} ${t('citationsCount')}`;
+    $('stats').textContent=state.lang==='ja'?`文献${data.nodes.filter(n=>n.object_type==='paper').length}件 / ${data.themes.length}テーマ / 展開の関係${data.lineage.length}件 / 引用関係${data.citations.length}件`:`${data.nodes.filter(n=>n.object_type==='paper').length} ${t('paper')} / ${data.themes.length} ${t('theme')} / ${data.lineage.length} ${t('lineage')} / ${data.citations.length} ${t('citationsCount')}`;
     $('story-play').textContent=t(state.playing?'pause':'play');
     $('chart').setAttribute('aria-label',t('figureTitle'));
     $('detail-close').setAttribute('aria-label',t('close'));
@@ -223,7 +223,7 @@
     for(const [label,value] of values){const block=el('div','');block.append(el('dt','',label),el('dd','',value));grid.append(block);}article.append(grid);
     if(edge.relation_type==='experiment_answers_rq')article.append(el('p','small',t('association')));
     else article.append(el('p','small',t('confidenceNote')));
-    const origin=el('details','edge-origin');origin.append(el('summary','',`${t('sources')} · ${edge.edge_id}`));
+    const origin=el('details','edge-origin');origin.append(el('summary','',`${t('sources')}${state.lang==='ja'?'（原資料・中国語を含む）':''} · ${edge.edge_id}`));
     for(const evidence of edge.evidence||[]){const paragraph=el('p','source-record');paragraph.textContent=[evidence.source_path,evidence.locator,evidence.quote,evidence.scope].filter(Boolean).join(' · ');origin.append(paragraph);}
     article.append(origin);container.append(article);
   }
@@ -264,7 +264,7 @@
   function pause(){clearTimeout(timer);state.playing=false;$('story-play').textContent=t('play');$('story-play').setAttribute('aria-pressed','false');}
   function schedule(){clearTimeout(timer);if(!state.playing)return;timer=setTimeout(()=>{if(state.step>=selectedStory().steps.length-1){pause();return;}goToStep(state.step+1);schedule();},4200);}
   function goToStep(index) {
-    const story=selectedStory();state.step=Math.max(0,Math.min(story.steps.length-1,index));const step=story.steps[state.step];state.selected=step.node_id;state.depth=step.depth||1;$('depth').value=String(state.depth);state.selectedTheme=story.theme;state.expanded.add(story.theme);render();renderDetail();focusChain();$('status').textContent=`${t('step')} ${state.step+1}: ${step.caption}`;
+    const story=selectedStory();state.step=Math.max(0,Math.min(story.steps.length-1,index));const step=story.steps[state.step];state.selected=step.node_id;state.depth=step.depth||1;$('depth').value=String(state.depth);state.selectedTheme=story.theme;state.expanded.add(story.theme);render();renderDetail();focusChain();$('status').textContent=`${t('step')} ${state.step+1}: ${step.caption_ja||step.caption}`;
   }
   function chooseStory(id){pause();state.storyId=id;state.step=0;state.expanded=new Set([selectedStory().theme]);goToStep(0);}
   function setView(view) {
@@ -311,6 +311,16 @@
     try {
       if(!window.d3)throw new Error('D3 v7 CDN could not load');
       const response=await fetch('/prototype-lineage/layout.json');if(!response.ok)throw new Error(`layout.json HTTP ${response.status}`);data=await response.json();
+      // Japanese presentation overlay changes text only: never node IDs, positions, links or research status.
+      if(state.lang==='ja'){
+        const editedResponse=await fetch('/research-ja-editorial.json');
+        if(!editedResponse.ok)throw new Error('Japanese research copy could not load');
+        const edited=await editedResponse.json();
+        for(const node of data.nodes){if(edited.titles[node.node_id])node.title_ja=edited.titles[node.node_id];}
+        for(const row of data.copy){if(edited.copy[row.key])row.ja=edited.copy[row.key];}
+        for(const edge of data.lineage){const text=edited.edges[edge.edge_id];if(text){edge.claim=text.claim;edge.limitation=text.limitation;}}
+        for(const story of data.stories){const text=edited.stories[story.story_id];if(text){story.title_ja=text.title;for(const step of story.steps){if(text.steps[step.node_id])step.caption_ja=text.steps[step.node_id];}}}
+      }
       nodes=new Map(data.nodes.map(n=>[n.node_id,n]));copies=new Map(data.copy.map(row=>[row.key,row]));indexEdges();state.storyId=data.stories[0].story_id;
       const tooltip=$('tooltip')||el('div','map-tooltip');tooltip.id='map-tooltip';tooltip.hidden=true;tooltip.setAttribute('role','tooltip');document.body.append(tooltip);
       svg=d3.select('#chart');world=svg.append('g').attr('class','map-world');zoom=d3.zoom().scaleExtent([.25,5]).filter(event=>!event.target.closest?.('.node-hit,.lane-label') && (!event.ctrlKey||event.type==='wheel') && !event.button).on('zoom',event=>world.attr('transform',event.transform));svg.call(zoom).on('dblclick.zoom',null);

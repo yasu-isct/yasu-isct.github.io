@@ -26,7 +26,7 @@ const kindMark = (n: Node) => (n.object_type === 'paper' ? '○' : n.object_type
 
 <Base title={d.title} description={copyOf('research.question', lang)} path="/research">
   <div class="page-lead">
-    <div><p class="eyebrow">RESEARCH / {counts.papers} PAPERS · {counts.themes} THEMES</p><h1 set:html={d.headline} /></div>
+    <div><p class="eyebrow">{lang === 'ja' ? `研究 / 文献${counts.papers}件・${counts.themes}テーマ` : `RESEARCH / ${counts.papers} PAPERS · ${counts.themes} THEMES`}</p><h1 set:html={d.headline} /></div>
     <div class="lead-plain">
       <p class="big">{d.plainLead}</p>
       <dl class="gloss">
@@ -59,7 +59,7 @@ const kindMark = (n: Node) => (n.object_type === 'paper' ? '○' : n.object_type
       <section class="theme-band" id={id} aria-labelledby={`${id}-h`}>
         <div class="band-head">
           <div>
-            <p class="eyebrow">THEME {String(ti + 1).padStart(2, '0')} / {ps.length} PAPERS · {rqs.length} {d.rqs}</p>
+            <p class="eyebrow">{lang === 'ja' ? `テーマ${ti + 1} / 文献${ps.length}件・研究の問い${rqs.length}件` : `THEME ${String(ti + 1).padStart(2, '0')} / ${ps.length} PAPERS · ${rqs.length} ${d.rqs}`}</p>
             <h2 id={`${id}-h`}>{label(th, lang)}</h2>
           </div>
           {th.status && <span class={`st st-${stIndex(th)}`}>{d.status[th.status]}</span>}
@@ -117,7 +117,7 @@ const kindMark = (n: Node) => (n.object_type === 'paper' ? '○' : n.object_type
                 {tab === 'experiments' && rqs.length > 0 && (
                   <ul class="rqlist">
                     {rqs.map((rq) => (
-                      <li><span class="mono muted">◇ {localId(rq.node_id)}</span> <span lang="zh">{rq.title}</span>{rq.status && <span class={`st st-${stIndex(rq)} tiny`}>{d.status[rq.status]}</span>}
+                      <li><span class="mono muted">◇ {localId(rq.node_id)}</span> <span lang={lang === 'ja' ? 'ja' : 'zh'}>{lang === 'ja' ? label(rq, lang) : rq.title}</span>{rq.status && <span class={`st st-${stIndex(rq)} tiny`}>{d.status[rq.status]}</span>}
                         {experimentsOfRq(rq).length > 0 && <span class="muted mono"> □ {experimentsOfRq(rq).map((e) => localId(e.node_id)).join(' ')}</span>}
                       </li>
                     ))}

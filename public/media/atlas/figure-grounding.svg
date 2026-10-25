@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="figure-svg-title figure-svg-desc">
   <title id="figure-svg-title">画像・図題・本文を、同じ対象へ。</title>
-  <desc id="figure-svg-desc">自作の幾何図と架空の文書。画像領域、図題、本文中の参照を対応させる説明図。画像認識モデルの実出力や実験結果ではありません。</desc>
+  <desc id="figure-svg-desc">自作の幾何図と架空の文書を使い、画像領域、図題、本文中の参照を対応付けています。画像認識モデルの実出力や実験結果ではありません。</desc>
   <style>text{font-family:Inter,"Noto Sans JP","Yu Gothic",sans-serif}.fg-mono{font-family:"IBM Plex Mono",monospace;letter-spacing:.05em}.fg-rule{stroke:#66685e;stroke-width:1.5;fill:none}.fg-flow{stroke:#2166b5;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}.fg-ink{fill:#141413}.fg-muted{fill:#595951}.fg-blue{fill:#2166b5}</style>
   <rect width="1200" height="800" fill="#faf9f5"/>
   <text x="54" y="55" font-size="18" class="fg-mono fg-muted">GROUNDING STUDY / 04</text>
@@ -26,7 +26,7 @@
     <g id="figure-caption">
       <text x="54" y="603" font-size="27" font-weight="600" class="fg-ink">図2 — 折りの構造を示す模型</text>
       <path d="M54 619H644" fill="none" stroke="#2166b5" stroke-width="1.5"/>
-      <text x="54" y="651" font-size="20" class="fg-muted">図題は、画像領域が何を示すかを説明する。</text>
+      <text x="54" y="651" font-size="20" class="fg-muted">図題は、画像領域が何を示すかを説明します。</text>
     </g>
   </g>
   <g id="figure-connections" class="fg-flow">
@@ -39,20 +39,20 @@
   <g id="figure-image-label">
     <text x="820" y="238" font-size="18" class="fg-mono fg-blue">01 / IMAGE</text>
     <text x="820" y="279" font-size="28" font-weight="600" class="fg-ink">何が写っているか。</text>
-    <text x="820" y="316" font-size="20" class="fg-muted">領域と対象を、切り出す。</text>
+    <text x="820" y="316" font-size="20" class="fg-muted">領域と対象を特定します。</text>
     <path d="M820 342H1146" class="fg-rule"/>
   </g>
   <g id="figure-caption-label">
     <text x="820" y="386" font-size="18" class="fg-mono fg-blue">02 / CAPTION</text>
     <text x="820" y="427" font-size="28" font-weight="600" class="fg-ink">どの図題に属するか。</text>
-    <text x="820" y="464" font-size="20" class="fg-muted">画像と名前を、対応させる。</text>
+    <text x="820" y="464" font-size="20" class="fg-muted">画像と図題を対応させます。</text>
   </g>
   <g id="figure-ref">
     <rect x="794" y="510" width="352" height="152" fill="#f0efe9"/>
     <text x="820" y="546" font-size="18" class="fg-mono fg-blue">03 / TEXT REFERENCE</text>
     <text x="820" y="585" font-size="21" font-weight="600" class="fg-ink">「図2の模型を参照する。」</text>
-    <text x="820" y="625" font-size="19" class="fg-muted">本文中の参照も、同じ対象へ。</text>
+    <text x="820" y="625" font-size="19" class="fg-muted">本文も同じ対象を指します。</text>
   </g>
   <path d="M54 720H1146" class="fg-rule"/>
-  <text x="54" y="760" font-size="17" class="fg-muted">幾何図・図題・本文はすべて自作。画像認識モデルの実出力や実験結果ではありません。</text>
+  <text x="54" y="760" font-size="17" class="fg-muted">幾何図・図題・本文はすべて自作です。画像認識モデルの実出力や実験結果ではありません。</text>
 </svg>

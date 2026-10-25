@@ -14,6 +14,11 @@ interface Props {
 const { title, description = '', path } = Astro.props;
 const lang = (Astro.currentLocale ?? 'ja') as Lang;
 const d = t(lang);
+const shell = {
+  ja: { skip: '本文へ移動', nav: 'メインナビゲーション', language: '表示言語' },
+  zh: { skip: '跳到正文', nav: '主导航', language: '显示语言' },
+  en: { skip: 'Skip to content', nav: 'Main navigation', language: 'Display language' },
+}[lang];
 const htmlLang = lang === 'zh' ? 'zh-CN' : lang;
 const nav = [
   { key: 'works', to: '/works' },
@@ -46,7 +51,7 @@ const langShort: Record<Lang, string> = { ja: 'JA', zh: 'ZH', en: 'EN' };
         <path d="M4 9h5M4 12h7" fill="none" stroke="currentColor" stroke-width="2" />
       </symbol>
     </svg>
-    <a class="skip" href="#main">skip</a>
+    <a class="skip" href="#main">{shell.skip}</a>
     <div class="progress" aria-hidden="true"><span></span></div>
     <div class="wrap">
       <header class="site-header">
@@ -54,11 +59,11 @@ const langShort: Record<Lang, string> = { ja: 'JA', zh: 'ZH', en: 'EN' };
           <svg class="brand-mark" aria-hidden="true"><use href="#logo" /></svg>
           <span>{d.siteName}</span>
         </a>
-        <nav class="site-nav" aria-label="main">
+        <nav class="site-nav" aria-label={shell.nav}>
           {nav.map((n) => (
             <a href={href(lang, n.to)} aria-current={path.startsWith(n.to) ? 'page' : undefined}>{d.nav[n.key]}</a>
           ))}
-          <span class="languages" aria-label="language">
+          <span class="languages" aria-label={shell.language}>
             {LANGS.map((l, i) => (
               <>
                 {i > 0 && ' / '}
@@ -274,6 +279,8 @@ const langShort: Record<Lang, string> = { ja: 'JA', zh: 'ZH', en: 'EN' };
     --t01: #8abaff; --t02: #75beb0; --t03: #d1ac66; --t04: #e19b8b; --edge-addresses: #75beb0; --edge-contrasts: #e19b8b;
   }
   * { box-sizing: border-box; }
+  /* Explicit component display rules must not override the hidden state. */
+  [hidden] { display: none !important; }
   html { scroll-padding-top: 2rem; }
   body { margin: 0; background: var(--bg); color: var(--text); font: 400 1rem/1.9 var(--sans); word-break: normal; overflow-wrap: anywhere; line-break: strict; letter-spacing: 0; }
   :lang(zh-CN) { font-family: Inter, 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif; line-height: 1.85; }
@@ -366,7 +373,7 @@ const langShort: Record<Lang, string> = { ja: 'JA', zh: 'ZH', en: 'EN' };
   .page-lead { padding: 62px 0 42px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: end; }
   .page-lead h1 { font-size: var(--display); margin-top: 12px; line-height: 1.45; letter-spacing: -0.025em; }
   .page-lead p { max-width: 35em; }
-  .section-heading { display: flex; justify-content: space-between; gap: 24px; align-items: baseline; padding-block: 24px; border-top: 1px solid var(--line-strong); }
+  .section-heading { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; align-items: baseline; padding-block: 24px; border-top: 1px solid var(--line-strong); }
   .section-heading h2 { font-size: 1.5rem; } .section-heading h2 .mono { margin-right: 18px; color: var(--accent); }
   .state { display: inline-flex; align-items: center; gap: 8px; font-size: 0.875rem; }
   .state::before { content: ''; width: 7px; height: 7px; border: 1.5px solid var(--accent); flex: none; }

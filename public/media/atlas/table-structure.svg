@@ -1,13 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="table-svg-title table-svg-desc">
   <title id="table-svg-title">表は、セルの集まりだけではない。</title>
-  <desc id="table-svg-desc">自作の架空資料。多段表頭、行をまたぐ結合セル、脚注の適用先を青い線で示す複雑表の説明図。実験結果ではありません。</desc>
+  <desc id="table-svg-desc">自作の架空資料です。複数段の見出し、行をまたぐ結合セル、脚注の適用先を青い線で示しています。実験結果ではありません。</desc>
   <style>text{font-family:Inter,"Noto Sans JP","Yu Gothic",sans-serif}.tb-mono{font-family:"IBM Plex Mono",monospace;letter-spacing:.05em}.tb-rule{stroke:#66685e;stroke-width:1.5;fill:none}.tb-flow{stroke:#2166b5;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}.tb-ink{fill:#141413}.tb-muted{fill:#595951}.tb-blue{fill:#2166b5}</style>
   <rect width="1200" height="800" fill="#faf9f5"/>
   <text x="54" y="55" font-size="18" class="tb-mono tb-muted">STRUCTURE STUDY / 02</text>
   <text x="1146" y="55" font-size="18" text-anchor="end" class="tb-muted">架空資料 / EDITORIAL STUDY</text>
   <path d="M54 78H1146" class="tb-rule"/>
   <text x="54" y="139" font-size="37" font-weight="600" class="tb-ink">表は、セルの集まりだけではない。</text>
-  <text x="54" y="177" font-size="20" class="tb-muted">見出しの範囲・結合の意味・注の適用先を、同時に読む。</text>
+  <text x="54" y="177" font-size="20" class="tb-muted">見出しの範囲・結合の意味・注の適用先を、併せて確認します。</text>
   <g id="table-document">
     <rect x="54" y="222" width="716" height="336" fill="#fff" stroke="#66685e" stroke-width="1.5"/>
     <g id="table-header">
@@ -62,18 +62,18 @@
   <g id="table-header-label">
     <text x="892" y="235" font-size="18" class="tb-mono tb-blue">01 / HEADER</text>
     <text x="892" y="274" font-size="27" font-weight="600" class="tb-ink">見出しの範囲</text>
-    <text x="892" y="309" font-size="19" class="tb-muted">二つの列を、束ねる。</text>
+    <text x="892" y="309" font-size="19" class="tb-muted">二つの列をまとめます。</text>
   </g>
   <g id="table-body-label">
     <text x="892" y="399" font-size="18" class="tb-mono tb-blue">02 / ROWSPAN</text>
     <text x="892" y="438" font-size="27" font-weight="600" class="tb-ink">結合セルの意味</text>
-    <text x="892" y="473" font-size="19" class="tb-muted">複数行に、適用する。</text>
+    <text x="892" y="473" font-size="19" class="tb-muted">複数行に適用します。</text>
   </g>
   <g id="table-note-label">
     <text x="892" y="563" font-size="18" class="tb-mono tb-blue">03 / FOOTNOTE</text>
     <text x="892" y="602" font-size="27" font-weight="600" class="tb-ink">注の適用先</text>
-    <text x="892" y="637" font-size="19" class="tb-muted">ひとつのセルを、補う。</text>
+    <text x="892" y="637" font-size="19" class="tb-muted">一つのセルを補います。</text>
   </g>
   <path d="M54 720H1146" class="tb-rule"/>
-  <text x="54" y="760" font-size="17" class="tb-muted">架空の表と注による自作模式図。実在する入試情報や実験結果ではありません。</text>
+  <text x="54" y="760" font-size="17" class="tb-muted">架空の表と注を使った自作模式図です。実在する入試情報や実験結果ではありません。</text>
 </svg>

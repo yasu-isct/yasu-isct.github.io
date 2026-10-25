@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="overview-title overview-desc">
   <title id="overview-title">文書は、関係の集まり。</title>
-  <desc id="overview-desc">自作の架空資料。文書内の画像、複雑表、脚注から、それぞれの構造関係へ青い線をつないだ説明図。モデルの出力ではありません。</desc>
+  <desc id="overview-desc">自作の架空資料です。文書内の画像、複雑な表、脚注の構造上の関係を青い線で示しています。モデルの出力ではありません。</desc>
   <style>text{font-family:Inter,"Noto Sans JP","Yu Gothic",sans-serif}.ov-mono{font-family:"IBM Plex Mono",monospace;letter-spacing:.06em}.ov-label{font-size:18px;fill:#595951}.ov-ink{fill:#141413}.ov-blue{fill:#2166b5}.ov-rule{stroke:#66685e;stroke-width:1.5}.ov-flow{fill:none;stroke:#2166b5;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}</style>
   <rect width="1200" height="800" fill="#faf9f5"/>
   <text x="54" y="55" class="ov-mono ov-label">DOCUMENT STUDY / 01</text>
@@ -67,7 +67,7 @@
   <g id="overview-table-node">
     <text x="828" y="443" class="ov-mono ov-label">02 / TABLE</text>
     <text x="828" y="486" font-size="30" font-weight="600" class="ov-ink">どの値の、見出しか。</text>
-    <text x="828" y="528" font-size="19" class="ov-label">多段表頭・結合セル・脚注</text>
+    <text x="828" y="528" font-size="19" class="ov-label">多段見出し・結合セル・脚注</text>
     <path d="M828 554H1146" class="ov-rule"/>
   </g>
   <g id="overview-link-node">
@@ -75,5 +75,5 @@
     <text x="828" y="659" font-size="30" font-weight="600" class="ov-ink">別のページへ、続く。</text>
     <text x="828" y="700" font-size="19" class="ov-label">条件・例外・根拠のつながり</text>
   </g>
-  <text x="54" y="760" font-size="17" fill="#595951">自作の模式図。実在資料・モデルの推論・研究結果を示すものではありません。</text>
+  <text x="54" y="760" font-size="17" fill="#595951">自作の模式図です。実在資料・モデルの推論・研究結果を示すものではありません。</text>
 </svg>
