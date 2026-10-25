@@ -105,6 +105,20 @@ export interface CopyRow { key: string; ja: string; zh: string; en: string }
 
 export const lineage: LineageEdge[] = readJsonl<LineageEdge>('lineage.jsonl');
 export const stories: Story[] = readJsonl<Story>('stories.jsonl');
+
+// R's Japanese sidecars (batch 3, 2026-10-25): never edit the originals, merge at load time.
+interface NodeJa { node_id: string; one_line_ja?: string; title_ja?: string }
+interface StoryJa { story_id: string; title_ja?: string; steps: { step_index: number; node_id: string; caption_ja?: string }[] }
+const nodeJa = new Map(readJsonl<NodeJa>('nodes.ja.jsonl').map((r) => [r.node_id, r]));
+const storyJa = new Map(readJsonl<StoryJa>('stories.ja.jsonl').map((r) => [r.story_id, r]));
+for (const n of nodes) { const j = nodeJa.get(n.node_id); if (j?.title_ja && !n.title_ja) n.title_ja = j.title_ja; }
+/** Story title / step caption in the page language: ja and en pages show R's Japanese, zh shows the original. */
+export const storyTitle = (s: Story, lang: 'ja' | 'zh' | 'en') => (lang === 'zh' ? { text: s.title, lang: 'zh' } : { text: storyJa.get(s.story_id)?.title_ja || s.title_ja || s.title, lang: storyJa.get(s.story_id)?.title_ja || s.title_ja ? 'ja' : 'zh' });
+export const stepCaption = (s: Story, i: number, lang: 'ja' | 'zh' | 'en') => {
+  const ja = storyJa.get(s.story_id)?.steps.find((x) => x.step_index === i)?.caption_ja;
+  return lang === 'zh' || !ja ? { text: s.steps[i].caption, lang: 'zh' } : { text: ja, lang: 'ja' };
+};
+const oneLineJa = (n: Node) => nodeJa.get(n.node_id)?.one_line_ja;
 export const paperThemes: PaperTheme[] = readJsonl<PaperTheme>('paper-themes.jsonl');
 const copyRows: CopyRow[] = readJsonl<CopyRow>('copy.jsonl');
 const copyMap = new Map(copyRows.map((r) => [r.key, r]));
@@ -116,7 +130,7 @@ export function copyOf(key: string, lang: 'ja' | 'zh' | 'en'): string {
   return (r[lang] && r[lang].trim()) || r.zh || '';
 }
 /** one_line for a node in the requested language (R translated all 130). */
-export const oneLine = (n: Node, lang: 'ja' | 'zh' | 'en') => copyOf(`node.${n.node_id}.one_line`, lang) || cleanOneLine(n.one_line);
+export const oneLine = (n: Node, lang: 'ja' | 'zh' | 'en') => copyOf(`node.${n.node_id}.one_line`, lang) || (lang !== 'zh' && oneLineJa(n)) || cleanOneLine(n.one_line);
 
 export const storiesOfTheme = (t: Node) => stories.filter((s) => s.theme === t.node_id);
 export const papersOfTheme = (t: Node) =>

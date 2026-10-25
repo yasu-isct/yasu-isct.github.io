@@ -47,6 +47,7 @@ const readme = [
   '- node_id, edge_id, story_id: stable record identifiers; report nodes use reports:R01 through reports:R20.',
   '- object_type: paper, direction, route, theme, rq, experiment, or report.',
   '- title, title_ja, one_line: authored titles and descriptions.',
+  '- one_line_ja, caption_ja (nodes.ja.jsonl, stories.ja.jsonl): Japanese sidecars translated by R; node_id / story_id + step_index key them to the originals.',
   '- status: one of the four states defined below, or null when no state is assigned.',
   '- public: the unchanged visibility flag; false does not grant permission to publish.',
   '- checked_at: the date of the recorded check, not evidence of full-text verification.',

@@ -8,7 +8,7 @@ import VerticalTitle from './VerticalTitle.astro';
 import { researchPlain, glossary } from '../content/research-plain';
 import {
   themes, papers, byId, localId, copyOf, oneLine, storiesOfTheme, papersOfTheme,
-  rqsOfTheme, experimentsOfRq, lineageFrom, STATUS_ORDER, counts, type Node,
+  rqsOfTheme, experimentsOfRq, lineageFrom, STATUS_ORDER, counts, storyTitle, stepCaption, type Node,
 } from '../lib/research';
 import { label, shortId } from '../lib/labels';
 import { t, fill, type Lang } from '../i18n/ui';
@@ -87,16 +87,17 @@ const kindMark = (n: Node) => (n.object_type === 'paper' ? '○' : n.object_type
           <div class="stories">
             {sts.map((s) => (
               <figure class="story">
-                <figcaption><span class="figure-number">{s.story_id.replace('story:', '').toUpperCase()}</span> <span lang="zh">{s.title}</span></figcaption>
+                <figcaption><span class="figure-number">{s.story_id.replace('story:', '').toUpperCase()}</span> <span lang={storyTitle(s, lang).lang}>{storyTitle(s, lang).text}</span></figcaption>
                 <ol class="steps">
-                  {s.steps.map((st) => {
+                  {s.steps.map((st, si) => {
                     const n = byId.get(st.node_id);
                     if (!n) return null;
+                    const cap = stepCaption(s, si, lang);
                     return (
                       <li>
                         <span class="node-kind mono">{kindMark(n)} {localId(n.node_id)}</span>
-                        <span class="step-title">{n.object_type === 'paper' ? n.title : label(n, lang)}{n.bib?.year && <span class="muted mono"> {n.bib.year}</span>}</span>
-                        <span class="caption" lang="zh">{st.caption}</span>
+                        <span class="step-title" lang={n.object_type === 'paper' ? 'en' : (lang === 'ja' && n.title_ja) ? 'ja' : (lang === 'zh' ? 'zh' : (n.title_ja ? 'ja' : 'zh'))}>{n.object_type === 'paper' ? n.title : label(n, lang)}{n.bib?.year && <span class="muted mono"> {n.bib.year}</span>}</span>
+                        <span class="caption" lang={cap.lang}>{cap.text}</span>
                       </li>
                     );
                   })}

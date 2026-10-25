@@ -12,7 +12,9 @@ const forbiddenFields = new Set(['source_path', 'source_sha256', 'basis', 'raw_l
 const requiredMarkers = ['D' + ':/', 'research' + '-assets-', '20' + '_DIRECTIONS'];
 const unsafe = /(?:^|[^A-Za-z0-9])[A-Z]:[\\/]|research-assets-|20_DIRECTIONS|research-control-[^"\s]*\/|job[-]finding|[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}/i;
 const allowedPrototype = ['build-layout.mjs', 'd3.LICENSE', 'd3.v7.9.0.min.js', 'layout.json', 'map.embed.css', 'map.embed.js'].sort();
-const sourceNames = ['nodes.jsonl', 'lineage.jsonl', 'citations.jsonl', 'openalex.jsonl', 'paper-themes.jsonl', 'stories.jsonl', 'copy.jsonl', 'edges.jsonl', 'README.md'];
+const layoutSources = ['nodes.jsonl', 'lineage.jsonl', 'citations.jsonl', 'openalex.jsonl', 'paper-themes.jsonl', 'stories.jsonl', 'copy.jsonl', 'edges.jsonl', 'README.md'];
+// + R's Japanese sidecars (one_line_ja / title_ja / caption_ja), not part of the layout build
+const sourceNames = [...layoutSources, 'nodes.ja.jsonl', 'stories.ja.jsonl'];
 const parse = text => text.split(/\r?\n/).filter(line => line.trim()).map(JSON.parse);
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
 
@@ -56,7 +58,7 @@ const layoutBytes = await readFile(path.join(prototypeDir, 'layout.json'));
 inspectText(layoutBytes.toString('utf8'), 'layout.json');
 const layout = JSON.parse(layoutBytes);
 inspect(layout, 'layout');
-assert.deepEqual(layout.meta.sourceFiles.map(item => item.name), sourceNames);
+assert.deepEqual(layout.meta.sourceFiles.map(item => item.name), layoutSources);
 for (const file of layout.meta.sourceFiles) {
   assert.deepEqual(Object.keys(file).sort(), ['name', 'sha256']);
   assert.equal(path.basename(file.name), file.name);
