@@ -40,6 +40,14 @@ export interface Edge {
 // Anchored at the site root (astro runs with cwd = site/), so it works after bundling too.
 const dataDir = resolve(process.cwd(), 'data/public/research-map');
 
+// Presentation-only Japanese edits. The hashed research snapshots stay byte-for-byte intact.
+interface EditorialJa {
+  copy: Record<string, string>;
+  titles: Record<string, string>;
+  stories: Record<string, { title: string; steps: Record<string, string> }>;
+}
+const editorialJa: EditorialJa = JSON.parse(readFileSync(resolve(process.cwd(), 'public/research-ja-editorial.json'), 'utf8'));
+
 function readJsonl<T>(file: string): T[] {
   return readFileSync(resolve(dataDir, file), 'utf8')
     .split('\n')
@@ -111,10 +119,21 @@ interface NodeJa { node_id: string; one_line_ja?: string; title_ja?: string }
 interface StoryJa { story_id: string; title_ja?: string; steps: { step_index: number; node_id: string; caption_ja?: string }[] }
 const nodeJa = new Map(readJsonl<NodeJa>('nodes.ja.jsonl').map((r) => [r.node_id, r]));
 const storyJa = new Map(readJsonl<StoryJa>('stories.ja.jsonl').map((r) => [r.story_id, r]));
-for (const n of nodes) { const j = nodeJa.get(n.node_id); if (j?.title_ja && !n.title_ja) n.title_ja = j.title_ja; }
+for (const n of nodes) {
+  const j = nodeJa.get(n.node_id);
+  if (editorialJa.titles[n.node_id]) n.title_ja = editorialJa.titles[n.node_id];
+  else if (j?.title_ja && !n.title_ja) n.title_ja = j.title_ja;
+}
 /** Story title / step caption in the page language: ja and en pages show R's Japanese, zh shows the original. */
-export const storyTitle = (s: Story, lang: 'ja' | 'zh' | 'en') => (lang === 'zh' ? { text: s.title, lang: 'zh' } : { text: storyJa.get(s.story_id)?.title_ja || s.title_ja || s.title, lang: storyJa.get(s.story_id)?.title_ja || s.title_ja ? 'ja' : 'zh' });
+export const storyTitle = (s: Story, lang: 'ja' | 'zh' | 'en') => {
+  if (lang === 'ja' && editorialJa.stories[s.story_id]) return { text: editorialJa.stories[s.story_id].title, lang: 'ja' };
+  return lang === 'zh' ? { text: s.title, lang: 'zh' } : { text: storyJa.get(s.story_id)?.title_ja || s.title_ja || s.title, lang: storyJa.get(s.story_id)?.title_ja || s.title_ja ? 'ja' : 'zh' };
+};
 export const stepCaption = (s: Story, i: number, lang: 'ja' | 'zh' | 'en') => {
+  if (lang === 'ja') {
+    const edited = editorialJa.stories[s.story_id]?.steps[s.steps[i].node_id];
+    if (edited) return { text: edited, lang: 'ja' };
+  }
   const ja = storyJa.get(s.story_id)?.steps.find((x) => x.step_index === i)?.caption_ja;
   return lang === 'zh' || !ja ? { text: s.steps[i].caption, lang: 'zh' } : { text: ja, lang: 'ja' };
 };
@@ -125,6 +144,7 @@ const copyMap = new Map(copyRows.map((r) => [r.key, r]));
 
 /** Trilingual copy from R's copy.jsonl; falls back to zh, then ''. */
 export function copyOf(key: string, lang: 'ja' | 'zh' | 'en'): string {
+  if (lang === 'ja' && editorialJa.copy[key]) return editorialJa.copy[key];
   const r = copyMap.get(key);
   if (!r) return '';
   return (r[lang] && r[lang].trim()) || r.zh || '';

@@ -12,6 +12,11 @@ const d = t(lang);
 const f = d.works;
 const g = d.gallery;
 const categories: Record<string, string> = { 'j-grad': 'RAG / DOCUMENT RETRIEVAL', coach: 'JAPANESE LEARNING / CLAUDE SKILL + GPU' };
+const supportingCopy = {
+  ja: { title: '補助機能・保存内容', note: '主画面とは別に、履歴と保存内容を確認できます。', open: '原図を拡大' },
+  zh: { title: '辅助功能与保存内容', note: '在主画面之外查看历史记录和保存内容。', open: '放大原图' },
+  en: { title: 'Supporting features and saved files', note: 'Inspect history and saved output separately from the main demonstration.', open: 'Enlarge original' },
+}[lang];
 ---
 
 <Base title={d.nav.works} description={f.intro} path="/works">
@@ -24,7 +29,8 @@ const categories: Record<string, string> = { 'j-grad': 'RAG / DOCUMENT RETRIEVAL
   </div>
 
   {works.map((w, i) => {
-    const m = w.media ?? [];
+    const m = (w.media ?? []).filter((x) => x.placement !== 'supporting');
+    const supporting = (w.media ?? []).filter((x) => x.placement === 'supporting');
     return (
       <article class="work-entry" id={w.id}>
         <div class={`project-spread${m.length ? '' : ' no-media'}`}>
@@ -43,7 +49,7 @@ const categories: Record<string, string> = { 'j-grad': 'RAG / DOCUMENT RETRIEVAL
                   </button>
                 ))}
               </div>
-              <figcaption class="image-caption"><span class="capture-caption-item">{m[0].caption?.[lang] ?? ''}</span> {g.caption}</figcaption>
+              <figcaption class="image-caption"><span class="capture-caption-item">{m[0].caption?.[lang] ?? ''}</span><span class="capture-origin">{w.mediaNote?.[lang] ?? g.caption}</span></figcaption>
             </figure>
           )}
           <div class="project-copy">
@@ -51,6 +57,8 @@ const categories: Record<string, string> = { 'j-grad': 'RAG / DOCUMENT RETRIEVAL
             <h2 lang="en">{w.name}</h2>
             <p class="project-point">{w.tagline[lang]}</p>
             <p class="meta">{w.status[lang]} · {w.period}</p>
+          </div>
+          <div class="project-actions">
             {w.points && <ol class="project-points">{w.points.map((p, k) => <li><span class="n mono">{String(k + 1).padStart(2, '0')}</span>{p[lang]}</li>)}</ol>}
             {!m.length && <p class="note pending">{g.pending}</p>}
             <div class="links">
@@ -59,12 +67,25 @@ const categories: Record<string, string> = { 'j-grad': 'RAG / DOCUMENT RETRIEVAL
             </div>
           </div>
         </div>
+        {supporting.length > 0 && <section class="supporting-media" aria-label={supportingCopy.title}>
+          <p class="note">{supportingCopy.note}</p>
+          {supporting.map((x) => <details class="supporting-evidence">
+            <summary>{x.label[lang].replace(/^\d+\s*\/\s*/, '')}</summary>
+            <figure>
+              <p class="image-caption">{x.caption?.[lang]}</p>
+              <button type="button" class="supporting-zoom" data-src={x.src} data-alt={x.alt[lang]} data-width={x.width} data-height={x.height} data-caption={x.caption?.[lang] ?? ''} aria-label={`${supportingCopy.open} — ${x.alt[lang]}`}>
+                <img src={x.src} width={x.width} height={x.height} alt={x.alt[lang]} loading="lazy" />
+                <span>{supportingCopy.open} ＋</span>
+              </button>
+            </figure>
+          </details>)}
+        </section>}
         <dl class="work-facts">
           <div><dt>{f.problem}</dt><dd>{w.problem[lang]}</dd></div>
           <div><dt>{f.role}</dt><dd>{w.role[lang]}</dd></div>
           <div><dt>{f.verification}</dt><dd>{w.verification[lang]}</dd></div>
           <div><dt>{f.change}</dt><dd>{w.change[lang]}</dd></div>
-          <div><dt>{f.number}</dt><dd><a class="num" href={w.number.href} rel="noopener">{w.number.value}</a><br /><span class="note">{w.number.label[lang]}</span></dd></div>
+          <div><dt>{f.number}</dt><dd><a class="num" href={w.number.href} rel="noopener">{w.number.display?.[lang] ?? w.number.value}</a><br /><span class="note">{w.number.label[lang]}</span></dd></div>
           <div><dt>{f.stack}</dt><dd class="stack">{w.stack.map((s) => <span class="chip mono">{s}</span>)}</dd></div>
         </dl>
       </article>
@@ -74,13 +95,20 @@ const categories: Record<string, string> = { 'j-grad': 'RAG / DOCUMENT RETRIEVAL
   <dialog class="lightbox" id="capture-lightbox" aria-labelledby="capture-lightbox-title">
     <div class="lightbox-top"><p id="capture-lightbox-title">{g.enlarge}</p><button type="button" id="capture-lightbox-close">{d.atlas.close}</button></div>
     <div class="img-view" tabindex="0"><img id="capture-lightbox-img" alt="" /></div>
-    <p class="note" style="margin-top:10px">{g.caption}</p>
+    <p class="note" id="capture-lightbox-caption" style="margin-top:10px"></p>
   </dialog>
 </Base>
 
 <script>
   const dialog = document.getElementById('capture-lightbox') as HTMLDialogElement | null;
   const big = document.getElementById('capture-lightbox-img') as HTMLImageElement | null;
+  const openImage = (x: { src: string; alt: string; w: number; h: number; caption: string }) => {
+    if (!dialog || !big) return;
+    big.src = x.src; big.alt = x.alt; big.width = x.w; big.height = x.h;
+    document.getElementById('capture-lightbox-title')!.textContent = x.alt;
+    document.getElementById('capture-lightbox-caption')!.textContent = x.caption;
+    dialog.showModal();
+  };
   document.querySelectorAll<HTMLElement>('.capture').forEach((fig) => {
     const media = JSON.parse(fig.dataset.media!) as { src: string; w: number; h: number; alt: string; caption: string; video: boolean; poster: string }[];
     const main = fig.querySelector<HTMLImageElement>('.capture-main')!;
@@ -91,13 +119,13 @@ const categories: Record<string, string> = { 'j-grad': 'RAG / DOCUMENT RETRIEVAL
     const thumbs = [...fig.querySelectorAll<HTMLButtonElement>('.capture-thumb')];
     let current = 0;
     const show = (k: number) => {
-      current = k; const x = media[k];
+      current = k; const x = media[k]; video.pause();
       if (x.video) {
         // the walkthrough clip: never autoplays, the visitor presses play
         zoomBtn.hidden = true; enlarge.hidden = true; video.hidden = false;
         video.src = x.src; video.poster = x.poster; video.setAttribute('aria-label', x.alt);
       } else {
-        video.pause(); video.hidden = true; video.removeAttribute('src'); zoomBtn.hidden = false; enlarge.hidden = false;
+        video.hidden = true; video.removeAttribute('src'); video.load(); zoomBtn.hidden = false; enlarge.hidden = false;
         main.src = x.src; main.alt = x.alt; main.width = x.w; main.height = x.h;
       }
       capItem.textContent = x.caption;
@@ -105,11 +133,12 @@ const categories: Record<string, string> = { 'j-grad': 'RAG / DOCUMENT RETRIEVAL
     };
     thumbs.forEach((b) => b.addEventListener('click', () => show(Number(b.dataset.index))));
     zoomBtn.addEventListener('click', () => {
-      if (!dialog || !big) return;
-      const x = media[current]; big.src = x.src; big.alt = x.alt; big.width = x.w; big.height = x.h;
-      document.getElementById('capture-lightbox-title')!.textContent = x.alt;
-      dialog.showModal();
+      openImage(media[current]);
     });
+    document.addEventListener('visibilitychange', () => { if (document.hidden) video.pause(); });
+  });
+  document.querySelectorAll<HTMLButtonElement>('.supporting-zoom').forEach((button) => {
+    button.addEventListener('click', () => openImage({ src: button.dataset.src!, alt: button.dataset.alt!, w: Number(button.dataset.width), h: Number(button.dataset.height), caption: button.dataset.caption ?? '' }));
   });
   document.getElementById('capture-lightbox-close')?.addEventListener('click', () => dialog?.close());
   dialog?.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
@@ -117,15 +146,18 @@ const categories: Record<string, string> = { 'j-grad': 'RAG / DOCUMENT RETRIEVAL
 
 <style>
   .work-entry { border-top: 1px solid var(--line-strong); padding: 36px 0 48px; scroll-margin-top: 2rem; }
-  .project-spread { display: grid; grid-template-columns: 1.35fr 0.8fr; gap: 48px; align-items: center; }
+  .project-spread { display: grid; grid-template-columns: 1.35fr 0.8fr; gap: 20px 48px; align-items: start; }
   .project-spread.no-media { grid-template-columns: 1fr; }
-  .capture { min-width: 0; margin: 0; }
+  .capture { min-width: 0; margin: 0; grid-column: 1; grid-row: 1 / span 2; }
+  .project-copy { grid-column: 2; grid-row: 1; }
+  .project-actions { grid-column: 2; grid-row: 2; }
+  .no-media .project-copy, .no-media .project-actions { grid-column: 1; }
   .capture-image { position: relative; background: var(--wash); border-radius: 14px; padding: 22px; overflow: hidden; }
   .zoom-capture { border: 0; padding: 0; background: transparent; display: block; width: 100%; text-align: left; min-height: 0; cursor: zoom-in; }
-  .capture-image img { width: 100%; height: auto; aspect-ratio: 1.55; object-fit: cover; object-position: top; border-radius: 5px; border: 1px solid var(--line); background: #fff; display: block; }
+  .capture-image img { width: 100%; height: auto; max-height: 650px; object-fit: contain; border-radius: 5px; border: 1px solid var(--line); background: var(--surface); display: block; }
   .enlarge { position: absolute; bottom: 32px; right: 32px; padding: 7px 12px; min-height: 36px; background: #faf9f5; color: #141413; border: 1px solid #66685e; border-radius: 30px; display: flex; gap: 7px; align-items: center; font-size: 0.75rem; pointer-events: none; font-family: var(--ui); }
   .enlarge svg { width: 14px; height: 14px; }
-  .capture-video { width: 100%; height: auto; aspect-ratio: 1.44; border-radius: 5px; border: 1px solid var(--line); background: #000; display: block; }
+  .capture-video { width: 100%; height: auto; max-height: 650px; border-radius: 5px; border: 1px solid var(--line); background: #000; display: block; }
   .capture-strip { display: flex; gap: 12px; margin-top: 14px; overflow-x: auto; padding-bottom: 4px; scroll-snap-type: x proximity; }
   .capture-thumb { display: block; flex: 0 0 118px; padding: 0 0 8px; border: 0; border-bottom: 2px solid transparent; background: transparent; text-align: left; min-width: 0; min-height: 0; font-family: var(--ui); scroll-snap-align: start; }
   .capture-thumb img, .thumb-video { height: 72px; width: 100%; object-fit: cover; object-position: top; border: 1px solid var(--line); border-radius: 4px; opacity: 0.78; display: block; background: #fff; }
@@ -133,12 +165,19 @@ const categories: Record<string, string> = { 'j-grad': 'RAG / DOCUMENT RETRIEVAL
   .capture-thumb span { font-size: 0.75rem; display: block; line-height: 1.7; margin-top: 7px; color: var(--muted); }
   .capture-thumb[aria-pressed='true'] { border-color: var(--accent); } .capture-thumb[aria-pressed='true'] img { opacity: 1; } .capture-thumb[aria-pressed='true'] span { color: var(--text); }
   .image-caption { font-size: 0.8125rem; color: var(--muted); line-height: 1.9; margin-top: 12px; }
+  .capture-origin { display: block; margin-top: 6px; }
+  .supporting-media { margin-top: 28px; }
+  .supporting-evidence { margin-top: 12px; }
+  .supporting-evidence figure { margin: 0; }
+  .supporting-zoom { display: block; text-align: left; border: 0; background: transparent; padding: 0; max-width: 100%; cursor: zoom-in; }
+  .supporting-zoom img { display: block; width: auto; max-width: 100%; height: auto; max-height: 720px; object-fit: contain; object-position: left; border: 1px solid var(--line); }
+  .supporting-zoom span { display: block; color: var(--accent); font-size: 0.8125rem; padding: 8px 0; }
   .project-kicker { color: var(--accent); font-size: 0.8125rem; }
   .project-copy h2 { font-size: clamp(1.6rem, 2.5vw, 2rem); line-height: 1.35; margin: 14px 0 18px; letter-spacing: -0.03em; }
   .project-point { font-size: 1.2rem; line-height: 1.7; font-weight: 500; margin-bottom: 12px; text-wrap: pretty; }
   .project-points { list-style: none; padding: 0; margin: 18px 0; border-top: 1px solid var(--line); }
   .project-points li { font-size: 0.9rem; padding: 10px 0; border-bottom: 1px solid var(--line); display: flex; gap: 12px; }
-  .project-points .n { color: var(--accent); font-size: 0.75rem; line-height: 2; }
+  .project-points .n { color: var(--accent); font-size: 0.75rem; line-height: 2; flex: 0 0 2ch; white-space: nowrap; }
   .pending { margin: 14px 0; }
   .work-facts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin: 36px 0 0; }
   .work-facts div { border-top: 1px solid var(--line); padding-top: 12px; }
@@ -159,8 +198,11 @@ const categories: Record<string, string> = { 'j-grad': 'RAG / DOCUMENT RETRIEVAL
   @media (max-width: 1080px) { .project-spread { gap: 30px; } .capture-image { padding: 16px; } .project-point { font-size: 1.1rem; } }
   @media (max-width: 900px) { .work-facts { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 760px) {
-    .project-spread { grid-template-columns: 1fr; gap: 24px; } .project-spread .project-copy { order: -1; }
-    .capture-image img { aspect-ratio: 1.2; } .capture-thumb img { height: 62px; } .capture-thumb span { font-size: 0.7rem; }
+    .project-spread { grid-template-columns: 1fr; gap: 24px; }
+    .project-copy { grid-column: 1; grid-row: 1; }
+    .capture { grid-column: 1; grid-row: 2; }
+    .project-actions { grid-column: 1; grid-row: 3; }
+    .capture-thumb img { height: 62px; } .capture-thumb span { font-size: 0.7rem; }
     .work-facts { grid-template-columns: 1fr; } .lightbox { padding: 14px; }
   }
 </style>

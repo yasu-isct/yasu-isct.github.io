@@ -14,7 +14,7 @@ const workName = (id?: string) => works.find((w) => w.id === id)?.name;
 
 <Base title={d.nav.notes} description={n.intro} path="/notes">
   <div class="page-lead">
-    <div><p class="eyebrow">DECISIONS / REVISIONS / EVIDENCE</p><h1 set:html={n.headline} /></div>
+    <div><p class="eyebrow">{lang === 'ja' ? '判断 / 修正 / 根拠' : 'DECISIONS / REVISIONS / EVIDENCE'}</p><h1 set:html={n.headline} /></div>
     <p>{n.intro}</p>
   </div>
 
@@ -37,7 +37,7 @@ const workName = (id?: string) => works.find((w) => w.id === id)?.name;
       <div class="running-head" aria-hidden="true"><span class="mono" id="rh-no">{n.running} 01</span><span id="rh-title">{notes[0]?.title[lang]}</span></div>
       {notes.map((x, i) => (
         <article class="record" id={x.id} data-no={String(i + 1).padStart(2, '0')} data-title={x.title[lang]}>
-          <p class="eyebrow">RECORD {String(i + 1).padStart(2, '0')} / {x.date}{x.work && <> / <a href={`${href(lang, '/works')}#${x.work}`}>{workName(x.work)}</a></>}</p>
+          <p class="eyebrow">{n.running} {String(i + 1).padStart(2, '0')} / {x.date}{x.work && <> / <a href={`${href(lang, '/works')}#${x.work}`}>{workName(x.work)}</a></>}</p>
           <h2>{x.title[lang]}</h2>
           <p class="scene">{x.scene[lang]}</p>
           <div class="cols">

@@ -16,8 +16,8 @@ const g = t(lang).gallery;
     <svg viewBox="0 0 1120 620">
       <rect class="paper" x="58" y="52" width="292" height="458" /><rect class="paper" x="426" y="106" width="292" height="458" /><rect class="paper" x="800" y="52" width="262" height="418" />
       <text class="svg-meta" x="84" y="88">P. 04 / 本文</text><text class="svg-title" x="84" y="132">資料を読む</text><path class="rule" d="M84 159h240M84 178h240M84 197h220M84 229h240M84 248h210M84 267h240M84 286h170" /><text class="svg-body" x="84" y="330">専門別の条件は、</text><text class="svg-body" x="84" y="361">別表Bを参照する。</text><path class="rule" d="M84 395h240M84 414h220M84 433h240" />
-      <text class="svg-meta" x="452" y="142">P. 09 / 別表B</text><text class="svg-title" x="452" y="186">専門別の条件</text><rect x="452" y="211" width="240" height="46" class="wash" /><rect x="452" y="211" width="240" height="203" fill="none" class="table-rule" /><path class="table-rule" d="M548 211v203M452 257h240M452 335h240" /><text class="svg-body" x="469" y="242">項目</text><text class="svg-body" x="568" y="242">条件</text><text class="svg-body" x="468" y="303">資料A</text><text class="svg-body" x="568" y="303">本文参照</text><text class="svg-body" x="468" y="382">資料B</text><text class="svg-body" x="568" y="382">注記参照</text><text class="svg-small" x="452" y="464">注記も、同じ根拠の一部。</text><text class="svg-meta" x="452" y="534">SELF-AUTHORED SAMPLE</text>
-      <text class="svg-meta" x="826" y="88">RELATION NOTE</text><text class="svg-title" x="826" y="132">出典へ戻る道</text><text class="svg-body" x="826" y="189">本文 P.04</text><path class="table-rule" d="M838 207v29" /><text class="svg-body" x="826" y="266">参照先 P.09</text><path class="table-rule" d="M838 284v29" /><text class="svg-body" x="826" y="344">条件と注記</text><text class="svg-small" x="826" y="410">ページをまたいで読む。</text>
+      <text class="svg-meta" x="452" y="142">P. 09 / 別表B</text><text class="svg-title" x="452" y="186">専門別の条件</text><rect x="452" y="211" width="240" height="46" class="wash" /><rect x="452" y="211" width="240" height="203" fill="none" class="table-rule" /><path class="table-rule" d="M548 211v203M452 257h240M452 335h240" /><text class="svg-body" x="469" y="242">項目</text><text class="svg-body" x="568" y="242">条件</text><text class="svg-body" x="468" y="303">資料A</text><text class="svg-body" x="568" y="303">本文参照</text><text class="svg-body" x="468" y="382">資料B</text><text class="svg-body" x="568" y="382">注記参照</text><text class="svg-small" x="452" y="464">注記も、根拠の一部です。</text><text class="svg-meta" x="452" y="534">SELF-AUTHORED SAMPLE</text>
+      <text class="svg-meta" x="826" y="88">RELATION NOTE</text><text class="svg-title" x="826" y="132">出典へ戻る道</text><text class="svg-body" x="826" y="189">本文 P.04</text><path class="table-rule" d="M838 207v29" /><text class="svg-body" x="826" y="266">参照先 P.09</text><path class="table-rule" d="M838 284v29" /><text class="svg-body" x="826" y="344">条件と注記</text><text class="svg-small" x="826" y="410">ページをまたいで読みます。</text>
       <g class="highlight s0"><rect class="focus" x="77" y="309" width="252" height="66" /><circle class="pin" cx="84" cy="330" r="5" /></g>
       <g class="highlight s1"><rect class="focus" x="426" y="106" width="292" height="458" /><path class="path relay" d="M329 347H388V164H440" /><circle class="pin" cx="440" cy="164" r="5" /></g>
       <g class="highlight s2"><rect class="focus" x="452" y="335" width="240" height="79" /><path class="path relay" d="M329 347H388V375H438" /><circle class="pin" cx="438" cy="375" r="5" /></g>
@@ -33,7 +33,7 @@ const g = t(lang).gallery;
     </nav>
   </figcaption>
   <details class="transcript"><summary>{m.transcript}</summary><ol>{m.transcriptItems.map((s) => <li>{s}</li>)}</ol></details>
-  <p class="motion-note note">{m.note} <a href={`${href(lang, '/works')}#j-grad`}>{m.real} ↗</a></p>
+  <p class="motion-note note">{m.note} <a href={`${href(lang, '/works')}#j-grad`}>{m.real} →</a></p>
 </figure>
 
 <script>

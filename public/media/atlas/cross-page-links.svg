@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="cross-title cross-desc">
   <title id="cross-title">ページをまたいでも、関係は続く。</title>
-  <desc id="cross-desc">自作の架空資料。全体の規則、条件と例外、参照図と注の三ページを、適用、補足、参照の有向関係でつなぐ説明図です。</desc>
+  <desc id="cross-desc">自作の架空資料です。全体の規則、条件と例外、参照図と注の三ページを、適用・補足・参照の関係で方向を示してつないでいます。</desc>
   <style>text{font-family:Inter,"Noto Sans JP","Yu Gothic",sans-serif}.cp-mono{font-family:"IBM Plex Mono",monospace;letter-spacing:.05em}.cp-rule{stroke:#66685e;stroke-width:1.5;fill:none}.cp-flow{stroke:#2166b5;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}.cp-ink{fill:#141413}.cp-muted{fill:#595951}.cp-blue{fill:#2166b5}</style>
   <rect width="1200" height="800" fill="#faf9f5"/>
   <text x="54" y="55" font-size="18" class="cp-mono cp-muted">RELATION STUDY / 03</text>
@@ -75,5 +75,5 @@
   <rect x="760" y="662" width="90" height="32" fill="#faf9f5"/>
   <text x="805" y="685" text-anchor="middle" font-size="18" font-weight="600" class="cp-blue">補足</text>
   <path d="M54 720H1146" class="cp-rule"/>
-  <text x="54" y="760" font-size="17" class="cp-muted">参照関係を説明する自作模式図。実在資料・モデルの推論・研究結果ではありません。</text>
+  <text x="54" y="760" font-size="17" class="cp-muted">参照関係を示す自作の模式図です。実在資料・モデルの推論・研究結果ではありません。</text>
 </svg>
