@@ -48,16 +48,16 @@ export const works: Work[] = [
     stack: ['Python', 'FastAPI', 'PyMuPDF', 'BGE-M3', 'BM25 / RRF', 'Pydantic', 'pytest', 'Playwright', 'GitHub Actions'],
     number: {
       value: 'Recall@10 0.8852 · MRR 0.8323',
-      label: { ja: '固定42問・391件KBの保存評価（2026-09-24）', zh: '固定 42 题 · 391 条 KB 的保存评测（2026-09-24）', en: 'saved evaluation, 42 fixed queries, 391-entry KB (2026-09-24)' },
+      label: { ja: '固定42問・391件のKBでの評価結果（2026-09-24保存）', zh: '固定 42 题 · 391 条 KB 的保存评测（2026-09-24）', en: 'saved evaluation, 42 fixed queries, 391-entry KB (2026-09-24)' },
       href: 'https://github.com/yasu-isct/J-Grad-Admission-RAG/blob/main/tests/fixtures/grounded_rag_retrieval_report_v1.json',
     },
     verification: {
-      ja: '実PDFでの端から端までの確認、固定ベンチマークの回帰ゲート、ブラウザ受け入れ（デスクトップ／スマホ）。CIはモデルを毎回測り直さない——その区別を公開文書に書いた。',
+      ja: '実PDFを使った一連の処理の確認、固定ベンチマークの回帰テストによる合否判定、ブラウザでの受け入れテスト（PC／スマホ）。CIではモデル性能を毎回再測定しない——その区別を公開文書に記した。',
       zh: '真实 PDF 端到端确认、固定基准回归门、浏览器验收（桌面/手机）。CI 不每次重测模型——这个区别写进了公开文档。',
       en: 'End-to-end runs on the real PDF, a regression gate on a fixed benchmark, browser acceptance on desktop and mobile. CI does not re-measure the model each run — the docs say so.',
     },
     change: {
-      ja: '最初の7マイルストーンで基盤を作り込みすぎ、ユーザーが一本道を通せる画面はM8まで出なかった。次は窄い垂直スライスを先に出す。',
+      ja: '最初の7マイルストーンで基盤を作り込みすぎ、ユーザーが一連の操作を完了できる画面はM8まで出せなかった。次は範囲を絞り、一連の操作ができる機能を先に出す。',
       zh: '前 7 个里程碑把基础设施做得太满，用户能走通一条路径的界面到 M8 才出现。下次先出窄而完整的垂直切片。',
       en: 'The first seven milestones over-built the foundation; a screen a user could walk through only appeared at M8. Next time: a narrow vertical slice first.',
     },
@@ -100,23 +100,23 @@ export const works: Work[] = [
       en: 'A Japanese conversation coach for the moment you are mid-conversation — a Claude Skill plus GPU real-time subtitles',
     },
     problem: {
-      ja: '日本で暮らす中国語話者（N4–N2）は、店員の敬語や同僚の口語に数秒で返せない。説明が先に来る教材は役に立たない。',
+      ja: '日本で暮らす中国語話者（N4–N2）が、店員の敬語や同僚の話し言葉に数秒で返せない場面を想定。説明が先に来る教材では、その場の返答を支えにくい。',
       zh: '在日本的中文母语者（N4–N2）面对店员敬语和同事口语，几秒内接不上话。先讲解释的教材帮不上忙。',
       en: 'Chinese speakers in Japan (N4–N2) cannot answer a clerk\'s keigo or a colleague\'s slang within seconds; textbooks that explain first do not help.',
     },
     role: {
-      ja: '出力フォーマットと教え方の設計、判定ルール（⭐ 推薦の5段階）、LLM審査員での評価設計は私。Skill本文と字幕アプリの実装は Claude Code。',
+      ja: '出力形式と教え方、判定ルール（⭐推奨表現を選ぶ5つの手順）、LLMによる評価を私が設計。Skill本文と字幕アプリの実装は Claude Code が担当。',
       zh: '输出格式与教学策略、⭐ 推荐的五步判定规则、LLM 评审的评测设计是我；Skill 正文和字幕应用的实现是 Claude Code。',
       en: 'I designed the output format, the five-step politeness rule behind the ⭐ pick and the LLM-judge evaluation; Claude Code implemented the Skill and the subtitle app.',
     },
     stack: ['Claude Skill', 'faster-whisper (kotoba-whisper)', 'CUDA', 'MeCab / fugashi', 'tkinter', 'Anki export'],
     number: {
       value: '20/20 · 8/8 · 0.25 s',
-      label: { ja: '返答フォーマット回帰 20/20、情景練習 8/8 完走、字幕の1文デコード約0.25秒（RTX 5060）', zh: '回复格式回归 20/20、情景练习 8/8 走完、字幕单句解码约 0.25 秒（RTX 5060）', en: 'format regression 20/20, 8/8 role-play scenes completed, ~0.25 s per-sentence subtitle decode (RTX 5060)' },
+      label: { ja: '返答形式の回帰テスト 20/20、場面別練習 8/8 完了、字幕1文のデコード約0.25秒（RTX 5060）', zh: '回复格式回归 20/20、情景练习 8/8 走完、字幕单句解码约 0.25 秒（RTX 5060）', en: 'format regression 20/20, 8/8 role-play scenes completed, ~0.25 s per-sentence subtitle decode (RTX 5060)' },
       href: 'https://github.com/yasu-isct/japanese-speaking-coach/blob/main/docs/status.md',
     },
     verification: {
-      ja: '生成はSonnet、審査は別コンテキストのOpus（文法・立場・語体・読みは硬性）。真人の試用と母語話者レビューはまだ——未検証と書く。',
+      ja: '生成はSonnet、評価は別コンテキストのOpus（文法・立場・文体・読みの誤りは不可）。実際の利用者による試用と母語話者レビューは、まだ実施していない。',
       zh: '生成用 Sonnet、审查用另一上下文的 Opus（语法/立场/语体/读音为硬性）。真人试用和母语者审阅还没做——如实标未验证。',
       en: 'Generation with Sonnet, blind review with Opus in a separate context (grammar, stance, register, readings are hard checks). No real-user trial or native review yet — stated as unverified.',
     },

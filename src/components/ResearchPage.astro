@@ -131,7 +131,7 @@ const kindMark = (n: Node) => (n.object_type === 'paper' ? '○' : n.object_type
     );
   })}
 
-  <div class="section-heading"><h2><span class="mono">{counts.papers}</span>{fill(d.papersTitle, { n: '' }).replace(/[（(]\s*[)）]/, '').trim()}</h2><span class="note">{d.papersNote}</span></div>
+  <div class="section-heading"><h2><span class="mono">{counts.papers}</span>{fill(d.papersTitle, { n: '' }).replace(/[（(][^）)]*[）)]/, '').trim()}</h2><span class="note">{d.papersNote}</span></div>
   <div class="paper-scroll" role="region" aria-label={d.papersScroll} tabindex="0">
   <table class="papers">
     <thead><tr><th>ID</th><th>{d.th.title}</th><th>{d.th.authors}</th><th>{d.th.year}</th><th>{d.th.themes}</th><th></th></tr></thead>
