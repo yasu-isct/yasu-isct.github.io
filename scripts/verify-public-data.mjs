@@ -11,7 +11,7 @@ const prototypeDir = path.join(root, 'public/prototype-lineage');
 const forbiddenFields = new Set(['source_path', 'source_sha256', 'basis', 'raw_line', 'historical_evidence_path']);
 const requiredMarkers = ['D' + ':/', 'research' + '-assets-', '20' + '_DIRECTIONS'];
 const unsafe = /(?:^|[^A-Za-z0-9])[A-Z]:[\\/]|research-assets-|20_DIRECTIONS|research-control-[^"\s]*\/|job[-]finding|[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}/i;
-const allowedPrototype = ['build-layout.mjs', 'layout.json', 'map.embed.css', 'map.embed.js'].sort();
+const allowedPrototype = ['build-layout.mjs', 'd3.LICENSE', 'd3.v7.9.0.min.js', 'layout.json', 'map.embed.css', 'map.embed.js'].sort();
 const sourceNames = ['nodes.jsonl', 'lineage.jsonl', 'citations.jsonl', 'openalex.jsonl', 'paper-themes.jsonl', 'stories.jsonl', 'copy.jsonl', 'edges.jsonl', 'README.md'];
 const parse = text => text.split(/\r?\n/).filter(line => line.trim()).map(JSON.parse);
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
@@ -76,6 +76,8 @@ if (process.argv.includes('--dist')) {
       if (entry.isDirectory()) {
         assert(!['_private', 'design-proposal', 'sketches', 'J-Grad-Admission-RAG'].includes(entry.name), 'Unexpected directory in dist');
         await walk(filename);
+      } else if (/^d3./.test(entry.name)) {
+        // vendored third-party library (D3, ISC licence beside it): not site text, so not scanned for internal markers
       } else if (/\.(?:html|css|js|mjs|json|svg|md|txt)$/i.test(entry.name)) {
         const text = await readFile(filename, 'utf8');
         inspectText(text, path.relative(root, filename));

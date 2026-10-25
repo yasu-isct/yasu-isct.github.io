@@ -1,8 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
+import VerticalTitle from './VerticalTitle.astro';
 import { notes } from '../content/notes';
 import { works } from '../content/works';
-import { t, href, type Lang } from '../i18n/ui';
+import { t, href, fill, type Lang } from '../i18n/ui';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -19,51 +20,94 @@ const workName = (id?: string) => works.find((w) => w.id === id)?.name;
 
   <div class="journal-layout">
     <aside>
-      <ul class="journal-index">
-        {notes.map((x, i) => (
-          <li><a href={`#${x.id}`}><span>{String(i + 1).padStart(2, '0')} · {x.date}</span>{x.title[lang]}</a></li>
-        ))}
-      </ul>
+      <VerticalTitle text={lang === 'ja' ? '判断を、残す' : lang === 'zh' ? '把判断留下来' : 'Keep the judgement'} />
+      <!-- on a phone the index folds (記録を選ぶ) so the first record is on the first screen;
+           a tiny script closes it below 900px, no-JS keeps it open -->
+      <details class="index-fold" open>
+        <summary>{fill(n.index, { n: notes.length })}</summary>
+        <ul class="journal-index">
+          {notes.map((x, i) => (
+            <li><a href={`#${x.id}`}><span>{String(i + 1).padStart(2, '0')} · {x.date}</span>{x.title[lang]}</a></li>
+          ))}
+        </ul>
+      </details>
     </aside>
-    <div>
+    <div class="records">
+      <!-- 柱 (running head): which record the reader is in — sticky on desktop, static on phones -->
+      <div class="running-head" aria-hidden="true"><span class="mono" id="rh-no">{n.running} 01</span><span id="rh-title">{notes[0]?.title[lang]}</span></div>
       {notes.map((x, i) => (
-        <article class="record" id={x.id}>
-          <p class="eyebrow">RECORD {String(i + 1).padStart(2, '0')} / {x.date}{x.work && <> / <a href={`${href(lang, '/works')}#${x.work}`}>{workName(x.work)}</a></>} / {x.tags.join(' · ')}</p>
+        <article class="record" id={x.id} data-no={String(i + 1).padStart(2, '0')} data-title={x.title[lang]}>
+          <p class="eyebrow">RECORD {String(i + 1).padStart(2, '0')} / {x.date}{x.work && <> / <a href={`${href(lang, '/works')}#${x.work}`}>{workName(x.work)}</a></>}</p>
           <h2>{x.title[lang]}</h2>
-          <p class="hook">{x.hook[lang]}</p>
-          <ol class="record-flow">
-            <li><h4><span class="mono accent">01</span><br />{n.what}</h4><p>{x.what[lang]}</p></li>
-            <li><h4><span class="mono accent">02</span><br />{n.changed}</h4><p>{x.changed[lang]}</p></li>
-            <li><h4 class="verify-label"><span class="mono">03</span><br />{n.evidence}</h4>
-              <p class="mono small">
-                {x.facts.map((f) => f.href ? <a href={f.href} rel="noopener">[{f.label}]</a> : <span class="muted">[{f.label}]</span>)}
-              </p>
-            </li>
-          </ol>
+          <p class="scene">{x.scene[lang]}</p>
+          <div class="cols">
+            <section>
+              <h3><span class="mono accent">01</span> {n.what}</h3>
+              <ul>{x.what[lang].map((s) => <li set:html={s.replace(/`([^`]+)`/g, '<code>$1</code>')} />)}</ul>
+            </section>
+            <section>
+              <h3><span class="mono accent">02</span> {n.changed}</h3>
+              <ul>{x.changed[lang].map((s) => <li set:html={s.replace(/`([^`]+)`/g, '<code>$1</code>')} />)}</ul>
+            </section>
+          </div>
+          <p class="facts small">
+            <span class="muted mono">{n.evidence}</span>
+            {x.facts.map((f) => f.href ? <a href={f.href} rel="noopener">{f.label} ↗</a> : <span class="muted">{f.label}</span>)}
+            <span class="tags muted mono">{x.tags.join(' · ')}</span>
+          </p>
         </article>
       ))}
     </div>
   </div>
 </Base>
 
+<script>
+  // fold the index on narrow screens (first record first); keep the running head in step with scrolling
+  const fold = document.querySelector<HTMLDetailsElement>('.index-fold');
+  if (fold && matchMedia('(max-width: 900px)').matches) fold.open = false;
+  const no = document.getElementById('rh-no'), title = document.getElementById('rh-title');
+  const records = [...document.querySelectorAll<HTMLElement>('.record')];
+  if (no && title && records.length && 'IntersectionObserver' in window) {
+    const prefix = no.textContent!.replace(/\s*\d+$/, '');
+    const io = new IntersectionObserver((es) => {
+      const top = es.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+      if (top) { const r = top.target as HTMLElement; no.textContent = `${prefix} ${r.dataset.no}`; title.textContent = r.dataset.title ?? ''; }
+    }, { rootMargin: '-10% 0px -70% 0px' });
+    records.forEach((r) => io.observe(r));
+  }
+</script>
+
 <style>
-  .journal-layout { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 40px; padding: 32px 0 48px; border-top: 1px solid var(--line-strong); }
-  .journal-index { list-style: none; padding: 0; font-size: 0.875rem; position: sticky; top: 24px; }
-  .journal-index li + li { margin-top: 14px; }
-  .journal-index a { display: block; padding-block: 4px; color: var(--text); text-decoration: none; }
+  .journal-layout { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 48px; padding: 32px 0 48px; border-top: 1px solid var(--line-strong); }
+  .journal-layout aside { position: sticky; top: 24px; align-self: start; display: grid; grid-template-columns: auto 1fr; gap: 18px; }
+  .index-fold { margin: 0; border: 0; } .index-fold summary { display: none; }
+  .journal-index { list-style: none; padding: 0; margin: 0; font-size: 0.875rem; }
+  .journal-index li + li { margin-top: 12px; }
+  .journal-index a { display: block; color: var(--text); text-decoration: none; line-height: 1.5; }
   .journal-index a:hover { color: var(--accent); }
-  .journal-index span { display: block; color: var(--muted); font-family: var(--mono); font-size: 0.75rem; }
-  .record { max-width: 44rem; padding: 8px 0 40px; }
+  .journal-index span { display: block; color: var(--muted); font: 400 0.8125rem/1.6 var(--mono); }
+  .records { min-width: 0; }
+  .running-head { position: sticky; top: 0; z-index: 3; background: var(--bg); display: flex; gap: 16px; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 0.875rem; max-width: 46rem; }
+  .running-head #rh-no { color: var(--accent); } .running-head #rh-title { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .record { max-width: 46rem; padding: 24px 0 44px; scroll-margin-top: 3rem; }
   .record + .record { border-top: 1px solid var(--line-strong); padding-top: 32px; }
-  .record h2 { font-size: 1.75rem; margin: 12px 0 16px; line-height: 1.5; }
-  .hook { font-size: 1.05rem; }
-  .record-flow { list-style: none; padding: 0; margin-top: 26px; }
-  .record-flow li { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 20px; padding: 18px 0; border-top: 1px solid var(--line); }
-  .record-flow h4 { font-size: 0.875rem; line-height: 1.8; margin: 0; font-weight: 500; }
-  .record-flow p { line-height: 1.9; }
-  .record-flow li:last-child { border-top: 1px solid var(--line-strong); }
-  .verify-label { color: var(--accent); }
-  .small { font-size: 0.85rem; } .small a { margin-right: 12px; }
-  @media (max-width: 900px) { .journal-layout { grid-template-columns: 1fr; gap: 24px; } .journal-index { position: static; display: flex; flex-wrap: wrap; gap: 16px; } .journal-index li + li { margin: 0; } }
-  @media (max-width: 650px) { .record-flow li { grid-template-columns: 1fr; gap: 8px; } .record h2 { font-size: 1.5rem; } }
+  .record h2 { font-size: 1.6rem; margin: 10px 0 18px; line-height: 1.45; }
+  .scene { margin: 0 0 22px; padding: 4px 0 4px 20px; border-left: 3px solid var(--accent); font-size: 1.22rem; line-height: 1.7; font-weight: 500; letter-spacing: -0.005em; text-wrap: pretty; }
+  .cols { display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; }
+  .cols h3 { font: 500 0.875rem/1.6 var(--mono); letter-spacing: 0.04em; color: var(--muted); margin: 0 0 8px; }
+  .cols ul { margin: 0; padding-left: 1.1em; }
+  .cols li { margin: 6px 0; line-height: 1.75; }
+  .cols li::marker { color: var(--accent); }
+  .cols code { font: 400 0.85em var(--mono); background: var(--surface); padding: 0 4px; }
+  .facts { margin: 18px 0 0; display: flex; gap: 6px 16px; flex-wrap: wrap; border-top: 1px solid var(--line); padding-top: 10px; align-items: baseline; }
+  .facts a { min-height: 32px; display: inline-flex; align-items: center; }
+  .facts .tags { margin-left: auto; }
+  .small { font-size: 0.875rem; }
+  @media (max-width: 900px) {
+    .journal-layout { grid-template-columns: 1fr; gap: 24px; } .journal-layout aside { position: static; grid-template-columns: 1fr; }
+    .index-fold { border-top: 1px solid var(--line-strong); } .index-fold summary { display: list-item; }
+    .journal-index { padding-bottom: 12px; } .journal-index li + li { margin-top: 8px; }
+    .running-head { position: static; }
+  }
+  @media (max-width: 650px) { .cols { grid-template-columns: 1fr; } .record h2 { font-size: 1.35rem; } .scene { font-size: 1.08rem; } }
 </style>

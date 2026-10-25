@@ -1,0 +1,50 @@
+// Plain-language layer over R's research copy. R's text (copy.jsonl) is the authoritative description
+// and stays available under 「Rの整理文」; this layer exists so a visitor understands each theme in
+// three lines and one example before reading anything dense. Editorial, not research judgement.
+import type { Lang } from '../i18n/ui';
+
+type L = Record<Lang, string>;
+export interface PlainTheme {
+  vt: L;       // 題眼: the short vertical running note beside the theme (not the id)
+  q: L;        // the question, one sentence, no jargon
+  why: L;      // why it matters, one sentence
+  now: L;      // where it stands, one sentence
+  example: L;  // one concrete scene (marked as an illustration, not a result)
+}
+
+export const researchPlain: Record<string, PlainTheme> = {
+  T01: {
+    vt: { ja: '無効と有効、どちらを選ぶ', zh: '失效与现行，选哪条', en: 'Superseded, or current' },
+    q: { ja: '「もう無効になった規則」と「いまの規則」が同じ文書に並んでいるとき、検索はいまの方を選べるか。', zh: '"已经失效的规则"和"现行规则"并排在同一份文档里，检索能选对现行的那条吗？', en: 'When a superseded rule and the current rule sit in the same document, can retrieval pick the current one?' },
+    why: { ja: '文字は読めても、どちらが有効かを落とせば、もっともらしい誤答になる。', zh: '文字读对了，但丢了"哪条有效"，就会得到一个看似合理的错答。', en: 'Reading the words correctly is not enough; lose "which one is valid" and you get a plausible wrong answer.' },
+    now: { ja: '合成した募集要項 100 文書・500 断片で、状態表示を残す／消す比較を準備。小規模な開発観察はあるが、正式な結論はまだ。', zh: '用 100 份合成募集要项、500 个片段，比较保留/抹平状态标注。已有小规模开发观察，正式结论还没有。', en: '100 synthetic guidelines, 500 chunks, comparing kept vs. flattened status marks. Small development observations exist; no formal result yet.' },
+    example: { ja: '募集要項：「出願書類は 6 月 10 日必着（旧：6 月 4 日）」。質問は「今年の締切は？」。6 月 4 日の方が検索上位に来たら、根拠はあるのに答えは間違う。', zh: '募集要项写着「出愿书类 6 月 10 日必达（旧：6 月 4 日）」。问"今年截止是哪天"，如果 6 月 4 日排在前面——有根据，但答错了。', en: 'A guideline says "documents due June 10 (formerly June 4)". Ask "this year\'s deadline?" — if June 4 ranks higher, the answer is wrong despite having a source.' },
+  },
+  T02: {
+    vt: { ja: '読めなかったか、間違えたか', zh: '没读出，还是读错了', en: 'Unread, or misread' },
+    q: { ja: '同じ文章を画像として見せたとき、モデルは「文字を読めなかった」のか「読めたのに答えを間違えた」のか。', zh: '同一段文字以图片呈现时，模型是"没读出字"，还是"读出了却答错"？', en: 'Shown the same text as an image, did the model fail to read the characters, or read them and still answer wrong?' },
+    why: { ja: 'この二つを分けないと、改善すべきが OCR なのか推論なのか分からない。', zh: '不分开这两种失败，就不知道该修 OCR 还是推理。', en: 'Without separating the two, you cannot tell whether to fix OCR or reasoning.' },
+    now: { ja: '10 例・20 枚の画像・50 入力を準備。モデルはまだ走らせていない。', zh: '准备了 10 例、20 张图、50 份输入。模型还没跑。', en: '10 cases, 20 images, 50 inputs prepared. The model has not been run.' },
+    example: { ja: '同じ段落を「文字」と「文字の画像」で渡し、答えが変わったら、さらに転写だけさせて読めていたかを確かめる。', zh: '同一段落分别作为文本和图片输入；答案不同时，再单独让它转写，确认是否读出了字。', en: 'Give the same paragraph as text and as an image; if answers differ, ask only for a transcription to check whether it could read it.' },
+  },
+  T03: {
+    vt: { ja: '書体と検索', zh: '字体与检索', en: 'Typeface and retrieval' },
+    q: { ja: '同じページでも、書体を変えるだけで検索順位は変わるのか。', zh: '同一页内容，只换字体，检索排名会变吗？', en: 'Same page, typeface changed and nothing else — does the retrieval rank move?' },
+    why: { ja: '内容とは無関係な書体の違いが、検索の安定性に影響するかを確かめたい。企業文書は作成者ごとに書体が違う。', zh: '想确认与内容无关的字体差异，是否影响检索的稳定性。企业文档的字体因作者而异。', en: 'To check whether a typeface difference unrelated to content affects retrieval stability. Corporate documents vary in typeface by author.' },
+    now: { ja: '10 ページを 3 書体で描画した。検索順位の比較はこれから行う。', zh: '已把 10 页用 3 种字体渲染。检索排名的比较接下来做。', en: '10 pages rendered in 3 typefaces. The rank comparison is next.' },
+    example: { ja: '「出願資格」の同じ文章を明朝・ゴシック・UD 書体で描き、同じ質問で検索する。', zh: '把「出愿资格」的同一段文字分别用明朝、黑体、UD 字体渲染，用同一个问题检索。', en: 'Render the same "eligibility" passage in Mincho, Gothic and UD, then search with the same question.' },
+  },
+  T04: {
+    vt: { ja: '目立つ本則と、小さな例外', zh: '醒目的本则与小字例外', en: 'Bold rule, small exception' },
+    q: { ja: '必要な根拠がぜんぶ読める状態でも、太字や大きさで目立つ方を「根拠」として選んでしまうか。', zh: '所有需要的证据都能读到时，模型是否会把更醒目（粗体、更大）的那条当成"根据"？', en: 'When every needed piece of evidence is readable, does the model pick the bolder, larger one as "the evidence"?' },
+    why: { ja: '例外は小さな注記に書かれがち。目立つ本則だけ拾う仕組みは、例外を持つ人に誤答する。', zh: '例外往往写在小字注记里。只拾取醒目本则的系统，会对适用例外的人答错。', en: 'Exceptions tend to live in small notes. A system that grabs the prominent main rule answers wrong for exactly the people the exception covers.' },
+    now: { ja: '候補テーマ。実験は未着手、観察もまだない。', zh: '候选主题。实验未启动，也还没有观察。', en: 'Candidate theme. No experiment started, no observations yet.' },
+    example: { ja: '本則の「TOEIC 600 点以上」を太字にし、例外の「数学系は 700 点」を小さく添える。文字の大きさや太さを変えたとき、数学系への回答も変わるかを比べたい。実験はまだ始めていない（説明用の例）。', zh: '把本则「TOEIC 600 分以上」设为粗体，例外「数学系 700 分」用小字附在旁边。想比较：改变字号和粗细时，对数学系的回答是否也跟着变。实验还没开始（说明用的例子）。', en: 'Set the main rule "TOEIC 600+" in bold and the exception "Mathematics: 700" in small type. The comparison: when size and weight change, does the answer for a maths applicant change too? Not yet run (illustrative example).' },
+  },
+};
+
+export const glossary: Record<string, L> = {
+  RAG: { ja: '資料を検索して、その内容を根拠に回答を作る仕組み。', zh: '先检索资料，再依据资料生成回答的机制。', en: 'Retrieve documents, then answer using their content as evidence.' },
+  根拠: { ja: '回答がどの資料のどの箇所に基づくか。', zh: '回答依据的是哪份资料的哪一处。', en: 'Which document and which passage an answer rests on.' },
+  状態: { ja: '規則が「現行」か「廃止」かといった、文字以外の情報。', zh: '规则是"现行"还是"已废止"这类文字之外的信息。', en: 'Information beyond the words, such as whether a rule is current or superseded.' },
+};

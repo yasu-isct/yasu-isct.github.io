@@ -38,7 +38,7 @@ const langShort: Record<Lang, string> = { ja: 'JA', zh: 'ZH', en: 'EN' };
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@400;600&family=BIZ+UDGothic&display=swap" rel="stylesheet" />
     {LANGS.map((l) => <link rel="alternate" hreflang={l} href={href(l, path)} />)}
   </head>
-  <body>
+  <body data-grid-caption={d.toggles.gridCaption}>
     <svg width="0" height="0" style="position:absolute" aria-hidden="true">
       <symbol id="logo" viewBox="0 0 16 16">
         <path d="M1 5V1h4M11 15h4v-4" fill="none" stroke="currentColor" stroke-width="2" />
@@ -47,10 +47,11 @@ const langShort: Record<Lang, string> = { ja: 'JA', zh: 'ZH', en: 'EN' };
       </symbol>
     </svg>
     <a class="skip" href="#main">skip</a>
+    <div class="progress" aria-hidden="true"><span></span></div>
     <div class="wrap">
       <header class="site-header">
         <a class="brand" href={href(lang, '/')}>
-          <svg class="mark" aria-hidden="true"><use href="#logo" /></svg>
+          <svg class="brand-mark" aria-hidden="true"><use href="#logo" /></svg>
           <span>{d.siteName}</span>
         </a>
         <nav class="site-nav" aria-label="main">
@@ -65,9 +66,8 @@ const langShort: Record<Lang, string> = { ja: 'JA', zh: 'ZH', en: 'EN' };
               </>
             ))}
           </span>
-          <span class="toggles" aria-label="view">
-            <button type="button" class="tgl" data-toggle="parse" aria-pressed="false" title={d.toggles.parseHelp}>[{d.toggles.parse}]</button>
-            <button type="button" class="tgl" data-toggle="font" aria-pressed="false" title={d.toggles.fontHelp}>[{d.toggles.font}]</button>
+          <span class="toggles">
+            <button type="button" class="viewbtn" aria-expanded={path === '/' ? 'true' : 'false'} aria-controls="viewbar">{d.toggles.open}<span class="viewbtn-ico" aria-hidden="true"></span></button>
             <select id="theme" aria-label={d.toggles.theme}>
               <option value="system">{d.toggles.system}</option>
               <option value="light">{d.toggles.light}</option>
@@ -76,6 +76,25 @@ const langShort: Record<Lang, string> = { ja: 'JA', zh: 'ZH', en: 'EN' };
           </span>
         </nav>
       </header>
+      <!-- 見方を変える: three named controls, one scope (this page). Open by default on the home page,
+           where FIG. 01 is the sample that answers them; folded elsewhere. -->
+      <div class="viewbar" id="viewbar" hidden={path !== '/'}>
+        <fieldset class="view-lab">
+          <legend class="sr-only">{d.toggles.open}</legend>
+          <div class="controls">
+            <button type="button" class="tgl" data-toggle="parse" aria-pressed="false" aria-controls="main">{d.toggles.parse}</button>
+            <label class="tgl-select">{d.toggles.font}
+              <select id="font-select" aria-controls="main">
+                <option value="">{d.toggles.fontSans}</option>
+                <option value="serif">{d.toggles.fontSerif}</option>
+                <option value="ud">{d.toggles.fontUd}</option>
+              </select>
+            </label>
+            <button type="button" class="tgl" data-toggle="grid" aria-pressed="false" aria-controls="main">{d.toggles.grid}</button>
+          </div>
+          <p class="help">{d.toggles.help}</p>
+        </fieldset>
+      </div>
       <main id="main">
         <slot />
       </main>
@@ -87,29 +106,50 @@ const langShort: Record<Lang, string> = { ja: 'JA', zh: 'ZH', en: 'EN' };
 
     <script>
       const root = document.documentElement;
+      const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Reading progress: only on pages long enough to need a position (records, research).
+      const bar = document.querySelector<HTMLElement>('.progress span');
+      const onScroll = () => {
+        const max = document.documentElement.scrollHeight - innerHeight;
+        if (bar) bar.style.transform = `scaleX(${max > innerHeight * 2.5 ? Math.min(1, scrollY / max) : 0})`;
+      };
+      addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+      // Reveal on scroll: only figures fade in once; text, tables and indexes are visible at once.
+      if (!reduced && 'IntersectionObserver' in window) {
+        const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
+        document.querySelectorAll('main figure.story, main .example').forEach((el) => { el.classList.add('reveal'); io.observe(el); });
+      }
+
       const theme = document.getElementById('theme') as HTMLSelectElement | null;
       theme?.addEventListener('change', () => {
         if (theme.value === 'system') root.removeAttribute('data-theme');
         else root.dataset.theme = theme.value;
       });
-      // [parse] and [font]: body attributes, pure CSS does the rest.
+
+      // 見方を変える: the bar folds/unfolds; its state is not persisted on purpose (nothing happens
+      // that the visitor did not ask for on this page).
+      const viewbtn = document.querySelector<HTMLButtonElement>('.viewbtn');
+      const viewbar = document.getElementById('viewbar');
+      viewbtn?.addEventListener('click', () => {
+        const open = viewbtn.getAttribute('aria-expanded') === 'true';
+        viewbtn.setAttribute('aria-expanded', String(!open));
+        if (viewbar) { viewbar.hidden = open; if (!open) viewbar.querySelector<HTMLElement>('.tgl')?.focus(); }
+      });
+      // 構造を重ねる / 版面を見る: boolean, body attributes, pure CSS does the rest.
       document.querySelectorAll<HTMLButtonElement>('.tgl').forEach((b) => {
         b.addEventListener('click', () => {
           const key = b.dataset.toggle!;
           const on = document.body.getAttribute('data-' + key) !== null;
-          if (key === 'font') {
-            const seq = [null, 'serif', 'ud'];
-            const cur = document.body.getAttribute('data-font');
-            const next = seq[(seq.indexOf(cur) + 1) % seq.length];
-            if (next) document.body.setAttribute('data-font', next); else document.body.removeAttribute('data-font');
-            b.setAttribute('aria-pressed', String(Boolean(next)));
-            b.textContent = next ? `[${b.dataset.label}: ${next}]` : `[${b.dataset.label}]`;
-            return;
-          }
           if (on) document.body.removeAttribute('data-' + key); else document.body.setAttribute('data-' + key, '');
           b.setAttribute('aria-pressed', String(!on));
         });
-        b.dataset.label = b.textContent!.replace(/^\[|\]$/g, '');
+      });
+      // 書体を変える: three values, so a select that names the current state.
+      const fontSel = document.getElementById('font-select') as HTMLSelectElement | null;
+      fontSel?.addEventListener('change', () => {
+        if (fontSel.value) document.body.setAttribute('data-font', fontSel.value); else document.body.removeAttribute('data-font');
       });
     </script>
   </body>
@@ -126,8 +166,11 @@ const langShort: Record<Lang, string> = { ja: 'JA', zh: 'ZH', en: 'EN' };
     /* ordinal status ramp (validated) */
     --st-1: #86b6ef; --st-1-fg: #0b0b0b; --st-2: #3987e5; --st-2-fg: #fff; --st-3: #1c5cab; --st-3-fg: #fff; --st-4: #0d366b; --st-4-fg: #fff;
     /* lineage map: theme bands + edge types (from the prototype) */
-    --t01: #2166b5; --t02: #277e76; --t03: #a47729; --t04: #b15b4e;
-    --edge-extends: var(--accent); --edge-addresses: #258679; --edge-contrasts: #bb6844;
+    /* theme colours all ≥ 4.5:1 on --bg (T03 was 3.80:1 before) */
+    --t01: #2166b5; --t02: #277e76; --t03: #8a6220; --t04: #9e4a3e;
+    --edge-extends: var(--accent); --edge-addresses: #258679; --edge-contrasts: #9e4a3e;
+    /* Japanese face, switchable by 書体を変える; Latin stays Inter */
+    --ja: Inter, 'Noto Sans JP', sans-serif;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme='light']) {
@@ -148,8 +191,12 @@ const langShort: Record<Lang, string> = { ja: 'JA', zh: 'ZH', en: 'EN' };
   body { margin: 0; background: var(--bg); color: var(--text); font: 400 1rem/1.9 var(--sans); word-break: normal; overflow-wrap: anywhere; line-break: strict; letter-spacing: 0; }
   :lang(zh-CN) { font-family: Inter, 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif; line-height: 1.85; }
   :lang(en) { line-height: 1.65; }
-  body[data-font='serif'] { --sans: 'Noto Serif JP', Georgia, serif; }
-  body[data-font='ud'] { --sans: 'BIZ UDGothic', 'Noto Sans JP', sans-serif; }
+  /* 書体を変える: on Japanese pages the whole page switches; on zh/en pages only the lang="ja"
+     samples do, so the visitor's own language keeps a face that actually renders it. */
+  body[data-font='serif'] { --ja: 'Noto Serif JP', Georgia, serif; }
+  body[data-font='ud'] { --ja: 'BIZ UDGothic', 'Noto Sans JP', sans-serif; }
+  html:lang(ja) body[data-font] { --sans: var(--ja); }
+  [lang='ja'] { font-family: var(--ja); }
   h1, h2, h3, h4, p, figure, ol, ul, dl { margin: 0; }
   h1, h2, h3 { font-weight: 600; line-height: 1.55; letter-spacing: 0; text-wrap: pretty; }
   h2 { font-size: var(--step-3); } h3 { font-size: var(--step-2); }
@@ -171,15 +218,46 @@ const langShort: Record<Lang, string> = { ja: 'JA', zh: 'ZH', en: 'EN' };
   .reading { max-width: 42rem; }
   .site-header { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding-block: 24px; border-bottom: 1px solid var(--line); }
   .brand { display: flex; align-items: center; gap: 12px; color: var(--text); text-decoration: none; font-size: 1rem; font-weight: 600; }
-  .mark { width: 28px; height: 28px; flex: none; }
+  .brand-mark { width: 28px; height: 28px; flex: none; }
   .site-nav { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; font-size: 0.875rem; }
   .site-nav > a { color: var(--text); text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; }
   .site-nav > a[aria-current] { color: var(--accent); text-decoration: underline; text-underline-offset: 0.5em; }
   .languages { font: 400 0.875rem/1.6 var(--mono); white-space: nowrap; color: var(--muted); }
   .languages strong { color: var(--text); font-weight: 500; } .languages a { color: var(--muted); text-decoration: none; }
-  .toggles { display: inline-flex; gap: 8px; align-items: center; }
-  .tgl { font: 400 0.8rem/1 var(--mono); border: 0; background: none; color: var(--muted); padding: 0.3rem 0.2rem; min-height: 0; }
-  .tgl[aria-pressed='true'] { color: var(--accent); }
+  .toggles { display: inline-flex; gap: 12px; align-items: center; }
+  /* 見方を変える: one named entry in the header, 44px, bracket-corner icon in the logo's grammar */
+  .viewbtn { min-height: 44px; border: 1px solid var(--line-strong); background: var(--bg); padding: 0 12px; font-size: 0.875rem; font-weight: 500; display: inline-flex; align-items: center; gap: 10px; }
+  .viewbtn-ico { width: 12px; height: 12px; border: 2px solid currentColor; border-right: 0; border-bottom: 0; position: relative; }
+  .viewbtn-ico::after { content: ''; position: absolute; right: -8px; bottom: -8px; width: 6px; height: 6px; border: 2px solid var(--accent); border-left: 0; border-top: 0; }
+  .viewbtn[aria-expanded='true'] { border-color: var(--accent); color: var(--accent); }
+  .viewbar { border-bottom: 1px solid var(--line); padding: 18px 0 20px; }
+  .view-lab { border: 0; margin: 0; padding: 0; min-width: 0; }
+  .controls { display: grid; grid-template-columns: 1fr 1.3fr 1fr; gap: 14px; align-items: end; max-width: 52rem; }
+  .controls .tgl, .controls select { min-height: 48px; width: 100%; padding: 8px 12px; border: 1px solid var(--line-strong); background: var(--bg); color: var(--text); text-align: left; font-size: 0.95rem; }
+  .controls .tgl { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .controls .tgl::after { content: '＋'; color: var(--accent); font-family: var(--mono); }
+  .controls .tgl[aria-pressed='true'] { border: 2px solid var(--accent); padding: 7px 11px; }
+  .controls .tgl[aria-pressed='true']::after { content: '✓'; }
+  .tgl-select { display: block; font-size: 0.875rem; color: var(--muted); }
+  .tgl-select select { display: block; margin-top: 4px; color: var(--text); }
+  .viewbar .help { font-size: 0.875rem; color: var(--muted); margin-top: 12px; max-width: 52rem; }
+  /* 版面を見る: leading guide, text-block boundary and the measure of the headings, like a proof sheet.
+     The caption says what the lines are (a 1.9rem leading guide), not what they are not. */
+  body[data-grid] main { background-image: repeating-linear-gradient(to bottom, transparent 0 calc(1.9rem - 1px), color-mix(in srgb, var(--accent) 22%, transparent) calc(1.9rem - 1px) 1.9rem); background-attachment: local; }
+  body[data-grid] .wrap { box-shadow: inset 1px 0 0 color-mix(in srgb, var(--accent) 35%, transparent), inset -1px 0 0 color-mix(in srgb, var(--accent) 35%, transparent); }
+  body[data-grid] main :is(h1, h2, .scene, .qq) { outline: 1px solid color-mix(in srgb, var(--accent) 45%, transparent); outline-offset: 2px; }
+  body[data-grid]::after { content: attr(data-grid-caption); position: fixed; right: 12px; bottom: 10px; font: 400 0.8125rem/1.4 var(--sans); color: var(--accent); background: var(--bg); padding: 4px 8px; border: 1px solid var(--line); z-index: 30; max-width: 22rem; }
+  /* reading progress */
+  .progress { position: fixed; left: 0; top: 0; width: 100%; height: 2px; z-index: 50; pointer-events: none; }
+  .progress span { display: block; height: 100%; background: var(--accent); transform-origin: left; transform: scaleX(0); transition: transform 80ms linear; }
+  /* reveal on scroll */
+  .reveal { opacity: 0; transform: translateY(10px); transition: opacity 420ms ease-out var(--d, 0ms), transform 420ms ease-out var(--d, 0ms); }
+  .reveal.in { opacity: 1; transform: none; }
+  /* logo: the hierarchy lines draw themselves once on hover / focus */
+  .brand-mark path { transition: stroke-dashoffset 500ms ease; }
+  .brand:is(:hover, :focus-visible) .brand-mark path:nth-child(2) { stroke-dasharray: 8; stroke-dashoffset: 0; animation: draw 600ms ease-out; }
+  .brand:is(:hover, :focus-visible) .brand-mark path:nth-child(3) { stroke-dasharray: 7; animation: draw 600ms ease-out 120ms; }
+  @keyframes draw { from { stroke-dashoffset: 8; opacity: 0.2; } to { stroke-dashoffset: 0; opacity: 1; } }
   #theme { font: 400 0.8rem/1 var(--mono); padding: 0.3rem 0.4rem; min-height: 0; border-color: var(--line); }
   main { padding-bottom: 56px; }
   .page-lead { padding: 62px 0 42px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: end; }
@@ -201,9 +279,11 @@ const langShort: Record<Lang, string> = { ja: 'JA', zh: 'ZH', en: 'EN' };
   th, td { text-align: left; padding: 8px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
   th { color: var(--muted); font-weight: 500; font-family: var(--mono); font-size: 0.8rem; }
   .site-footer { display: flex; justify-content: space-between; gap: 24px; align-items: flex-end; border-top: 1px solid var(--line); padding: 22px 0 40px; color: var(--muted); font-size: 0.875rem; }
-  /* [parse]: what a layout parser sees */
-  body[data-parse] main :is(h1, h2, h3, p, table, figure, blockquote, ol, ul, dl) { outline: 1px dashed var(--line-strong); outline-offset: 3px; position: relative; }
-  body[data-parse] main :is(h1, h2, h3, p, table, figure, blockquote, ol, ul, dl)::before { position: absolute; top: -1.05em; left: 0; font: 500 10px/1 var(--mono); color: var(--accent); background: var(--bg); padding: 0 3px; letter-spacing: 0.04em; }
+  /* 構造を重ねる: what a layout parser sees — block boxes and their type, drawn in ~240ms, then kept */
+  body[data-parse] main :is(h1, h2, h3, p, table, figure, blockquote, ol, ul, dl) { outline: 1px dashed var(--line-strong); outline-offset: 3px; position: relative; animation: bbox-in 240ms ease-out both; }
+  body[data-parse] main :is(h1, h2, h3, p, table, figure, blockquote, ol, ul, dl)::before { position: absolute; top: -1.05em; left: 0; font: 500 11px/1 var(--mono); color: var(--accent); background: var(--bg); padding: 0 3px; letter-spacing: 0.04em; animation: label-in 240ms ease-out both; }
+  @keyframes bbox-in { from { outline-color: transparent; } to { outline-color: var(--line-strong); } }
+  @keyframes label-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
   body[data-parse] main h1::before { content: 'doc_title'; }
   body[data-parse] main :is(h2, h3)::before { content: 'paragraph_title'; }
   body[data-parse] main p::before { content: 'text'; }
@@ -218,7 +298,8 @@ const langShort: Record<Lang, string> = { ja: 'JA', zh: 'ZH', en: 'EN' };
   @media (max-width: 650px) {
     .wrap { padding-inline: 20px; } .site-header { gap: 12px; padding-block: 20px; }
     .site-nav { width: 100%; gap: 14px; justify-content: space-between; }
+    .controls { grid-template-columns: 1fr; }
     .page-lead h1 { font-size: 2rem; } .site-footer { flex-direction: column; align-items: flex-start; gap: 12px; }
   }
-  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } .reveal { opacity: 1; transform: none; } }
 </style>

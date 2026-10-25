@@ -3,6 +3,8 @@
 // from copy.jsonl) → bibliography. The time-axis lineage map is deliberately not here yet.
 import Base from '../layouts/Base.astro';
 import LineageMap from './LineageMap.astro';
+import VerticalTitle from './VerticalTitle.astro';
+import { researchPlain, glossary } from '../content/research-plain';
 import {
   themes, papers, byId, localId, copyOf, oneLine, storiesOfTheme, papersOfTheme,
   rqsOfTheme, experimentsOfRq, lineageFrom, STATUS_ORDER, counts, type Node,
@@ -24,11 +26,19 @@ const kindMark = (n: Node) => (n.object_type === 'paper' ? '○' : n.object_type
 <Base title={d.title} description={copyOf('research.question', lang)} path="/research">
   <div class="page-lead">
     <div><p class="eyebrow">RESEARCH / {counts.papers} PAPERS · {counts.themes} THEMES</p><h1 set:html={d.headline} /></div>
-    <p>{copyOf('research.question', lang)}</p>
+    <div class="lead-plain">
+      <p class="big">{d.plainLead}</p>
+      <dl class="gloss">
+        {Object.entries(glossary).map(([k, v]) => (<div><dt class="mono">{k}</dt><dd>{v[lang]}</dd></div>))}
+      </dl>
+    </div>
   </div>
 
   <div class="status-row">
-    <p class="reading">{copyOf('research.status', lang)}</p>
+    <div>
+      <p class="reading">{copyOf('research.status', lang)}</p>
+      <details class="rtext"><summary>{d.rText}</summary><p>{copyOf('research.question', lang)}</p></details>
+    </div>
     <ul class="legend">
       {STATUS_ORDER.map((s, i) => (<li><span class={`st st-${i + 1}`}>{d.status[s]}</span><span class="note">{d.statusHelp[s]}</span></li>))}
     </ul>
@@ -53,7 +63,23 @@ const kindMark = (n: Node) => (n.object_type === 'paper' ? '○' : n.object_type
           </div>
           {th.status && <span class={`st st-${stIndex(th)}`}>{d.status[th.status]}</span>}
         </div>
-        <p class="band-line">{oneLine(th, lang)}</p>
+        {researchPlain[id] && (
+          <div class="plain">
+            <VerticalTitle text={researchPlain[id].vt[lang]} />
+            <dl class="qwn">
+              <div><dt class="mono">{d.plain.q}</dt><dd class="qq">{researchPlain[id].q[lang]}</dd></div>
+              <div><dt class="mono">{d.plain.now}</dt><dd>{researchPlain[id].now[lang]}</dd></div>
+            </dl>
+            <figure class="example">
+              <figcaption class="mono muted">{d.plain.example}</figcaption>
+              <p>{researchPlain[id].example[lang]}</p>
+            </figure>
+          </div>
+        )}
+        <details class="rtext"><summary>{d.rText}</summary>
+          {researchPlain[id] && <p><span class="mono accent">{d.plain.why}</span> {researchPlain[id].why[lang]}</p>}
+          <p>{oneLine(th, lang)}</p>
+        </details>
 
         <div class="band-grid">
           <div class="stories">
@@ -66,7 +92,7 @@ const kindMark = (n: Node) => (n.object_type === 'paper' ? '○' : n.object_type
                     if (!n) return null;
                     return (
                       <li>
-                        <span class="mark mono">{kindMark(n)} {localId(n.node_id)}</span>
+                        <span class="node-kind mono">{kindMark(n)} {localId(n.node_id)}</span>
                         <span class="step-title">{n.object_type === 'paper' ? n.title : label(n, lang)}{n.bib?.year && <span class="muted mono"> {n.bib.year}</span>}</span>
                         <span class="caption" lang="zh">{st.caption}</span>
                       </li>
@@ -103,6 +129,7 @@ const kindMark = (n: Node) => (n.object_type === 'paper' ? '○' : n.object_type
   })}
 
   <div class="section-heading"><h2><span class="mono">{counts.papers}</span>{fill(d.papersTitle, { n: '' }).replace(/[（(]\s*[)）]/, '').trim()}</h2><span class="note">{d.papersNote}</span></div>
+  <div class="paper-scroll" role="region" aria-label={d.papersScroll} tabindex="0">
   <table class="papers">
     <thead><tr><th>ID</th><th>{d.th.title}</th><th>{d.th.authors}</th><th>{d.th.year}</th><th>{d.th.themes}</th><th></th></tr></thead>
     <tbody>
@@ -126,12 +153,28 @@ const kindMark = (n: Node) => (n.object_type === 'paper' ? '○' : n.object_type
       })}
     </tbody>
   </table>
+  </div>
 
   <p class="note mono" style="margin-top:24px">{fill(d.dataNote, { date: checkedAt })}</p>
 </Base>
 
 <style>
   .status-row { display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; padding: 8px 0 32px; border-top: 1px solid var(--line-strong); }
+  .lead-plain .big { font-size: 1.15rem; line-height: 1.7; max-width: 34em; }
+  .gloss { display: grid; gap: 4px; margin-top: 14px; font-size: 0.85rem; }
+  .gloss div { display: grid; grid-template-columns: 5em 1fr; gap: 10px; }
+  .gloss dt { color: var(--accent); } .gloss dd { margin: 0; color: var(--muted); }
+  .rtext { margin-top: 10px; border-top: 1px solid var(--line); } .rtext summary { font-size: 0.85rem; color: var(--muted); font-weight: 400; min-height: 32px; padding: 6px 0; }
+  .rtext p { font-size: 0.9rem; color: var(--muted); padding-bottom: 8px; } .rtext p + p { margin-top: 0; }
+  .plain { display: grid; grid-template-columns: auto 1.2fr 1fr; gap: 24px; margin-top: 18px; align-items: start; }
+  .qwn { margin: 0; display: grid; gap: 14px; }
+  .qwn div { display: grid; grid-template-columns: 4.5em 1fr; gap: 12px; align-items: baseline; }
+  .qwn dt { font-size: 0.875rem; color: var(--accent); letter-spacing: 0.04em; }
+  .qwn dd { margin: 0; } .qwn .qq { font-size: 1.15rem; font-weight: 500; line-height: 1.6; }
+  .example { margin: 0; padding: 16px 18px; background: var(--surface); border-left: 2px solid var(--line-strong); }
+  .example figcaption { font-size: 0.875rem; letter-spacing: 0.04em; margin-bottom: 6px; }
+  .example p { font-size: 0.95rem; line-height: 1.8; }
+  @media (max-width: 900px) { .plain { grid-template-columns: 1fr; } }
   .legend { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
   .legend li { display: flex; gap: 12px; align-items: baseline; }
   .theme-band { border-top: 1px solid var(--line-strong); padding: 28px 0 40px; scroll-margin-top: 2rem; }
@@ -143,7 +186,7 @@ const kindMark = (n: Node) => (n.object_type === 'paper' ? '○' : n.object_type
   .story figcaption { font-weight: 500; margin-bottom: 8px; }
   .steps { list-style: none; padding: 0; margin: 0; }
   .steps li { display: grid; grid-template-columns: 7em minmax(0, 1fr); gap: 4px 14px; padding: 8px 0; border-top: 1px solid var(--line); }
-  .steps .mark { color: var(--muted); font-size: 0.8rem; }
+  .steps .node-kind { color: var(--muted); font-size: 0.8rem; white-space: nowrap; }
   .steps .step-title { font-size: 0.95rem; }
   .steps .caption { grid-column: 2; font-size: 0.85rem; color: var(--muted); }
   .core { margin-top: 8px; } .core .mono { color: var(--accent); margin-right: 8px; }
@@ -153,5 +196,10 @@ const kindMark = (n: Node) => (n.object_type === 'paper' ? '○' : n.object_type
   .rqlist li { padding: 6px 0; border-top: 1px dashed var(--line); }
   .st.tiny { font-size: 0.68rem; padding: 0 6px; margin-left: 6px; }
   .papers td:nth-child(2) { min-width: 18em; } .small { font-size: 0.85rem; }
+  /* the bibliography scrolls sideways inside its own named region instead of squeezing six columns */
+  .paper-scroll { max-width: 100%; overflow-x: auto; }
+  .paper-scroll .papers { min-width: 58rem; }
+  .paper-scroll :is(th, td) { overflow-wrap: normal; }
+  .paper-scroll:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
   @media (max-width: 900px) { .status-row, .band-grid { grid-template-columns: 1fr; gap: 24px; } }
 </style>
