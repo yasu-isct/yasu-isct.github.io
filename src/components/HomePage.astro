@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import Atlas from './Atlas.astro';
 import { t, href, type Lang } from '../i18n/ui';
 import { works } from '../content/works';
 import { notes } from '../content/notes';
@@ -27,37 +28,10 @@ const stIndex = (s: string | null) => (s ? STATUS_ORDER.indexOf(s as any) + 1 : 
         <a class="action" href={href(lang, '/research')}>{h.ctaResearch} <span aria-hidden="true">↓</span></a>
         <a class="action" href="https://github.com/yasu-isct" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
       </div>
+      <p class="hero-note">{d.atlas.heroNote}</p>
     </div>
 
-    <figure class="hero-figure" id="fig01">
-      <div class="figure-top"><span class="figure-number">FIG. 01</span><span class="meta">TYPOGRAPHIC QUESTION</span></div>
-      <!-- the research variables set in type: 圏点 on 見た目, ruby on 構造 (GPT study 4.2) -->
-      <h2 class="type-title" set:html={h.figTitle} />
-      <dl class="type-gloss">
-        {h.figGloss.map(([k, v]) => (<div><dt>{k}</dt><dd>{v}</dd></div>))}
-      </dl>
-      <!-- the specimen: a hand-written sample page and its hand-labelled structure. The three
-           controls in 見方を変える act on it: 構造を重ねる draws the link, 書体を変える swaps the face,
-           版面を見る names the margins (天・地・ノド・小口・版心). -->
-      <div class="demo" id="specimen">
-        <article class="sample-page" lang="ja" aria-label={h.sampleAria}>
-          <span class="construction m-top" aria-hidden="true">天</span><span class="construction m-bottom" aria-hidden="true">地</span>
-          <span class="construction m-inner" aria-hidden="true">ノド</span><span class="construction m-outer" aria-hidden="true">小口</span><span class="construction m-body" aria-hidden="true">版心</span>
-          <h3 class="sample-h">出願に必要な書類</h3>
-          <p>研究計画書</p>
-          <p>最終学校の成績証明書</p>
-          <p class="sample-note">自作文による表示例</p>
-        </article>
-        <div class="link" aria-hidden="true"></div>
-        <aside class="tree" aria-label={h.sampleLabel}>
-          <p class="node">{h.structHeading}：<span lang="ja">出願に必要な書類</span></p>
-          <p>{h.structBody}：<span lang="ja">研究計画書</span></p>
-          <p>{h.structBody}：<span lang="ja">最終学校の成績証明書</span></p>
-          <small>{h.sampleLabel}</small>
-        </aside>
-      </div>
-      <figcaption class="figure-caption" set:html={h.figCaption} />
-    </figure>
+    <Atlas lang={lang} />
   </section>
 
   <div class="section-heading"><h2><span class="mono">01</span>{d.nav.works}</h2><a class="note" href={href(lang, '/works')}>{h.toWorks} ↗</a></div>
@@ -106,43 +80,13 @@ const stIndex = (s: string | null) => (s ? STATUS_ORDER.indexOf(s as any) + 1 : 
 </Base>
 
 <style>
-  .hero { display: grid; grid-template-columns: 1.1fr 1fr; gap: 56px; padding: 64px 0 56px; align-items: start; }
+  .hero { display: grid; grid-template-columns: 0.85fr 1.4fr; gap: 42px; padding: 56px 0 44px; align-items: center; }
   .hero h1 { font-size: var(--display); line-height: 1.45; letter-spacing: -0.025em; margin-top: 20px; font-weight: 600; }
   .hero .intro { margin-top: 26px; max-width: 37em; }
   .identity { margin-top: 24px; color: var(--muted); font-size: 0.875rem; line-height: 1.9; }
   .hero-actions { display: flex; flex-wrap: wrap; gap: 24px; align-items: center; margin-top: 28px; }
   .action { display: inline-flex; align-items: center; gap: 12px; min-height: 44px; font-weight: 500; }
-  .hero-figure { border-top: 2px solid var(--text); padding-top: 12px; }
-  .figure-top { display: flex; justify-content: space-between; gap: 10px; align-items: center; }
-  /* FIG. 01 — the typographic question (圏点 + ruby), then the specimen */
-  .type-title { font-size: clamp(1.75rem, 2.8vw, 2.4rem); line-height: 1.85; letter-spacing: 0.015em; margin-top: 10px; font-weight: 600; }
-  .type-title :global(.kenten) { font-style: normal; text-emphasis: filled circle var(--accent); text-emphasis-position: over right; -webkit-text-emphasis: filled circle var(--accent); }
-  .type-title :global(ruby) { ruby-position: over; }
-  .type-title :global(rt) { font-size: 0.3em; letter-spacing: 0.08em; font-weight: 400; color: var(--muted); }
-  :global(html:lang(en)) .type-title :global(.kenten) { text-emphasis: none; -webkit-text-emphasis: none; text-decoration: underline; text-underline-offset: 0.15em; text-decoration-color: var(--accent); text-decoration-thickness: 2px; }
-  .type-gloss { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 12px 0 18px; border-top: 1px solid var(--line); padding-top: 12px; }
-  .type-gloss dt { font-weight: 600; font-size: 0.875rem; } .type-gloss dd { margin: 2px 0 0; font-size: 0.875rem; color: var(--muted); line-height: 1.7; }
-  .demo { display: grid; grid-template-columns: 1.15fr 44px 1fr; gap: 16px; align-items: center; padding: 18px; border: 1px solid var(--line-strong); position: relative; }
-  .sample-page { position: relative; padding: 26px 22px 20px 30px; background: var(--surface); min-height: 190px; font-size: 0.95rem; }
-  .sample-page .sample-h { font-size: 1.15rem; font-weight: 700; line-height: 1.6; outline: 2px solid transparent; outline-offset: 6px; transition: outline-color 240ms ease-out; margin: 0 0 10px; }
-  .sample-page p { line-height: 1.9; } .sample-page .sample-note { font-size: 0.8125rem; color: var(--muted); margin-top: 14px; }
-  .link { height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 240ms ease-out; position: relative; }
-  .link::after { content: ''; position: absolute; right: 0; top: -4px; width: 8px; height: 8px; border-top: 2px solid var(--accent); border-right: 2px solid var(--accent); transform: rotate(45deg); }
-  .tree { border-left: 2px solid var(--line-strong); padding-left: 16px; font-size: 0.875rem; transition: border-color 240ms; }
-  .tree p + p { margin-top: 8px; } .tree .node { outline: 2px solid transparent; outline-offset: 6px; transition: outline-color 240ms ease-out; }
-  .tree small { display: block; margin-top: 14px; color: var(--muted); font-size: 0.8125rem; }
-  /* 構造を重ねる: a line becomes structure */
-  :global(body[data-parse]) .link { transform: scaleX(1); }
-  :global(body[data-parse]) .sample-h, :global(body[data-parse]) .tree .node { outline-color: var(--accent); }
-  :global(body[data-parse]) .tree { border-color: var(--accent); }
-  /* 版面を見る: the margins get their names (天・地・ノド・小口) and the text block its boundary */
-  .construction { position: absolute; font: 400 0.8125rem/1.4 var(--sans); color: var(--accent); background: var(--bg); padding: 1px 5px; opacity: 0; visibility: hidden; transition: opacity 160ms ease; z-index: 2; }
-  .m-top { top: 2px; left: 50%; transform: translateX(-50%); } .m-bottom { bottom: 2px; left: 50%; transform: translateX(-50%); }
-  .m-inner { top: 50%; left: 2px; writing-mode: vertical-rl; transform: translateY(-50%); } .m-outer { top: 50%; right: 2px; writing-mode: vertical-rl; transform: translateY(-50%); }
-  .m-body { top: 6px; right: 22px; }
-  :global(body[data-grid]) .construction { opacity: 1; visibility: visible; }
-  :global(body[data-grid]) .sample-page { outline: 1px dashed var(--accent); outline-offset: -14px; background-image: repeating-linear-gradient(to bottom, transparent 0 calc(1.9rem - 1px), color-mix(in srgb, var(--accent) 18%, transparent) calc(1.9rem - 1px) 1.9rem); background-origin: content-box; }
-  .figure-caption { font-size: 0.875rem; color: var(--muted); line-height: 1.9; margin-top: 16px; }
+  .hero-note { font-size: 0.8125rem; color: var(--muted); margin-top: 26px; padding-left: 12px; border-left: 2px solid var(--accent); max-width: 28em; }
   .projects { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 52px; }
   .project-item { padding-top: 24px; border-top: 1px solid var(--line); }
   .project-item h3 { font-size: 1.5rem; line-height: 1.45; margin: 12px 0; }
@@ -162,10 +106,5 @@ const stIndex = (s: string | null) => (s ? STATUS_ORDER.indexOf(s as any) + 1 : 
   @media (max-width: 900px) { .hero { grid-template-columns: 1fr; gap: 36px; padding-top: 44px; } .map-preview { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 650px) {
     .hero { gap: 32px; padding: 40px 0; } .hero h1 { font-size: clamp(1.625rem, 7vw, 2rem); } .projects, .split-note, .map-preview { grid-template-columns: 1fr; gap: 24px; }
-    .type-title { font-size: clamp(1.5rem, 6.5vw, 2rem); line-height: 1.9; } .type-title :global(rt) { font-size: 0.4em; }
-    .demo { grid-template-columns: 1fr; gap: 16px; padding: 14px; }
-    .link { width: 2px; height: 40px; margin-left: 24px; transform: scaleY(0); transform-origin: top; }
-    .link::after { left: -3px; right: auto; top: auto; bottom: 0; transform: rotate(135deg); }
-    :global(body[data-parse]) .link { transform: scaleY(1); }
   }
 </style>

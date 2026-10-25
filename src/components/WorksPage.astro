@@ -1,4 +1,7 @@
 ---
+// 成果物: each work opens with the real thing — unedited public-demo screens with a thumbnail strip and
+// an enlarge dialog (GPT visual design v2) — then the same seven honest fields as before
+// (problem / my part & AI / verification / change / number / stack / links).
 import Base from '../layouts/Base.astro';
 import { works } from '../content/works';
 import { t, href, type Lang } from '../i18n/ui';
@@ -7,26 +10,51 @@ interface Props { lang: Lang }
 const { lang } = Astro.props;
 const d = t(lang);
 const f = d.works;
-const categories: Record<string, string> = { 'j-grad': 'RAG<br>DOCUMENT RETRIEVAL', coach: 'JAPANESE LEARNING<br>CLAUDE SKILL + GPU' };
+const g = d.gallery;
+const categories: Record<string, string> = { 'j-grad': 'RAG / DOCUMENT RETRIEVAL', coach: 'JAPANESE LEARNING / CLAUDE SKILL + GPU' };
 ---
 
 <Base title={d.nav.works} description={f.intro} path="/works">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+    <symbol id="i-zoom" viewBox="0 0 20 20"><path d="M3 8V3h5m4 0h5v5M3 12v5h5m4 0h5v-5" fill="none" stroke="currentColor" stroke-width="1.6" /></symbol>
+  </defs></svg>
   <div class="page-lead">
     <div><p class="eyebrow">SELECTED WORK / {works.length} PROJECTS</p><h1 set:html={f.headline} /></div>
     <p>{f.intro}</p>
   </div>
 
-  {works.map((w, i) => (
-    <article class="work-entry" id={w.id}>
-      <aside class="work-aside">
-        <p class="project-no mono">{String(i + 1).padStart(2, '0')}</p>
-        <p class="meta" set:html={categories[w.id] ?? ''} />
-        <p class="state">{w.status[lang]}</p>
-        <p class="meta">{w.period}</p>
-      </aside>
-      <div class="work-main">
-        <h2 lang="en">{w.name}</h2>
-        <p class="project-summary">{w.tagline[lang]}</p>
+  {works.map((w, i) => {
+    const m = w.media ?? [];
+    return (
+      <article class="work-entry" id={w.id}>
+        <div class={`project-spread${m.length ? '' : ' no-media'}`}>
+          {m.length > 0 && (
+            <figure class="capture" data-media={JSON.stringify(m.map((x) => ({ src: x.src, w: x.width, h: x.height, alt: x.alt[lang] })))}>
+              <div class="capture-image">
+                <button type="button" class="zoom-capture" aria-label={g.zoomAria}><img class="capture-main" src={m[0].src} alt={m[0].alt[lang]} width={m[0].width} height={m[0].height} loading="lazy" /></button>
+                <span class="enlarge" aria-hidden="true"><svg><use href="#i-zoom" /></svg>{g.enlarge}</span>
+              </div>
+              <div class="capture-strip" role="group" aria-label={g.choose}>
+                {m.map((x, k) => (
+                  <button type="button" class="capture-thumb" data-index={k} aria-pressed={k === 0 ? 'true' : 'false'}><img src={x.src} alt="" loading="lazy" /><span>{x.label[lang]}</span></button>
+                ))}
+              </div>
+              <figcaption class="image-caption">{g.caption}</figcaption>
+            </figure>
+          )}
+          <div class="project-copy">
+            <p class="project-kicker mono">PROJECT {String(i + 1).padStart(2, '0')} / {categories[w.id] ?? ''}</p>
+            <h2 lang="en">{w.name}</h2>
+            <p class="project-point">{w.tagline[lang]}</p>
+            <p class="meta">{w.status[lang]} · {w.period}</p>
+            {w.points && <ol class="project-points">{w.points.map((p, k) => <li><span class="n mono">{String(k + 1).padStart(2, '0')}</span>{p[lang]}</li>)}</ol>}
+            {!m.length && <p class="note pending">{g.pending}</p>}
+            <div class="links">
+              {w.links.map((l) => <a class="action" href={l.href} rel="noopener">{l.label} ↗</a>)}
+              {w.noteId && <a class="action" href={`${href(lang, '/notes')}#${w.noteId}`}>{f.noteLink} →</a>}
+            </div>
+          </div>
+        </div>
         <dl class="work-facts">
           <div><dt>{f.problem}</dt><dd>{w.problem[lang]}</dd></div>
           <div><dt>{f.role}</dt><dd>{w.role[lang]}</dd></div>
@@ -35,30 +63,86 @@ const categories: Record<string, string> = { 'j-grad': 'RAG<br>DOCUMENT RETRIEVA
           <div><dt>{f.number}</dt><dd><a class="num" href={w.number.href} rel="noopener">{w.number.value}</a><br /><span class="note">{w.number.label[lang]}</span></dd></div>
           <div><dt>{f.stack}</dt><dd class="stack">{w.stack.map((s) => <span class="chip mono">{s}</span>)}</dd></div>
         </dl>
-        <div class="links">
-          {w.links.map((l) => <a class="action" href={l.href} rel="noopener">{l.label} ↗</a>)}
-          {w.noteId && <a class="action" href={`${href(lang, '/notes')}#${w.noteId}`}>{f.noteLink} →</a>}
-        </div>
-      </div>
-    </article>
-  ))}
+      </article>
+    );
+  })}
+
+  <dialog class="lightbox" id="capture-lightbox" aria-labelledby="capture-lightbox-title">
+    <div class="lightbox-top"><p id="capture-lightbox-title">{g.enlarge}</p><button type="button" id="capture-lightbox-close">{d.atlas.close}</button></div>
+    <div class="img-view" tabindex="0"><img id="capture-lightbox-img" alt="" /></div>
+    <p class="note" style="margin-top:10px">{g.caption}</p>
+  </dialog>
 </Base>
 
+<script>
+  const dialog = document.getElementById('capture-lightbox') as HTMLDialogElement | null;
+  const big = document.getElementById('capture-lightbox-img') as HTMLImageElement | null;
+  document.querySelectorAll<HTMLElement>('.capture').forEach((fig) => {
+    const media = JSON.parse(fig.dataset.media!) as { src: string; w: number; h: number; alt: string }[];
+    const main = fig.querySelector<HTMLImageElement>('.capture-main')!;
+    const thumbs = [...fig.querySelectorAll<HTMLButtonElement>('.capture-thumb')];
+    let current = 0;
+    const show = (k: number) => {
+      current = k; const x = media[k];
+      main.src = x.src; main.alt = x.alt; main.width = x.w; main.height = x.h;
+      thumbs.forEach((b, i) => b.setAttribute('aria-pressed', String(i === k)));
+    };
+    thumbs.forEach((b) => b.addEventListener('click', () => show(Number(b.dataset.index))));
+    fig.querySelector('.zoom-capture')?.addEventListener('click', () => {
+      if (!dialog || !big) return;
+      const x = media[current]; big.src = x.src; big.alt = x.alt; big.width = x.w; big.height = x.h;
+      document.getElementById('capture-lightbox-title')!.textContent = x.alt;
+      dialog.showModal();
+    });
+  });
+  document.getElementById('capture-lightbox-close')?.addEventListener('click', () => dialog?.close());
+  dialog?.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
+</script>
+
 <style>
-  .work-entry { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 40px; border-top: 1px solid var(--line-strong); padding: 32px 0 48px; }
-  .project-no { font: 400 3rem/1.2 var(--mono); color: var(--muted); }
-  .work-aside .meta { margin: 14px 0; }
-  .work-main h2 { font-size: 2rem; line-height: 1.45; margin-bottom: 14px; }
-  .project-summary { max-width: 43em; }
-  .work-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 28px 0; }
+  .work-entry { border-top: 1px solid var(--line-strong); padding: 36px 0 48px; scroll-margin-top: 2rem; }
+  .project-spread { display: grid; grid-template-columns: 1.35fr 0.8fr; gap: 48px; align-items: center; }
+  .project-spread.no-media { grid-template-columns: 1fr; }
+  .capture { min-width: 0; margin: 0; }
+  .capture-image { position: relative; background: var(--wash); border-radius: 14px; padding: 22px; overflow: hidden; }
+  .zoom-capture { border: 0; padding: 0; background: transparent; display: block; width: 100%; text-align: left; min-height: 0; cursor: zoom-in; }
+  .capture-image img { width: 100%; height: auto; aspect-ratio: 1.55; object-fit: cover; object-position: top; border-radius: 5px; border: 1px solid var(--line); background: #fff; display: block; }
+  .enlarge { position: absolute; bottom: 32px; right: 32px; padding: 7px 12px; min-height: 36px; background: #faf9f5; color: #141413; border: 1px solid #66685e; border-radius: 30px; display: flex; gap: 7px; align-items: center; font-size: 0.75rem; pointer-events: none; font-family: var(--ui); }
+  .enlarge svg { width: 14px; height: 14px; }
+  .capture-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 14px; }
+  .capture-thumb { display: block; padding: 0 0 8px; border: 0; border-bottom: 2px solid transparent; background: transparent; text-align: left; min-width: 0; min-height: 0; font-family: var(--ui); }
+  .capture-thumb img { height: 72px; width: 100%; object-fit: cover; object-position: top; border: 1px solid var(--line); border-radius: 4px; opacity: 0.78; display: block; background: #fff; }
+  .capture-thumb span { font-size: 0.75rem; display: block; line-height: 1.7; margin-top: 7px; color: var(--muted); }
+  .capture-thumb[aria-pressed='true'] { border-color: var(--accent); } .capture-thumb[aria-pressed='true'] img { opacity: 1; } .capture-thumb[aria-pressed='true'] span { color: var(--text); }
+  .image-caption { font-size: 0.8125rem; color: var(--muted); line-height: 1.9; margin-top: 12px; }
+  .project-kicker { color: var(--accent); font-size: 0.8125rem; }
+  .project-copy h2 { font-size: clamp(1.6rem, 2.5vw, 2rem); line-height: 1.35; margin: 14px 0 18px; letter-spacing: -0.03em; }
+  .project-point { font-size: 1.2rem; line-height: 1.7; font-weight: 500; margin-bottom: 12px; text-wrap: pretty; }
+  .project-points { list-style: none; padding: 0; margin: 18px 0; border-top: 1px solid var(--line); }
+  .project-points li { font-size: 0.9rem; padding: 10px 0; border-bottom: 1px solid var(--line); display: flex; gap: 12px; }
+  .project-points .n { color: var(--accent); font-size: 0.75rem; line-height: 2; }
+  .pending { margin: 14px 0; }
+  .work-facts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin: 36px 0 0; }
   .work-facts div { border-top: 1px solid var(--line); padding-top: 12px; }
-  .work-facts dt { font: 400 0.8rem/1.6 var(--mono); color: var(--muted); margin-bottom: 8px; letter-spacing: 0.03em; }
-  .work-facts dd { margin: 0; }
+  .work-facts dt { font: 400 0.8125rem/1.6 var(--mono); color: var(--muted); margin-bottom: 8px; letter-spacing: 0.03em; }
+  .work-facts dd { margin: 0; font-size: 0.95rem; }
   .num { font-weight: 600; font-variant-numeric: tabular-nums; }
   .stack { display: flex; flex-wrap: wrap; gap: 6px; }
   .chip { font-size: 0.78rem; padding: 1px 8px; border: 1px solid var(--line); background: var(--surface); }
-  .links { display: flex; gap: 24px; flex-wrap: wrap; border-top: 1px solid var(--line); padding-top: 16px; }
+  .links { display: flex; gap: 24px; flex-wrap: wrap; }
   .action { display: inline-flex; align-items: center; min-height: 44px; font-weight: 500; }
-  @media (max-width: 900px) { .work-entry { grid-template-columns: 140px minmax(0, 1fr); gap: 24px; } .work-facts { grid-template-columns: 1fr; } }
-  @media (max-width: 650px) { .work-entry { grid-template-columns: 1fr; } .work-aside { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; } .project-no { font-size: 2rem; } .work-aside .meta { margin: 0; } .work-main h2 { font-size: 1.625rem; } }
+  .lightbox { width: min(1280px, 96vw); max-height: 94vh; padding: 20px; background: var(--bg); color: var(--text); border: 1px solid var(--line-strong); border-radius: 10px; }
+  .lightbox::backdrop { background: #101513bb; }
+  .lightbox-top { display: flex; justify-content: space-between; gap: 20px; align-items: center; margin-bottom: 16px; }
+  .lightbox-top p { font-size: 0.875rem; }
+  .lightbox-top button { border: 1px solid var(--line-strong); background: var(--bg); color: var(--text); padding: 6px 16px; border-radius: 30px; min-height: 40px; }
+  .img-view { overflow: auto; max-height: 72vh; } .img-view img { display: block; max-width: 100%; height: auto; margin: 0 auto; border: 1px solid var(--line); background: #fff; }
+  @media (prefers-reduced-motion: no-preference) { .capture-image img { transition: opacity 180ms ease; } }
+  @media (max-width: 1080px) { .project-spread { gap: 30px; } .capture-image { padding: 16px; } .project-point { font-size: 1.1rem; } }
+  @media (max-width: 900px) { .work-facts { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 760px) {
+    .project-spread { grid-template-columns: 1fr; gap: 24px; } .project-spread .project-copy { order: -1; }
+    .capture-image img { aspect-ratio: 1.2; } .capture-thumb img { height: 62px; } .capture-thumb span { font-size: 0.7rem; }
+    .work-facts { grid-template-columns: 1fr; } .lightbox { padding: 14px; }
+  }
 </style>

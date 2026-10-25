@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="cross-title cross-desc">
+  <title id="cross-title">ページをまたいでも、関係は続く。</title>
+  <desc id="cross-desc">自作の架空資料。全体の規則、条件と例外、参照図と注の三ページを、適用、補足、参照の有向関係でつなぐ説明図です。</desc>
+  <style>text{font-family:Inter,"Noto Sans JP","Yu Gothic",sans-serif}.cp-mono{font-family:"IBM Plex Mono",monospace;letter-spacing:.05em}.cp-rule{stroke:#66685e;stroke-width:1.5;fill:none}.cp-flow{stroke:#2166b5;stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}.cp-ink{fill:#141413}.cp-muted{fill:#595951}.cp-blue{fill:#2166b5}</style>
+  <rect width="1200" height="800" fill="#faf9f5"/>
+  <text x="54" y="55" font-size="18" class="cp-mono cp-muted">RELATION STUDY / 03</text>
+  <text x="1146" y="55" font-size="18" text-anchor="end" class="cp-muted">架空資料 / EDITORIAL STUDY</text>
+  <path d="M54 78H1146" class="cp-rule"/>
+  <text x="54" y="139" font-size="37" font-weight="600" class="cp-ink">ページをまたいでも、関係は続く。</text>
+  <g id="cross-pages">
+    <g id="page-p01">
+      <rect x="64" y="222" width="288" height="428" fill="#e8e7e0"/>
+      <rect x="54" y="212" width="288" height="428" fill="#fff" stroke="#66685e" stroke-width="1.5"/>
+      <text x="80" y="253" font-size="17" class="cp-mono cp-muted">DOCUMENT / P.01</text>
+      <text x="80" y="300" font-size="26" font-weight="600" class="cp-ink">全体の規則</text>
+      <path d="M80 322H316" class="cp-rule"/>
+      <text x="80" y="360" font-size="19" class="cp-ink">本文 §A</text>
+      <rect x="80" y="382" width="236" height="102" fill="#e6edf5"/>
+      <path d="M80 382H316V484H80Z" fill="none" stroke="#2166b5" stroke-width="2.5"/>
+      <text x="98" y="417" font-size="21" font-weight="600" class="cp-ink">適用する範囲</text>
+      <text x="98" y="452" font-size="18" class="cp-ink">条件Bに従う。</text>
+      <text x="80" y="532" font-size="18" class="cp-ink">共通の説明。</text>
+      <text x="80" y="567" font-size="18" class="cp-muted">詳細は次ページへ。</text>
+      <text x="316" y="613" text-anchor="end" font-size="19" class="cp-mono cp-blue">01</text>
+    </g>
+    <g id="page-p02">
+      <rect x="466" y="222" width="288" height="428" fill="#e8e7e0"/>
+      <rect x="456" y="212" width="288" height="428" fill="#fff" stroke="#66685e" stroke-width="1.5"/>
+      <text x="482" y="253" font-size="17" class="cp-mono cp-muted">DOCUMENT / P.02</text>
+      <text x="482" y="300" font-size="26" font-weight="600" class="cp-ink">条件と例外</text>
+      <path d="M482 322H718" class="cp-rule"/>
+      <rect x="482" y="346" width="236" height="102" fill="#e6edf5"/>
+      <path d="M482 346H718V448H482Z" fill="none" stroke="#2166b5" stroke-width="2.5"/>
+      <text x="500" y="381" font-size="21" font-weight="600" class="cp-ink">条件B</text>
+      <text x="500" y="416" font-size="18" class="cp-ink">§A の範囲を絞る。</text>
+      <text x="482" y="493" font-size="19" class="cp-ink">例外の扱い</text>
+      <text x="482" y="530" font-size="18" class="cp-blue">図2・注1を参照。</text>
+      <path d="M482 546H718" fill="none" stroke="#2166b5" stroke-width="1.5"/>
+      <text x="718" y="613" text-anchor="end" font-size="19" class="cp-mono cp-blue">02</text>
+    </g>
+    <g id="page-p03">
+      <rect x="868" y="222" width="288" height="428" fill="#e8e7e0"/>
+      <rect x="858" y="212" width="288" height="428" fill="#fff" stroke="#66685e" stroke-width="1.5"/>
+      <text x="884" y="253" font-size="17" class="cp-mono cp-muted">DOCUMENT / P.03</text>
+      <text x="884" y="300" font-size="26" font-weight="600" class="cp-ink">参照図と注</text>
+      <path d="M884 322H1120" class="cp-rule"/>
+      <rect x="884" y="346" width="236" height="112" fill="#e6e9e7"/>
+      <path d="M906 435L957 365L1001 400L1044 367L1097 435Z" fill="#a8b2aa"/>
+      <path d="M957 365L975 435H906Z" fill="#66736c"/>
+      <path d="M1001 400L1044 367L1057 435H975Z" fill="#2166b5"/>
+      <text x="884" y="490" font-size="18" class="cp-ink">図2　条件の対応</text>
+      <rect x="884" y="511" width="236" height="61" fill="#e6edf5"/>
+      <text x="898" y="548" font-size="18" class="cp-ink">注1　例外への補足。</text>
+      <text x="1120" y="613" text-anchor="end" font-size="19" class="cp-mono cp-blue">03</text>
+    </g>
+  </g>
+  <g id="cross-apply" class="cp-flow">
+    <path d="M316 433H376C411 433 422 397 456 397H482"/>
+    <path d="M473 389L482 397L473 405"/>
+    <circle cx="316" cy="433" r="5" fill="#2166b5" stroke="none"/>
+  </g>
+  <g id="cross-reference" class="cp-flow">
+    <path d="M718 529H784C814 529 830 402 858 402H884"/>
+    <path d="M875 394L884 402L875 410"/>
+    <circle cx="718" cy="529" r="5" fill="#2166b5" stroke="none"/>
+  </g>
+  <g id="cross-supplement" class="cp-flow">
+    <path d="M1002 572V680H600V546" stroke-dasharray="7 7"/>
+    <path d="M592 555L600 546L608 555"/>
+  </g>
+  <rect x="354" y="360" width="88" height="32" fill="#faf9f5"/>
+  <text x="398" y="383" text-anchor="middle" font-size="18" font-weight="600" class="cp-blue">適用</text>
+  <rect x="757" y="360" width="88" height="32" fill="#faf9f5"/>
+  <text x="801" y="383" text-anchor="middle" font-size="18" font-weight="600" class="cp-blue">参照</text>
+  <rect x="760" y="662" width="90" height="32" fill="#faf9f5"/>
+  <text x="805" y="685" text-anchor="middle" font-size="18" font-weight="600" class="cp-blue">補足</text>
+  <path d="M54 720H1146" class="cp-rule"/>
+  <text x="54" y="760" font-size="17" class="cp-muted">参照関係を説明する自作模式図。実在資料・モデルの推論・研究結果ではありません。</text>
+</svg>

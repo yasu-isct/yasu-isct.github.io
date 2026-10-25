@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="table-svg-title table-svg-desc">
+  <title id="table-svg-title">表は、セルの集まりだけではない。</title>
+  <desc id="table-svg-desc">自作の架空資料。多段表頭、行をまたぐ結合セル、脚注の適用先を青い線で示す複雑表の説明図。実験結果ではありません。</desc>
+  <style>text{font-family:Inter,"Noto Sans JP","Yu Gothic",sans-serif}.tb-mono{font-family:"IBM Plex Mono",monospace;letter-spacing:.05em}.tb-rule{stroke:#66685e;stroke-width:1.5;fill:none}.tb-flow{stroke:#2166b5;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}.tb-ink{fill:#141413}.tb-muted{fill:#595951}.tb-blue{fill:#2166b5}</style>
+  <rect width="1200" height="800" fill="#faf9f5"/>
+  <text x="54" y="55" font-size="18" class="tb-mono tb-muted">STRUCTURE STUDY / 02</text>
+  <text x="1146" y="55" font-size="18" text-anchor="end" class="tb-muted">架空資料 / EDITORIAL STUDY</text>
+  <path d="M54 78H1146" class="tb-rule"/>
+  <text x="54" y="139" font-size="37" font-weight="600" class="tb-ink">表は、セルの集まりだけではない。</text>
+  <text x="54" y="177" font-size="20" class="tb-muted">見出しの範囲・結合の意味・注の適用先を、同時に読む。</text>
+  <g id="table-document">
+    <rect x="54" y="222" width="716" height="336" fill="#fff" stroke="#66685e" stroke-width="1.5"/>
+    <g id="table-header">
+      <rect x="54" y="222" width="716" height="112" fill="#e6edf5"/>
+      <path d="M54 334H770M214 222V334M492 222V334M214 278H770M353 278V334M631 278V334" class="tb-rule"/>
+      <text x="134" y="286" text-anchor="middle" font-size="22" font-weight="600" class="tb-ink">区分</text>
+      <text x="353" y="258" text-anchor="middle" font-size="22" font-weight="600" class="tb-ink">提出物</text>
+      <text x="631" y="258" text-anchor="middle" font-size="22" font-weight="600" class="tb-ink">確認</text>
+      <text x="283" y="313" text-anchor="middle" font-size="20" class="tb-ink">本文</text>
+      <text x="422" y="313" text-anchor="middle" font-size="20" class="tb-ink">添付</text>
+      <text x="561" y="313" text-anchor="middle" font-size="20" class="tb-ink">窓口</text>
+      <text x="700" y="313" text-anchor="middle" font-size="20" class="tb-ink">出典</text>
+      <path d="M226 236H480V265H226Z" fill="none" stroke="#2166b5" stroke-width="2.5"/>
+    </g>
+    <g id="table-body">
+      <rect x="54" y="334" width="160" height="224" fill="#f0efe9"/>
+      <rect x="214" y="410" width="556" height="74" fill="#f0efe9"/>
+      <path d="M214 334V558M353 334V558M492 334V558M631 334V558M214 410H770M54 484H770" class="tb-rule"/>
+      <g id="table-rowspan">
+        <text x="134" y="402" text-anchor="middle" font-size="21" font-weight="600" class="tb-ink">研究科</text>
+        <text x="134" y="434" text-anchor="middle" font-size="21" font-weight="600" class="tb-ink">共通</text>
+        <path d="M65 346H202V473H65Z" fill="none" stroke="#2166b5" stroke-width="2.5"/>
+      </g>
+      <text x="134" y="530" text-anchor="middle" font-size="21" font-weight="600" class="tb-ink">専攻別</text>
+      <text x="283" y="381" text-anchor="middle" font-size="20" class="tb-ink">書式A</text>
+      <text x="422" y="381" text-anchor="middle" font-size="20" class="tb-ink">図1</text>
+      <text x="561" y="381" text-anchor="middle" font-size="20" class="tb-ink">共通窓口</text>
+      <text x="700" y="381" text-anchor="middle" font-size="20" class="tb-ink">p.02</text>
+      <text x="283" y="455" text-anchor="middle" font-size="20" class="tb-ink">書式B</text>
+      <text x="422" y="455" text-anchor="middle" font-size="20" class="tb-ink">表2</text>
+      <text x="561" y="455" text-anchor="middle" font-size="20" class="tb-ink">共通窓口</text>
+      <text x="700" y="455" text-anchor="middle" font-size="20" class="tb-ink">p.03</text>
+      <text x="283" y="530" text-anchor="middle" font-size="20" class="tb-ink">補足C</text>
+      <text x="422" y="530" text-anchor="middle" font-size="20" class="tb-blue">注1</text>
+      <text x="561" y="530" text-anchor="middle" font-size="20" class="tb-ink">専攻窓口</text>
+      <text x="700" y="530" text-anchor="middle" font-size="20" class="tb-ink">p.07</text>
+    </g>
+    <rect x="54" y="222" width="716" height="336" fill="none" stroke="#66685e" stroke-width="1.5"/>
+    <g id="table-notes">
+      <path d="M54 596H190" class="tb-rule"/>
+      <text x="54" y="631" font-size="20" class="tb-ink">注1　補足Cのみに適用する説明。</text>
+      <text x="54" y="668" font-size="18" class="tb-muted">表全体ではなく、対象セルに結び付けて読む。</text>
+      <path d="M422 539V583H383V610" class="tb-flow"/>
+    </g>
+  </g>
+  <g id="table-connectors" class="tb-flow">
+    <path d="M480 250V206H825V254H866"/>
+    <path d="M202 410H795V419H866"/>
+    <path d="M455 624H827V583H866"/>
+    <path d="M858 247L866 254L858 261M858 412L866 419L858 426M858 576L866 583L858 590"/>
+  </g>
+  <g id="table-header-label">
+    <text x="892" y="235" font-size="18" class="tb-mono tb-blue">01 / HEADER</text>
+    <text x="892" y="274" font-size="27" font-weight="600" class="tb-ink">見出しの範囲</text>
+    <text x="892" y="309" font-size="19" class="tb-muted">二つの列を、束ねる。</text>
+  </g>
+  <g id="table-body-label">
+    <text x="892" y="399" font-size="18" class="tb-mono tb-blue">02 / ROWSPAN</text>
+    <text x="892" y="438" font-size="27" font-weight="600" class="tb-ink">結合セルの意味</text>
+    <text x="892" y="473" font-size="19" class="tb-muted">複数行に、適用する。</text>
+  </g>
+  <g id="table-note-label">
+    <text x="892" y="563" font-size="18" class="tb-mono tb-blue">03 / FOOTNOTE</text>
+    <text x="892" y="602" font-size="27" font-weight="600" class="tb-ink">注の適用先</text>
+    <text x="892" y="637" font-size="19" class="tb-muted">ひとつのセルを、補う。</text>
+  </g>
+  <path d="M54 720H1146" class="tb-rule"/>
+  <text x="54" y="760" font-size="17" class="tb-muted">架空の表と注による自作模式図。実在する入試情報や実験結果ではありません。</text>
+</svg>

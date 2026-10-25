@@ -17,6 +17,10 @@ export interface Work {
   change: L;
   links: { label: string; href: string }[];
   image?: { src: string; alt: L };
+  /** Real, unedited screenshots of the public demo (source and capture date in the caption). */
+  media?: { src: string; width: number; height: number; label: L; alt: L }[];
+  /** Three things the visitor can do in the screens, in order. */
+  points?: L[];
   noteId?: string; // link into AI 協働の記録
 }
 
@@ -61,6 +65,17 @@ export const works: Work[] = [
       { label: 'Demo', href: 'https://yasu-isct.github.io/J-Grad-Admission-RAG/' },
       { label: 'GitHub', href: 'https://github.com/yasu-isct/J-Grad-Admission-RAG' },
       { label: '技術解説', href: 'https://github.com/yasu-isct/J-Grad-Admission-RAG/blob/main/docs/portfolio/engineering-ja.md' },
+    ],
+    // Public-demo captures from docs/assets/portfolio/public-demo at commit 2ce9930 (captured 2026-10-21), bytes unchanged.
+    media: [
+      { src: '/media/j-grad/isct-overview.png', width: 1440, height: 1000, label: { ja: '01 / 全体を見る', zh: '01 / 看全貌', en: '01 / Overview' }, alt: { ja: 'J-Grad 公開デモ：大学院募集要項の日程と必要書類を確認する画面', zh: 'J-Grad 公开演示：确认研究生院募集要项的日程与所需材料的画面', en: 'J-Grad public demo: screen checking the schedule and required documents of a graduate guideline' } },
+      { src: '/media/j-grad/gsfs-evidence.png', width: 840, height: 602, label: { ja: '02 / 根拠へ戻る', zh: '02 / 回到根据', en: '02 / Back to the evidence' }, alt: { ja: 'J-Grad 公開デモ：三つの資料と根拠の対応を示すダイアログ', zh: 'J-Grad 公开演示：显示三份资料与根据对应关系的对话框', en: 'J-Grad public demo: dialog showing how three documents relate as evidence' } },
+      { src: '/media/j-grad/isct-report-mobile.png', width: 390, height: 900, label: { ja: '03 / モバイル', zh: '03 / 手机', en: '03 / Mobile' }, alt: { ja: 'J-Grad 公開デモ：手機幅での準備レポート', zh: 'J-Grad 公开演示：手机宽度下的准备报告', en: 'J-Grad public demo: the preparation report at phone width' } },
+    ],
+    points: [
+      { ja: '資料の中から、必要な情報を探す', zh: '从资料里找出需要的信息', en: 'Find what you need inside the documents' },
+      { ja: '回答と根拠の対応を確かめる', zh: '核对回答与根据的对应', en: 'Check how each answer maps to its evidence' },
+      { ja: '原文に戻って、条件を読み直す', zh: '回到原文，重读条件', en: 'Go back to the source and re-read the condition' },
     ],
     noteId: 'm10-drift',
   },

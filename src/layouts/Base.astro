@@ -67,7 +67,7 @@ const langShort: Record<Lang, string> = { ja: 'JA', zh: 'ZH', en: 'EN' };
             ))}
           </span>
           <span class="toggles">
-            <button type="button" class="viewbtn" aria-expanded={path === '/' ? 'true' : 'false'} aria-controls="viewbar">{d.toggles.open}<span class="viewbtn-ico" aria-hidden="true"></span></button>
+            <button type="button" class="viewbtn" aria-expanded="false" aria-controls="viewbar">{d.toggles.open}<span class="viewbtn-ico" aria-hidden="true"></span></button>
             <select id="theme" aria-label={d.toggles.theme}>
               <option value="system">{d.toggles.system}</option>
               <option value="light">{d.toggles.light}</option>
@@ -76,9 +76,9 @@ const langShort: Record<Lang, string> = { ja: 'JA', zh: 'ZH', en: 'EN' };
           </span>
         </nav>
       </header>
-      <!-- 見方を変える: three named controls, one scope (this page). Open by default on the home page,
-           where FIG. 01 is the sample that answers them; folded elsewhere. -->
-      <div class="viewbar" id="viewbar" hidden={path !== '/'}>
+      <!-- 見方を変える: three comparison tools, one scope (this page). Folded by default; the atlas on
+           the home page opens it as its secondary 比較する. -->
+      <div class="viewbar" id="viewbar" hidden>
         <fieldset class="view-lab">
           <legend class="sr-only">{d.toggles.open}</legend>
           <div class="controls">
@@ -171,18 +171,22 @@ const langShort: Record<Lang, string> = { ja: 'JA', zh: 'ZH', en: 'EN' };
     --edge-extends: var(--accent); --edge-addresses: #258679; --edge-contrasts: #9e4a3e;
     /* Japanese face, switchable by 書体を変える; Latin stays Inter */
     --ja: Inter, 'Noto Sans JP', sans-serif;
+    /* the UI face never switches (navigation, controls, captions) */
+    --ui: Inter, 'Noto Sans JP', sans-serif;
+    /* paper stage for drawings and screenshots (GPT v2) */
+    --wash: #e9eef4; --paper: #fff;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme='light']) {
       color-scheme: dark; --bg: #171816; --surface: #20221f; --text: #f0efe7; --muted: #b7bbb0;
-      --accent: #8abaff; --line: #3d4139; --line-strong: #858b7d;
+      --accent: #8abaff; --line: #3d4139; --line-strong: #858b7d; --wash: #252d35; --paper: #252823;
       --st-1: #9ec5f4; --st-1-fg: #0b0b0b; --st-2: #6da7ec; --st-2-fg: #0b0b0b; --st-3: #3987e5; --st-3-fg: #fff; --st-4: #1c5cab; --st-4-fg: #fff;
       --t01: #8abaff; --t02: #75beb0; --t03: #d1ac66; --t04: #e19b8b; --edge-addresses: #75beb0; --edge-contrasts: #e19b8b;
     }
   }
   :root[data-theme='dark'] {
     color-scheme: dark; --bg: #171816; --surface: #20221f; --text: #f0efe7; --muted: #b7bbb0;
-    --accent: #8abaff; --line: #3d4139; --line-strong: #858b7d;
+    --accent: #8abaff; --line: #3d4139; --line-strong: #858b7d; --wash: #252d35; --paper: #252823;
     --st-1: #9ec5f4; --st-1-fg: #0b0b0b; --st-2: #6da7ec; --st-2-fg: #0b0b0b; --st-3: #3987e5; --st-3-fg: #fff; --st-4: #1c5cab; --st-4-fg: #fff;
     --t01: #8abaff; --t02: #75beb0; --t03: #d1ac66; --t04: #e19b8b; --edge-addresses: #75beb0; --edge-contrasts: #e19b8b;
   }
@@ -216,6 +220,7 @@ const langShort: Record<Lang, string> = { ja: 'JA', zh: 'ZH', en: 'EN' };
   .accent { color: var(--accent); } .muted { color: var(--muted); } .note { font-size: 0.875rem; color: var(--muted); }
   .wrap { max-width: 1136px; margin-inline: auto; padding-inline: 32px; }
   .reading { max-width: 42rem; }
+  .site-header, .viewbar, .site-footer { font-family: var(--ui); }
   .site-header { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding-block: 24px; border-bottom: 1px solid var(--line); }
   .brand { display: flex; align-items: center; gap: 12px; color: var(--text); text-decoration: none; font-size: 1rem; font-weight: 600; }
   .brand-mark { width: 28px; height: 28px; flex: none; }

@@ -1,0 +1,183 @@
+---
+// FIG. 01 — Document Atlas (GPT visual design v2, 2026-10-25). The document itself is the visual:
+// four hand-drawn studies (overview / table / cross-page / figure) switched by lens buttons that sit on
+// the same canvas, hotspots inside the overview drawing, and an enlarge dialog. The three comparison
+// tools (書体・構造・版面) are reachable from here as the secondary 比較する.
+// The SVGs are the editable studies in public/media/atlas/ (fictional sample text, Japanese).
+import overview from '../../public/media/atlas/doc-overview.svg?raw';
+import table from '../../public/media/atlas/table-structure.svg?raw';
+import pages from '../../public/media/atlas/cross-page-links.svg?raw';
+import figure from '../../public/media/atlas/figure-grounding.svg?raw';
+import { t, href, type Lang } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const a = t(lang).atlas;
+const studies = [
+  { mode: 'overview', svg: overview, icon: 'i-doc' },
+  { mode: 'table', svg: table, icon: 'i-table' },
+  { mode: 'pages', svg: pages, icon: 'i-pages' },
+  { mode: 'figure', svg: figure, icon: 'i-figure' },
+] as const;
+const first = a.captions.overview;
+---
+
+<figure class="atlas" id="atlas" aria-labelledby="atlas-title" data-captions={JSON.stringify(a.captions)} data-hotspots={JSON.stringify(a.hotspots)} data-zoom-title={a.zoomTitle}>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+    <symbol id="i-zoom" viewBox="0 0 20 20"><path d="M3 8V3h5m4 0h5v5M3 12v5h5m4 0h5v-5" fill="none" stroke="currentColor" stroke-width="1.6" /></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 30"><path d="M3 2h18v26H3zM7 8h10M7 13h10M7 18h6M7 23h10" fill="none" stroke="currentColor" stroke-width="1.4" /></symbol>
+    <symbol id="i-table" viewBox="0 0 24 30"><path d="M2 5h20v20H2zM2 11h20M2 18h20M9 11v14M16 5v20" fill="none" stroke="currentColor" stroke-width="1.4" /></symbol>
+    <symbol id="i-pages" viewBox="0 0 24 30"><path d="M2 7h13v20H2zM8 3h14v20h-4M5 12h7m-7 5h7m5-9h3" fill="none" stroke="currentColor" stroke-width="1.4" /></symbol>
+    <symbol id="i-figure" viewBox="0 0 24 30"><path d="M2 5h20v16H2zM3 20l6-8 5 5 4-4 4 5M5 26h14" fill="none" stroke="currentColor" stroke-width="1.4" /><circle cx="17" cy="9" r="1.5" fill="currentColor" /></symbol>
+  </defs></svg>
+
+  <div class="atlas-top"><span class="mono index">{a.fig}</span><span class="eyebrow">{a.select}</span></div>
+  <div class="atlas-frame">
+    <div class="canvas" lang="ja">
+      {studies.map((s, i) => (
+        <div class={`study-visual${i === 0 ? ' active' : ''}`} data-mode={s.mode} hidden={i !== 0} set:html={s.svg} />
+      ))}
+      <button type="button" class="zoom-chart" id="zoom-chart" aria-label={a.zoom}><svg aria-hidden="true"><use href="#i-zoom" /></svg></button>
+    </div>
+    <div class="study-switches" role="group" aria-label={a.select}>
+      {studies.map((s, i) => (
+        <button type="button" class="study-button" data-view={s.mode} aria-pressed={i === 0 ? 'true' : 'false'}>
+          <svg class="icon" aria-hidden="true"><use href={`#${s.icon}`} /></svg>
+          <span>{a.lenses[s.mode][0]}<span class="small">{a.lenses[s.mode][1]}</span></span>
+        </button>
+      ))}
+    </div>
+  </div>
+  <figcaption class="atlas-caption">
+    <span class="caption-no" id="caption-no">{first[0]}</span>
+    <div aria-live="polite" aria-atomic="true">
+      <h2 id="atlas-title">{first[1]}</h2>
+      <p id="atlas-description">{first[2]}</p>
+      <p class="atlas-links"><a href={`${href(lang, '/research')}#fig-motion`}>{a.follow} ↗</a><button type="button" class="compare-link" id="compare-link">{a.compare} →</button></p>
+    </div>
+  </figcaption>
+  <p class="atlas-note note">{a.note}</p>
+</figure>
+
+<dialog class="lightbox" id="atlas-lightbox" aria-labelledby="atlas-lightbox-title">
+  <div class="lightbox-top"><p id="atlas-lightbox-title">{a.zoom}</p><button type="button" id="atlas-lightbox-close">{a.close}</button></div>
+  <div class="svg-view" id="atlas-lightbox-svg" tabindex="0" role="region" aria-label={a.zoom} lang="ja"></div>
+</dialog>
+
+<script>
+  const atlas = document.getElementById('atlas');
+  if (atlas) {
+    const captions = JSON.parse(atlas.dataset.captions!) as Record<string, [string, string, string]>;
+    const hotspotLabels = JSON.parse(atlas.dataset.hotspots!) as Record<string, string>;
+    const buttons = [...atlas.querySelectorAll<HTMLButtonElement>('[data-view]')];
+    const visuals = [...atlas.querySelectorAll<HTMLElement>('.study-visual')];
+    const select = (mode: string) => {
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.view === mode)));
+      visuals.forEach((v) => { const on = v.dataset.mode === mode; v.hidden = !on; v.classList.toggle('active', on); });
+      const c = captions[mode];
+      document.getElementById('caption-no')!.textContent = c[0];
+      document.getElementById('atlas-title')!.textContent = c[1];
+      document.getElementById('atlas-description')!.textContent = c[2];
+    };
+    buttons.forEach((b) => b.addEventListener('click', () => select(b.dataset.view!)));
+
+    // hotspots inside the overview drawing: the table, the image and the three right-hand nodes
+    const hotspots: [string, string][] = [['overview-table-node', 'table'], ['overview-table', 'table'], ['overview-figure-node', 'figure'], ['overview-image', 'figure'], ['overview-link-node', 'pages']];
+    atlas.querySelector('.study-visual[data-mode="overview"] > svg')?.setAttribute('role', 'group');
+    for (const [id, view] of hotspots) {
+      const node = document.getElementById(id);
+      if (!node) continue;
+      node.setAttribute('tabindex', '0'); node.setAttribute('role', 'button'); node.setAttribute('aria-label', hotspotLabels[view]); node.classList.add('chart-hotspot');
+      const activate = () => { const b = buttons.find((x) => x.dataset.view === view); b?.click(); b?.focus(); };
+      node.addEventListener('click', activate);
+      node.addEventListener('keydown', (e) => { if ((e as KeyboardEvent).key === 'Enter' || (e as KeyboardEvent).key === ' ') { e.preventDefault(); activate(); } });
+    }
+
+    // enlarge: clone the active drawing into the dialog with prefixed ids (no duplicate ids on the page)
+    const dialog = document.getElementById('atlas-lightbox') as HTMLDialogElement | null;
+    const view = document.getElementById('atlas-lightbox-svg');
+    document.getElementById('zoom-chart')?.addEventListener('click', () => {
+      const src = atlas.querySelector('.study-visual.active svg');
+      if (!src || !dialog || !view) return;
+      const clone = src.cloneNode(true) as SVGElement;
+      const map = new Map([...clone.querySelectorAll('[id]')].map((e) => [e.id, 'zoom-' + e.id]));
+      for (const e of [clone, ...clone.querySelectorAll('*')]) {
+        for (const at of [...e.attributes]) {
+          let v = at.value;
+          if (at.name === 'id' && map.has(v)) v = map.get(v)!;
+          if (at.name === 'aria-labelledby' || at.name === 'aria-describedby') v = v.split(' ').map((x) => map.get(x) || x).join(' ');
+          if (v !== at.value) e.setAttribute(at.name, v);
+        }
+      }
+      clone.querySelectorAll('.chart-hotspot').forEach((n) => { n.removeAttribute('role'); n.removeAttribute('tabindex'); n.removeAttribute('aria-label'); n.classList.remove('chart-hotspot'); });
+      clone.setAttribute('role', 'img');
+      view.replaceChildren(clone);
+      document.getElementById('atlas-lightbox-title')!.textContent = document.getElementById('atlas-title')!.textContent + (atlas.dataset.zoomTitle ?? '');
+      dialog.showModal();
+    });
+    document.getElementById('atlas-lightbox-close')?.addEventListener('click', () => dialog?.close());
+    dialog?.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
+
+    // 比較する: opens the header's 見方を変える bar and moves focus there
+    document.getElementById('compare-link')?.addEventListener('click', () => {
+      const btn = document.querySelector<HTMLButtonElement>('.viewbtn');
+      if (btn && btn.getAttribute('aria-expanded') !== 'true') btn.click(); else document.querySelector<HTMLElement>('#viewbar .tgl')?.focus();
+      document.getElementById('viewbar')?.scrollIntoView({ block: 'nearest' });
+    });
+  }
+</script>
+
+<style>
+  .atlas { min-width: 0; }
+  .atlas-top { display: flex; justify-content: space-between; align-items: center; padding: 0 2px 12px; gap: 16px; }
+  .atlas-top .index { color: var(--accent); font-size: 0.8125rem; }
+  .atlas-frame { background: var(--wash); border-radius: 16px; position: relative; padding: 14px 10px 10px; isolation: isolate; }
+  .atlas-frame::before { content: ''; position: absolute; left: 18px; top: 18px; width: 12px; height: 12px; border-left: 2px solid var(--accent); border-top: 2px solid var(--accent); z-index: 2; pointer-events: none; }
+  .atlas-frame::after { content: ''; position: absolute; right: 18px; bottom: 18px; width: 12px; height: 12px; border-right: 2px solid var(--accent); border-bottom: 2px solid var(--accent); z-index: 2; pointer-events: none; }
+  .canvas { aspect-ratio: 3 / 2; position: relative; }
+  .study-visual { display: none; width: 100%; height: 100%; align-items: center; justify-content: center; }
+  .study-visual.active { display: flex; }
+  .study-visual :global(svg) { width: 100%; height: 100%; max-height: 100%; border-radius: 7px; display: block; }
+  .zoom-chart { position: absolute; right: 14px; top: 12px; width: 44px; min-height: 44px; border: 1px solid #66685e; background: #faf9f5; color: #141413; border-radius: 50%; z-index: 3; display: grid; place-items: center; padding: 0; }
+  .zoom-chart svg { width: 16px; height: 16px; }
+  .study-switches { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 5px; margin: 8px 4px 4px; padding: 5px; background: var(--bg); border: 1px solid var(--line); border-radius: 12px; }
+  .study-button { border: 0; background: transparent; min-height: 62px; border-radius: 8px; text-align: left; padding: 10px 9px; display: flex; gap: 8px; align-items: center; font-size: 0.8125rem; line-height: 1.6; white-space: nowrap; font-family: var(--ui); color: var(--text); }
+  .study-button .icon { width: 24px; height: 30px; flex: none; color: var(--muted); }
+  .study-button .small { display: block; font: 10px/1.5 var(--mono); letter-spacing: 0.02em; color: var(--muted); }
+  .study-button[aria-pressed='true'] { color: var(--bg); background: var(--text); }
+  .study-button[aria-pressed='true'] .icon, .study-button[aria-pressed='true'] .small { color: var(--bg); }
+  .study-button:hover:not([aria-pressed='true']) { background: var(--surface); }
+  .atlas-caption { display: grid; grid-template-columns: 40px 1fr; gap: 12px; margin: 18px 4px 0; min-height: 90px; }
+  .atlas-caption .caption-no { font: 400 1.5rem/1.4 var(--mono); color: var(--accent); }
+  .atlas-caption h2 { font-size: 1.0625rem; letter-spacing: 0; line-height: 1.55; margin-bottom: 7px; }
+  .atlas-caption p { font-size: 0.875rem; line-height: 1.8; color: var(--muted); }
+  .atlas-links { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; margin-top: 4px; }
+  .atlas-links a, .compare-link { font-size: 0.8125rem; min-height: 44px; display: inline-flex; align-items: center; }
+  .compare-link { border: 0; background: none; padding: 0; color: var(--accent); text-decoration: underline; text-underline-offset: 0.22em; cursor: pointer; font-family: var(--ui); }
+  .atlas-note { margin: 10px 4px 0; font-size: 0.8125rem; }
+  :global(.chart-hotspot) { cursor: pointer; }
+  :global(.chart-hotspot:hover) { opacity: 0.8; }
+  :global(.chart-hotspot:focus-visible) { outline: 3px solid #2166b5; outline-offset: 6px; }
+  .lightbox { width: min(1280px, 96vw); max-height: 94vh; padding: 20px; background: var(--bg); color: var(--text); border: 1px solid var(--line-strong); border-radius: 10px; }
+  .lightbox::backdrop { background: #101513bb; }
+  .lightbox-top { display: flex; justify-content: space-between; gap: 20px; align-items: center; margin-bottom: 16px; }
+  .lightbox-top p { font-size: 0.875rem; }
+  .lightbox-top button { border: 1px solid var(--line-strong); background: var(--bg); color: var(--text); padding: 6px 16px; border-radius: 30px; min-height: 40px; }
+  .svg-view { overflow: auto; } .svg-view :global(svg) { width: 100%; height: auto; background: #faf9f5; display: block; }
+  @media (prefers-reduced-motion: no-preference) {
+    .study-visual.active { animation: arrive 220ms ease-out; }
+    .study-button { transition: background-color 160ms, color 160ms; }
+    @keyframes arrive { from { opacity: 0.6; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  }
+  @media (max-width: 1080px) { .study-button { padding: 8px 5px; gap: 5px; font-size: 0.75rem; } .study-button .icon { width: 20px; } }
+  @media (max-width: 760px) {
+    .atlas-frame { padding: 10px 6px 6px; border-radius: 12px; }
+    .study-switches { gap: 2px; padding: 3px; margin-inline: 2px; }
+    .study-button { display: block; text-align: center; padding: 7px 2px; font-size: 0.75rem; min-height: 68px; white-space: normal; }
+    .study-button .icon { height: 20px; width: 18px; margin: 0 auto 3px; }
+    .study-button .small { display: none; }
+    .atlas-caption { margin-top: 16px; min-height: 106px; } .atlas-caption h2 { font-size: 1rem; }
+    .lightbox { padding: 14px; } .svg-view :global(svg) { min-width: 820px; }
+    .zoom-chart { right: 8px; top: 7px; }
+  }
+</style>

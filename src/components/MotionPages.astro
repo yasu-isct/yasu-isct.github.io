@@ -1,0 +1,121 @@
+---
+// FIG. 03 — the cross-page relation demonstrated in four frames (GPT motion reel, scene "pages").
+// Nothing plays until the visitor presses 再生する; it stops at the fourth frame. Frames can be chosen
+// directly. Under prefers-reduced-motion the play button becomes 次のコマへ and nothing animates.
+// The drawing is a hand-made sample (Japanese); the step copy and transcript are translated.
+import { t, href, type Lang } from '../i18n/ui';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const m = t(lang).motion;
+const g = t(lang).gallery;
+---
+
+<figure class="theater" id="fig-motion" aria-labelledby="motion-title" data-steps={JSON.stringify(m.steps)} data-labels={JSON.stringify({ play: m.play, pause: m.pause, next: m.next, playAria: m.playAria, pauseAria: m.pauseAria, nextAria: m.nextAria })}>
+  <div class="theater-head"><h3 class="theater-title" id="motion-title">{m.title}</h3><span class="figure-id mono">{m.fig}</span></div>
+  <div class="scene" id="scene-pages" data-step="0" aria-hidden="true" lang="ja">
+    <svg viewBox="0 0 1120 620">
+      <rect class="paper" x="58" y="52" width="292" height="458" /><rect class="paper" x="426" y="106" width="292" height="458" /><rect class="paper" x="800" y="52" width="262" height="418" />
+      <text class="svg-meta" x="84" y="88">P. 04 / 本文</text><text class="svg-title" x="84" y="132">資料を読む</text><path class="rule" d="M84 159h240M84 178h240M84 197h220M84 229h240M84 248h210M84 267h240M84 286h170" /><text class="svg-body" x="84" y="330">専門別の条件は、</text><text class="svg-body" x="84" y="361">別表Bを参照する。</text><path class="rule" d="M84 395h240M84 414h220M84 433h240" />
+      <text class="svg-meta" x="452" y="142">P. 09 / 別表B</text><text class="svg-title" x="452" y="186">専門別の条件</text><rect x="452" y="211" width="240" height="46" class="wash" /><rect x="452" y="211" width="240" height="203" fill="none" class="table-rule" /><path class="table-rule" d="M548 211v203M452 257h240M452 335h240" /><text class="svg-body" x="469" y="242">項目</text><text class="svg-body" x="568" y="242">条件</text><text class="svg-body" x="468" y="303">資料A</text><text class="svg-body" x="568" y="303">本文参照</text><text class="svg-body" x="468" y="382">資料B</text><text class="svg-body" x="568" y="382">注記参照</text><text class="svg-small" x="452" y="464">注記も、同じ根拠の一部。</text><text class="svg-meta" x="452" y="534">SELF-AUTHORED SAMPLE</text>
+      <text class="svg-meta" x="826" y="88">RELATION NOTE</text><text class="svg-title" x="826" y="132">出典へ戻る道</text><text class="svg-body" x="826" y="189">本文 P.04</text><path class="table-rule" d="M838 207v29" /><text class="svg-body" x="826" y="266">参照先 P.09</text><path class="table-rule" d="M838 284v29" /><text class="svg-body" x="826" y="344">条件と注記</text><text class="svg-small" x="826" y="410">ページをまたいで読む。</text>
+      <g class="highlight s0"><rect class="focus" x="77" y="309" width="252" height="66" /><circle class="pin" cx="84" cy="330" r="5" /></g>
+      <g class="highlight s1"><rect class="focus" x="426" y="106" width="292" height="458" /><path class="path relay" d="M329 347H388V164H440" /><circle class="pin" cx="440" cy="164" r="5" /></g>
+      <g class="highlight s2"><rect class="focus" x="452" y="335" width="240" height="79" /><path class="path relay" d="M329 347H388V375H438" /><circle class="pin" cx="438" cy="375" r="5" /></g>
+      <g class="highlight s3"><path class="path relay" d="M329 347H388V375H734V178H812" /><rect class="focus" x="818" y="160" width="220" height="201" /><circle class="pin" cx="812" cy="178" r="5" /></g>
+      <text class="svg-meta" x="58" y="593">EDITORIAL DEMO / ページ番号・本文・参照関係は自作の説明例です。</text>
+    </svg>
+  </div>
+  <figcaption class="playbar">
+    <button class="play" id="motion-play" type="button" aria-label={m.playAria}><span class="play-icon" aria-hidden="true">▶</span><span id="motion-play-label">{m.play}</span></button>
+    <p class="step-copy" id="motion-copy" role="status" aria-live="polite">{m.steps[0][0]}<small>{m.steps[0][1]}</small></p>
+    <nav class="steps" aria-label={m.stepsLabel}>
+      {[0, 1, 2, 3].map((i) => (<button type="button" class="step-button" data-step={i} aria-current={i === 0 ? 'step' : undefined} aria-label={m.stepAria.replace('{n}', String(i + 1))}>{String(i + 1).padStart(2, '0')}</button>))}
+    </nav>
+  </figcaption>
+  <details class="transcript"><summary>{m.transcript}</summary><ol>{m.transcriptItems.map((s) => <li>{s}</li>)}</ol></details>
+  <p class="motion-note note">{m.note} <a href={`${href(lang, '/works')}#j-grad`}>{m.real} ↗</a></p>
+</figure>
+
+<script>
+  const fig = document.getElementById('fig-motion');
+  if (fig) {
+    const steps = JSON.parse(fig.dataset.steps!) as [string, string][];
+    const L = JSON.parse(fig.dataset.labels!) as Record<string, string>;
+    const scene = fig.querySelector<HTMLElement>('.scene')!;
+    const play = document.getElementById('motion-play') as HTMLButtonElement;
+    const label = document.getElementById('motion-play-label')!;
+    const copy = document.getElementById('motion-copy')!;
+    const stepButtons = [...fig.querySelectorAll<HTMLButtonElement>('.step-button')];
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+    let step = 0; let timer: number | null = null;
+    const paintPlay = () => {
+      label.textContent = reduced.matches ? L.next : timer ? L.pause : L.play;
+      play.querySelector('.play-icon')!.textContent = reduced.matches ? '→' : timer ? 'Ⅱ' : '▶';
+      play.setAttribute('aria-label', reduced.matches ? L.nextAria : timer ? L.pauseAria : L.playAria);
+    };
+    const stop = () => { if (timer) clearInterval(timer); timer = null; paintPlay(); };
+    const render = () => {
+      scene.dataset.step = String(step);
+      stepButtons.forEach((b) => { if (Number(b.dataset.step) === step) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current'); });
+      copy.replaceChildren(document.createTextNode(steps[step][0]));
+      const small = document.createElement('small'); small.textContent = steps[step][1]; copy.append(small);
+      paintPlay();
+    };
+    stepButtons.forEach((b) => b.addEventListener('click', () => { stop(); step = Number(b.dataset.step); render(); }));
+    play.addEventListener('click', () => {
+      if (reduced.matches) { stop(); step = (step + 1) % 4; render(); return; }
+      if (timer) { stop(); return; }
+      if (step === 3) step = 0;
+      render();
+      timer = window.setInterval(() => { if (step < 3) { step++; render(); } if (step === 3) stop(); }, 1900);
+      paintPlay();
+    });
+    reduced.addEventListener('change', () => { stop(); render(); });
+    document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); });
+    fig.querySelectorAll<SVGPathElement>('.relay').forEach((p) => p.style.setProperty('--length', String(Math.ceil(p.getTotalLength()))));
+    render();
+  }
+</script>
+
+<style>
+  .theater { background: var(--surface); border: 1px solid var(--line-strong); margin: 22px 0 0; scroll-margin-top: 2rem; }
+  .theater-head { display: flex; gap: 20px; align-items: center; justify-content: space-between; padding: 16px 22px; border-bottom: 1px solid var(--line); }
+  .theater-title { font-size: 1.0625rem; font-weight: 500; line-height: 1.5; }
+  .figure-id { font-size: 0.8125rem; color: var(--muted); white-space: nowrap; }
+  .scene svg { width: 100%; height: auto; display: block; }
+  .scene svg :global(text) { font-family: var(--ui); fill: var(--text); }
+  .scene svg :global(.svg-meta) { font-family: var(--mono); font-size: 13px; fill: var(--muted); }
+  .scene svg :global(.svg-small) { font-size: 16px; fill: var(--muted); }
+  .scene svg :global(.svg-body) { font-size: 19px; }
+  .scene svg :global(.svg-title) { font-size: 18px; font-weight: 600; }
+  .scene svg :global(.paper) { fill: var(--paper); stroke: var(--line-strong); stroke-width: 1; }
+  .scene svg :global(.rule) { stroke: var(--line); stroke-width: 1; }
+  .scene svg :global(.table-rule) { stroke: var(--line-strong); stroke-width: 1; }
+  .scene svg :global(.wash) { fill: var(--wash); }
+  .scene svg :global(.focus) { fill: none; stroke: var(--accent); stroke-width: 3; }
+  .scene svg :global(.path) { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+  .scene svg :global(.pin) { fill: var(--accent); }
+  .scene svg :global(.highlight) { opacity: 0; transition: opacity 180ms ease-out; pointer-events: none; }
+  /* higher specificity than the .highlight rule above once Astro adds its scope attributes */
+  .scene[data-step='0'] svg :global(.highlight.s0), .scene[data-step='1'] svg :global(.highlight.s1), .scene[data-step='2'] svg :global(.highlight.s2), .scene[data-step='3'] svg :global(.highlight.s3) { opacity: 1; }
+  .scene svg :global(.relay) { stroke-dasharray: var(--length, 1400); stroke-dashoffset: var(--length, 1400); transition: stroke-dashoffset 650ms cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .scene[data-step='0'] :global(.s0 .relay), .scene[data-step='1'] :global(.s1 .relay), .scene[data-step='2'] :global(.s2 .relay), .scene[data-step='3'] :global(.s3 .relay) { stroke-dashoffset: 0; }
+  .playbar { display: grid; grid-template-columns: 150px minmax(0, 1fr) auto; gap: 24px; align-items: center; padding: 18px 22px; border-top: 1px solid var(--line-strong); background: var(--paper); font-family: var(--ui); }
+  .play { display: inline-flex; align-items: center; gap: 10px; border: 0; background: transparent; color: var(--accent); padding: 0; min-height: 48px; text-align: left; font-size: 0.95rem; }
+  .play .play-icon { width: 42px; height: 42px; border: 1px solid var(--accent); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 15px; flex: none; }
+  .step-copy { font-size: 1rem; line-height: 1.7; }
+  .step-copy small { display: block; font-size: 0.875rem; color: var(--muted); margin-top: 4px; }
+  .steps { display: flex; gap: 8px; }
+  .step-button { width: 44px; height: 44px; min-height: 44px; border: 1px solid var(--line-strong); border-radius: 50%; background: var(--paper); color: var(--muted); font: 400 14px/1 var(--mono); padding: 0; }
+  .step-button[aria-current='step'] { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+  .transcript { margin: 0; border-top: 1px solid var(--line); padding: 0 22px; }
+  .transcript summary { min-height: 44px; padding: 10px 0; font-size: 0.875rem; }
+  .transcript ol { margin: 0 0 16px; padding-left: 1.4em; max-width: 48rem; font-size: 0.9rem; } .transcript li { padding: 4px 0; }
+  .motion-note { margin: 0; padding: 12px 22px 16px; border-top: 1px solid var(--line); font-size: 0.8125rem; }
+  @media (max-width: 760px) {
+    .theater-head { padding: 12px 14px; align-items: flex-start; gap: 12px; } .theater-title { font-size: 1rem; }
+    .scene svg { min-height: 220px; }
+    .playbar { grid-template-columns: 1fr; gap: 14px; padding: 16px 14px; } .steps { grid-row: 2; } .step-copy { grid-row: 3; }
+    .transcript, .motion-note { padding-inline: 14px; }
+  }
+</style>

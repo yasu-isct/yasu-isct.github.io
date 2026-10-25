@@ -3,6 +3,7 @@
 // from copy.jsonl) → bibliography. The time-axis lineage map is deliberately not here yet.
 import Base from '../layouts/Base.astro';
 import LineageMap from './LineageMap.astro';
+import MotionPages from './MotionPages.astro';
 import VerticalTitle from './VerticalTitle.astro';
 import { researchPlain, glossary } from '../content/research-plain';
 import {
@@ -76,6 +77,7 @@ const kindMark = (n: Node) => (n.object_type === 'paper' ? '○' : n.object_type
             </figure>
           </div>
         )}
+        {id === 'T01' && <MotionPages lang={lang} />}
         <details class="rtext"><summary>{d.rText}</summary>
           {researchPlain[id] && <p><span class="mono accent">{d.plain.why}</span> {researchPlain[id].why[lang]}</p>}
           <p>{oneLine(th, lang)}</p>
