@@ -85,8 +85,10 @@ if (process.argv.includes('--dist')) {
         inspectText(text, path.relative(root, filename));
         if (entry.name.endsWith('.json')) inspect(JSON.parse(text), path.relative(root, filename));
         if (entry.name.endsWith('.html')) {
-          htmlPages++;
-          assert(/<meta\s+name="robots"\s+content="noindex"\s*\/?>/.test(text), 'noindex missing');
+          // Twelve localized content pages, plus the shared error document added for publication.
+          if (filename !== path.join(root, 'dist/404.html')) htmlPages++;
+          assert(!/<meta\b(?=[^>]*\bname\s*=\s*["']robots["'])(?=[^>]*\bcontent\s*=\s*["'][^"']*\bnoindex\b)[^>]*>/i.test(text), 'noindex remains');
+          assert(!/内部プレビュー|内部预览|Internal preview|公開範囲は未確定|公开范围未定|Public scope not yet decided/i.test(text), 'Preview footer remains');
         }
       }
     }
@@ -95,6 +97,7 @@ if (process.argv.includes('--dist')) {
   assert.equal(htmlPages, 12, 'Unexpected HTML page count');
   assert.deepEqual((await readdir(path.join(root, 'dist/prototype-lineage'))).sort(), allowedPrototype);
   assert.equal(sha256(await readFile(path.join(root, 'dist/prototype-lineage/layout.json'))), sha256(layoutBytes));
-  assert((await readFile(path.join(root, 'dist/index.html'), 'utf8')).includes('内部プレビュー'), 'Preview footer missing');
-  console.log('Built output: 12 noindex pages; preview footer retained; no private assets or forbidden markers.');
+  assert((await readFile(path.join(root, 'dist/404.html'), 'utf8')).includes('<title>404'), 'Shared 404 page missing');
+  assert(!(await readFile(path.join(root, 'dist/index.html'), 'utf8')).includes('内部プレビュー'), 'Preview footer remains');
+  console.log('Built output: 12 indexable content pages plus shared 404; preview footer removed; no private assets or forbidden markers.');
 }

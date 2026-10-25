@@ -10,8 +10,10 @@ interface Props {
   description?: string;
   /** Current path without locale prefix, e.g. "/research". */
   path: string;
+  /** One shared error page; its language links lead to the localized homepages. */
+  shared404?: boolean;
 }
-const { title, description = '', path } = Astro.props;
+const { title, description = '', path, shared404 = false } = Astro.props;
 const lang = (Astro.currentLocale ?? 'ja') as Lang;
 const d = t(lang);
 const htmlLang = lang === 'zh' ? 'zh-CN' : lang;
@@ -21,6 +23,10 @@ const nav = [
   { key: 'notes', to: '/notes' },
 ] as const;
 const langShort: Record<Lang, string> = { ja: 'JA', zh: 'ZH', en: 'EN' };
+const pageTitle = `${title} · ${d.siteName}`;
+const pageUrl = new URL(shared404 ? '/404.html' : Astro.url.pathname, Astro.site!);
+const imageUrl = new URL('/og.png', Astro.site!);
+const ogLocale: Record<Lang, string> = { ja: 'ja_JP', zh: 'zh_CN', en: 'en_US' };
 ---
 
 <!doctype html>
@@ -29,14 +35,25 @@ const langShort: Record<Lang, string> = { ja: 'JA', zh: 'ZH', en: 'EN' };
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title} · {d.siteName}</title>
+    <title>{pageTitle}</title>
     {description && <meta name="description" content={description} />}
-    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={pageUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="CHEN YI AN · DOCUMENT STUDY" />
+    <meta property="og:url" content={pageUrl} />
+    <meta property="og:locale" content={ogLocale[lang]} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@400;600&family=BIZ+UDGothic&display=swap" rel="stylesheet" />
-    {LANGS.map((l) => <link rel="alternate" hreflang={l} href={href(l, path)} />)}
+    {!shared404 && LANGS.map((l) => <link rel="alternate" hreflang={l} href={href(l, path)} />)}
   </head>
   <body data-grid-caption={d.toggles.gridCaption}>
     <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -62,7 +79,7 @@ const langShort: Record<Lang, string> = { ja: 'JA', zh: 'ZH', en: 'EN' };
             {LANGS.map((l, i) => (
               <>
                 {i > 0 && ' / '}
-                {l === lang ? <strong>{langShort[l]}</strong> : <a href={href(l, path)} lang={l}>{langShort[l]}</a>}
+                {l === lang && !shared404 ? <strong>{langShort[l]}</strong> : <a href={href(l, shared404 ? '/' : path)} lang={l}>{langShort[l]}</a>}
               </>
             ))}
           </span>

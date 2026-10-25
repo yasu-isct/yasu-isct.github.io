@@ -51,7 +51,7 @@ export const ui = {
       intro: '提案を採用した理由、修正した理由、確かめた方法。あとから説明できる形で、協働の過程を記録します。実際の出来事をもとに、数値や番号の出典を示しています。',
       what: '何が起きたか', changed: '人の修正', evidence: '根拠', flow: '何が起きたか → 人の修正 → 根拠', index: '記録を選ぶ（{n}件）', running: '記録',
     },
-    footer: { line: '東京を拠点に、文書と機械のあいだを考える。', note: '内部プレビュー。公開範囲は未確定。' },
+    footer: { line: '東京を拠点に、文書と機械のあいだを考える。', note: '© 2026 CHEN YI AN · ソース: GitHub' },
     research: {
       title: '研究マップ',
       headline: '問いの成り立ち。<br>いまどこまで来たか。',
@@ -125,7 +125,7 @@ export const ui = {
       intro: '为什么采纳提案、为什么修改、怎么验证。用事后能解释的形式记录协作过程。全部是真实发生的事，数字和编号可追溯到原始记录。',
       what: '发生了什么', changed: '人的修正', evidence: '根据', flow: '发生了什么 → 人的修正 → 根据', index: '选择记录（{n} 条）', running: '记录',
     },
-    footer: { line: '在东京，思考文档与机器之间的事。', note: '内部预览，公开范围未定。' },
+    footer: { line: '在东京，思考文档与机器之间的事。', note: '© 2026 CHEN YI AN · 源码: GitHub' },
     research: {
       title: '研究地图',
       headline: '问题的来路。<br>现在走到哪里。',
@@ -199,7 +199,7 @@ export const ui = {
       intro: 'Why a proposal was accepted, why it was changed, how it was checked — recorded so it can be explained later. All of it happened; every number and ID traces to a source.',
       what: 'What happened', changed: 'Human correction', evidence: 'Evidence', flow: 'what happened → human correction → evidence', index: 'Choose a record ({n})', running: 'Record',
     },
-    footer: { line: 'Thinking about the space between documents and machines, from Tokyo.', note: 'Internal preview. Public scope not yet decided.' },
+    footer: { line: 'Thinking about the space between documents and machines, from Tokyo.', note: '© 2026 CHEN YI AN · Source: GitHub' },
     research: {
       title: 'Research map',
       headline: 'Where the questions came from.<br>How far they have got.',
