@@ -43,8 +43,8 @@ export const researchPlain: Record<string, PlainTheme> = {
   },
 };
 
-export const glossary: Record<string, L> = {
-  RAG: { ja: '資料を検索して、その内容を根拠に回答を作る仕組み。', zh: '先检索资料，再依据资料生成回答的机制。', en: 'Retrieve documents, then answer using their content as evidence.' },
-  根拠: { ja: '回答がどの資料のどの箇所に基づくか。', zh: '回答依据的是哪份资料的哪一处。', en: 'Which document and which passage an answer rests on.' },
-  状態: { ja: '規則が「現行」か「廃止」かといった、文字以外の情報。', zh: '规则是"现行"还是"已废止"这类文字之外的信息。', en: 'Information beyond the words, such as whether a rule is current or superseded.' },
-};
+export const glossary: { key: L; text: L }[] = [
+  { key: { ja: 'RAG', zh: 'RAG', en: 'RAG' }, text: { ja: '資料を検索して、その内容を根拠に回答を作る仕組み。', zh: '先检索资料，再依据资料生成回答的机制。', en: 'Retrieve documents, then answer using their content as evidence.' } },
+  { key: { ja: '根拠', zh: '根据', en: 'evidence' }, text: { ja: '回答がどの資料のどの箇所に基づくか。', zh: '回答依据的是哪份资料的哪一处。', en: 'Which document and which passage an answer rests on.' } },
+  { key: { ja: '状態', zh: '状态', en: 'status' }, text: { ja: '規則が「現行」か「廃止」かといった、文字以外の情報。', zh: '规则是"现行"还是"已废止"这类文字之外的信息。', en: 'Information beyond the words, such as whether a rule is current or superseded.' } },
+];

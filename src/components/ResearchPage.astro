@@ -30,7 +30,7 @@ const kindMark = (n: Node) => (n.object_type === 'paper' ? '○' : n.object_type
     <div class="lead-plain">
       <p class="big">{d.plainLead}</p>
       <dl class="gloss">
-        {Object.entries(glossary).map(([k, v]) => (<div><dt class="mono">{k}</dt><dd>{v[lang]}</dd></div>))}
+        {glossary.map((g) => (<div><dt class="mono">{g.key[lang]}</dt><dd>{g.text[lang]}</dd></div>))}
       </dl>
     </div>
   </div>

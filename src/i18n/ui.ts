@@ -7,7 +7,7 @@ export const ui = {
     siteName: 'CHEN YI AN',
     tagline: 'RAG・文書構造・AI協働開発',
     nav: { home: 'ホーム', works: '成果物', research: '研究マップ', notes: 'AI協働の記録' },
-    toggles: { open: '見方を変える', parse: '構造を重ねる', font: '書体を変える', fontSans: 'ゴシック', fontSerif: '明朝', fontUd: 'UDゴシック', grid: '版面を見る', help: '同じ文章を、違う見た目で。内容は変わりません。構造の枠は HTML をもとにした説明で、モデルの推論結果ではありません。このページ全体に適用されます。', gridCaption: '行送り 1.9rem のガイド・版心の境界（説明用）', theme: '外観', system: '自動', light: '明', dark: '暗' },
+    toggles: { open: '見方を変える', parse: '構造を重ねる', font: '書体を変える', fontSans: 'ゴシック', fontSerif: '明朝', fontUd: 'UDゴシック', grid: '版面を見る', help: '同じ文章を、違う見た目で。内容は変わりません。構造の枠は HTML をもとにした説明で、モデルの推論結果ではありません。このページ全体に適用されます。', gridCaption: '行送り 1.9rem のガイド・版心の境界（説明用）', intro: { steps: [['構造を重ねる', 'まとまりが、枠として見える。'], ['書体を変える', '同じ文章を、明朝で見る。'], ['版面を見る', '余白と行の間隔を見る。']], gather: 'この見方の入口は、ここ。', hintTitle: 'ここから、いつでも。', hint: '「見方を変える」で、構造・書体・版面を切り替えられます。', close: '閉じる', replay: '紹介をもう一度見る' }, theme: '外観', system: '自動', light: '明', dark: '暗' },
     home: {
       headline: '文書の見た目から、<br>機械の理解を考える。',
       positioning: '同じ文章でも、フォントや余白、見出しが変わると、機械は同じ構造を読み取れるのか。文書構造の理解と RAG 検索の関係を研究し、それを使うシステムを作っています。',
@@ -81,7 +81,7 @@ export const ui = {
     siteName: 'CHEN YI AN',
     tagline: 'RAG · 文档结构 · AI 协作开发',
     nav: { home: '首页', works: '成果', research: '研究地图', notes: 'AI 协作记录' },
-    toggles: { open: '换个看法', parse: '叠加结构', font: '切换字体', fontSans: '黑体', fontSerif: '明朝体', fontUd: 'UD 黑体', grid: '显示版面', help: '同一段文字，不同的外观。内容不变。结构框是基于 HTML 的说明，不是模型的推理结果。作用于整个页面；字体切换只影响日文样本。', gridCaption: '行距 1.9rem 参考线・版心边界（示意）', theme: '外观', system: '自动', light: '亮', dark: '暗' },
+    toggles: { open: '换个看法', parse: '叠加结构', font: '切换字体', fontSans: '黑体', fontSerif: '明朝体', fontUd: 'UD 黑体', grid: '显示版面', help: '同一段文字，不同的外观。内容不变。结构框是基于 HTML 的说明，不是模型的推理结果。作用于整个页面；字体切换只影响日文样本。', gridCaption: '行距 1.9rem 参考线・版心边界（示意）', intro: { steps: [['叠加结构', '段落的边界，显示为框。'], ['切换字体', '同一段日文，换成明朝体。'], ['显示版面', '看留白和行距。']], gather: '这个视角的入口，在这里。', hintTitle: '随时从这里开始。', hint: '用「换个看法」切换结构、字体、版面。', close: '关闭', replay: '再看一次介绍' }, theme: '外观', system: '自动', light: '亮', dark: '暗' },
     home: {
       headline: '从文档的外观，<br>思考机器的理解。',
       positioning: '同一段文字，换了字体、留白、标题样式，机器还能读出同样的结构吗？我研究文档结构理解与 RAG 检索的关系，并开发使用它的系统。',
@@ -155,7 +155,7 @@ export const ui = {
     siteName: 'CHEN YI AN',
     tagline: 'RAG · document structure · AI-assisted development',
     nav: { home: 'Home', works: 'Works', research: 'Research map', notes: 'Working with AI' },
-    toggles: { open: 'Change the view', parse: 'Overlay structure', font: 'Change typeface', fontSans: 'Gothic', fontSerif: 'Mincho', fontUd: 'UD Gothic', grid: 'Show the page frame', help: 'Same text, different look. Nothing in the content changes. The structure boxes are an explanation derived from the HTML, not model output. Applies to this whole page; the typeface switch affects the Japanese samples.', gridCaption: '1.9rem leading guide · text-block boundary (illustrative)', theme: 'Theme', system: 'Auto', light: 'Light', dark: 'Dark' },
+    toggles: { open: 'Change the view', parse: 'Overlay structure', font: 'Change typeface', fontSans: 'Gothic', fontSerif: 'Mincho', fontUd: 'UD Gothic', grid: 'Show the page frame', help: 'Same text, different look. Nothing in the content changes. The structure boxes are an explanation derived from the HTML, not model output. Applies to this whole page; the typeface switch affects the Japanese samples.', gridCaption: '1.9rem leading guide · text-block boundary (illustrative)', intro: { steps: [['Overlay structure', 'Blocks become visible as boxes.'], ['Change typeface', 'The Japanese samples switch to Mincho.'], ['Show the page frame', 'Margins and leading, shown.']], gather: 'The entry to these views is here.', hintTitle: 'From here, any time.', hint: 'Use “Change the view” to switch structure, typeface and page frame.', close: 'Close', replay: 'Replay the introduction' }, theme: 'Theme', system: 'Auto', light: 'Light', dark: 'Dark' },
     home: {
       headline: 'From how a document looks,<br>to how a machine reads it.',
       positioning: 'Same text, different font, margins or headings — does a machine still recover the same structure? I study the link between document-structure understanding and RAG retrieval, and build systems that use it.',

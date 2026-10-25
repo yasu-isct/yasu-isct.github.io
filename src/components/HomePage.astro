@@ -19,9 +19,11 @@ const stIndex = (s: string | null) => (s ? STATUS_ORDER.indexOf(s as any) + 1 : 
 <Base title={d.nav.home} description={h.positioning} path="/">
   <section class="hero">
     <div>
-      <p class="eyebrow">NLP / DOCUMENT UNDERSTANDING</p>
-      <h1 set:html={h.headline} />
-      <p class="intro">{h.positioning}</p>
+      <div data-intro-sample>
+        <p class="eyebrow">NLP / DOCUMENT UNDERSTANDING</p>
+        <h1 set:html={h.headline} />
+        <p class="intro">{h.positioning}</p>
+      </div>
       <p class="identity" set:html={h.who} />
       <div class="hero-actions">
         <a class="action" href={href(lang, '/works')}>{h.ctaWorks} <span aria-hidden="true">↗</span></a>
@@ -50,7 +52,7 @@ const stIndex = (s: string | null) => (s ? STATUS_ORDER.indexOf(s as any) + 1 : 
   </div>
 
   <div class="section-heading"><h2><span class="mono">02</span>{d.nav.research}</h2><span class="note">{h.researchNote}</span></div>
-  <p class="reading" lang="ja">{copyOf('research.question', lang)}</p>
+  <p class="reading">{copyOf('research.question', lang)}</p>
   <div class="map-preview" role="group">
     {themes.map((th) => (
       <a class="map-node" href={`${href(lang, '/research')}#${th.node_id.split(':')[1]}`}>

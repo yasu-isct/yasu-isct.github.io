@@ -15,10 +15,10 @@ export interface Work {
   number: { value: string; label: L; href: string };
   verification: L;
   change: L;
-  links: { label: string; href: string }[];
+  links: { label: string | L; href: string }[];
   image?: { src: string; alt: L };
   /** Real, unedited screenshots of the public demo (source and capture date in the caption). */
-  media?: { src: string; width: number; height: number; label: L; alt: L }[];
+  media?: { src: string; width: number; height: number; label: L; alt: L; caption?: L; video?: boolean; poster?: string }[];
   /** Three things the visitor can do in the screens, in order. */
   points?: L[];
   noteId?: string; // link into AI 協働の記録
@@ -64,13 +64,23 @@ export const works: Work[] = [
     links: [
       { label: 'Demo', href: 'https://yasu-isct.github.io/J-Grad-Admission-RAG/' },
       { label: 'GitHub', href: 'https://github.com/yasu-isct/J-Grad-Admission-RAG' },
-      { label: '技術解説', href: 'https://github.com/yasu-isct/J-Grad-Admission-RAG/blob/main/docs/portfolio/engineering-ja.md' },
+      { label: { ja: '技術解説', zh: '技术解说（日文）', en: 'Engineering notes (ja)' }, href: 'https://github.com/yasu-isct/J-Grad-Admission-RAG/blob/main/docs/portfolio/engineering-ja.md' },
     ],
-    // Public-demo captures from docs/assets/portfolio/public-demo at commit 2ce9930 (captured 2026-10-21), bytes unchanged.
+    // Public-demo captures, bytes unchanged: isct-overview from docs/assets/portfolio/public-demo (2026-10-21);
+    // the rest from docs/assets/portfolio/public-demo-2 (PR #303, captured 2026-10-25, gh-pages 112211e).
+    // A = evidence relations → source → back, B = requirements → preparation, C = phone report.
     media: [
-      { src: '/media/j-grad/isct-overview.png', width: 1440, height: 1000, label: { ja: '01 / 全体を見る', zh: '01 / 看全貌', en: '01 / Overview' }, alt: { ja: 'J-Grad 公開デモ：大学院募集要項の日程と必要書類を確認する画面', zh: 'J-Grad 公开演示：确认研究生院募集要项的日程与所需材料的画面', en: 'J-Grad public demo: screen checking the schedule and required documents of a graduate guideline' } },
-      { src: '/media/j-grad/gsfs-evidence.png', width: 840, height: 602, label: { ja: '02 / 根拠へ戻る', zh: '02 / 回到根据', en: '02 / Back to the evidence' }, alt: { ja: 'J-Grad 公開デモ：三つの資料と根拠の対応を示すダイアログ', zh: 'J-Grad 公开演示：显示三份资料与根据对应关系的对话框', en: 'J-Grad public demo: dialog showing how three documents relate as evidence' } },
-      { src: '/media/j-grad/isct-report-mobile.png', width: 390, height: 900, label: { ja: '03 / モバイル', zh: '03 / 手机', en: '03 / Mobile' }, alt: { ja: 'J-Grad 公開デモ：手機幅での準備レポート', zh: 'J-Grad 公开演示：手机宽度下的准备报告', en: 'J-Grad public demo: the preparation report at phone width' } },
+      { src: '/media/j-grad/a-evidence-main.png', width: 1440, height: 1000, label: { ja: 'A1 / 資料の関係', zh: 'A1 / 资料关系', en: 'A1 / Evidence relations' }, alt: { ja: 'J-Grad 公開デモ：英語スコア証明に関する三つの資料の関係を表示したデスクトップ画面', zh: 'J-Grad 公开演示：显示英语成绩证明相关三份资料关系的桌面画面', en: 'J-Grad public demo: desktop screen showing how three documents relate for the English-score certificate' }, caption: { ja: '英語スコア証明の根拠となる募集要項・入試案内・追加提出物一覧を、資料の役割とともに確認する。矢印は参照・補足関係で、三つすべてを提出する意味ではない。', zh: '查看英语成绩证明的根据：募集要项、入试案内、追加提交物一览及各自的作用。箭头是参照/补充关系，不表示三份都要提交。', en: 'The guideline, exam guide and supplementary list behind the English-score certificate, with each document\'s role. Arrows show reference relations, not "submit all three".' } },
+      { src: '/media/j-grad/a-relations-detail.png', width: 792, height: 328, label: { ja: 'A2 / カードと矢印', zh: 'A2 / 卡片与箭头', en: 'A2 / Cards and arrows' }, alt: { ja: '資料の役割と関係を示すカードと矢印の局部', zh: '显示资料作用与关系的卡片和箭头局部', en: 'Detail of the document cards, relation arrows and the open-source button' }, caption: { ja: '各資料のカード、関係を示す矢印、原文を開くボタンの切り出し。', zh: '各资料的卡片、表示关系的箭头、打开原文的按钮。', en: 'Each document\'s card, the relation arrows and the button that opens the source.' } },
+      { src: '/media/j-grad/a-original-detail.png', width: 840, height: 634, label: { ja: 'A3 / 原文へ', zh: 'A3 / 到原文', en: 'A3 / To the source' }, alt: { ja: '入試案内のPDF28ページに対応する原文の局部', zh: '对应入试案内 PDF 第 28 页的原文局部', en: 'Detail of the source text matching page 28 of the exam-guide PDF' }, caption: { ja: 'カードから開いた入試案内 PDF 28 ページの原文と、出典のページ情報。', zh: '从卡片打开的入试案内 PDF 第 28 页原文和出处页码。', en: 'The source passage from page 28 of the exam guide, opened from the card, with its page reference.' } },
+      { src: '/media/j-grad/a-return-detail.png', width: 840, height: 602, label: { ja: 'A4 / 戻る', zh: 'A4 / 返回', en: 'A4 / Back' }, alt: { ja: '原文から資料の関係に戻った画面の局部', zh: '从原文返回资料关系图的画面局部', en: 'Detail of the screen after returning from the source to the relation view' }, caption: { ja: '原文の「資料の関係に戻る」から、同じ資料の関係図へ戻った状態。', zh: '从原文的「資料の関係に戻る」回到同一张资料关系图。', en: 'Back at the same relation view via "return to the document relations".' } },
+      { src: '/media/j-grad/a-evidence-walkthrough.webm', width: 1440, height: 1000, video: true, poster: '/media/j-grad/a-evidence-main.png', label: { ja: 'A5 / 操作動画 10秒', zh: 'A5 / 操作视频 10 秒', en: 'A5 / 10-second walkthrough' }, alt: { ja: '資料の関係から原文を開いて戻る操作の無音録画（10秒）', zh: '从资料关系打开原文再返回的无声录屏（10 秒）', en: 'Silent 10-second recording: open the source from the relations and return' }, caption: { ja: '資料の関係 → 原文 → 戻る、を後処理なしで録画。自動再生しない。', zh: '资料关系 → 原文 → 返回，未经后处理的录屏。不自动播放。', en: 'Relations → source → back, recorded without post-processing. Never autoplays.' } },
+      { src: '/media/j-grad/b-requirements.png', width: 1440, height: 1000, label: { ja: 'B1 / 基本要件の原文', zh: 'B1 / 基本要件原文', en: 'B1 / Requirements source' }, alt: { ja: '基本要件から開いた入学志願票の原文', zh: '从基本要件打开的入学志愿票原文', en: 'The application-form source opened from the basic requirements' }, caption: { ja: '第2ステップの基本要件から「入学志願票」の原文を開き、準備の根拠となる公式資料を確認する。', zh: '从第 2 步的基本要件打开「入学志愿票」原文，确认准备的依据。', en: 'From step 2, open the application-form source that the preparation rests on.' } },
+      { src: '/media/j-grad/b-prepare-action.png', width: 1440, height: 1000, label: { ja: 'B2 / 本人の状況と照合', zh: 'B2 / 与本人情况核对', en: 'B2 / Match my situation' }, alt: { ja: '第3ステップの本人情報と準備状況を確認するボタン', zh: '第 3 步的本人信息与准备状况确认按钮', en: 'Step 3: the sample applicant\'s details and the check button' }, caption: { ja: '第3ステップで固定サンプルの本人情報を表示し、準備状況の確認へ進む。', zh: '第 3 步显示固定样例的本人信息，进入准备状况确认。', en: 'Step 3 shows the fixed sample applicant and moves on to the preparation check.' } },
+      { src: '/media/j-grad/b-preparation-result.png', width: 1440, height: 1000, label: { ja: 'B3 / 準備状況', zh: 'B3 / 准备状况', en: 'B3 / Preparation status' }, alt: { ja: '第4ステップの準備状況と次の行動', zh: '第 4 步的准备状况与下一步行动', en: 'Step 4: preparation status and next actions' }, caption: { ja: '準備・対応が必要な項目と確認が必要な項目を整理して表示。サンプルの自己申告に基づき、提出済み・受理を意味しない。', zh: '整理显示需要准备/应对的项目和需要确认的项目。基于样例的自我申报，不表示已提交或已受理。', en: 'Items to prepare and items to confirm, laid out. Based on the sample\'s self-report; not "submitted" or "accepted".' } },
+      { src: '/media/j-grad/c-report-mobile-long.png', width: 366, height: 1841, label: { ja: 'C1 / スマホのレポート', zh: 'C1 / 手机报告', en: 'C1 / Phone report' }, alt: { ja: 'スマートフォンのレポート抜粋：保存済みサンプルの注記から書類の準備リスト冒頭まで', zh: '手机报告节选：从保存样例的注记到材料准备清单开头', en: 'Phone report excerpt: from the saved-sample note to the start of the document checklist' }, caption: { ja: '390×900 の視口で連続スクロールし、元の画素でつないだ抜粋（全文ではない）。', zh: '390×900 视口连续滚动，按原像素拼接的节选（非全文）。', en: 'Scrolled at 390×900 and stitched at original pixels; an excerpt, not the full report.' } },
+      { src: '/media/j-grad/c-source-mobile.png', width: 390, height: 900, label: { ja: 'C2 / 原文の入口', zh: 'C2 / 原文入口', en: 'C2 / Source entry' }, alt: { ja: '第4ステップの入学志願票から開いた原文と公式PDFへの入口', zh: '从第 4 步的入学志愿票打开的原文和官方 PDF 入口', en: 'Source window opened from step 4 with the link to the official PDF' }, caption: { ja: 'レポートを閉じ、第4ステップから原文参照ウィンドウを開いた状態。', zh: '关闭报告后，从第 4 步打开原文参照窗口。', en: 'After closing the report, the source window opened from step 4.' } },
+      { src: '/media/j-grad/isct-overview.png', width: 1440, height: 1000, label: { ja: 'D / 全体を見る', zh: 'D / 看全貌', en: 'D / Overview' }, alt: { ja: 'J-Grad 公開デモ：大学院募集要項の日程と必要書類を確認する画面', zh: 'J-Grad 公开演示：确认研究生院募集要项的日程与所需材料的画面', en: 'J-Grad public demo: screen checking the schedule and required documents of a graduate guideline' }, caption: { ja: '日程と必要書類の一覧。撮影：2026-10-21。', zh: '日程与所需材料一览。截图：2026-10-21。', en: 'Schedule and required documents. Captured 2026-10-21.' } },
     ],
     points: [
       { ja: '資料の中から、必要な情報を探す', zh: '从资料里找出需要的信息', en: 'Find what you need inside the documents' },

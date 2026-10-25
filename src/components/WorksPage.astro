@@ -29,17 +29,21 @@ const categories: Record<string, string> = { 'j-grad': 'RAG / DOCUMENT RETRIEVAL
       <article class="work-entry" id={w.id}>
         <div class={`project-spread${m.length ? '' : ' no-media'}`}>
           {m.length > 0 && (
-            <figure class="capture" data-media={JSON.stringify(m.map((x) => ({ src: x.src, w: x.width, h: x.height, alt: x.alt[lang] })))}>
+            <figure class="capture" data-media={JSON.stringify(m.map((x) => ({ src: x.src, w: x.width, h: x.height, alt: x.alt[lang], caption: x.caption?.[lang] ?? '', video: Boolean(x.video), poster: x.poster ?? '' })))}>
               <div class="capture-image">
                 <button type="button" class="zoom-capture" aria-label={g.zoomAria}><img class="capture-main" src={m[0].src} alt={m[0].alt[lang]} width={m[0].width} height={m[0].height} loading="lazy" /></button>
+                <video class="capture-video" controls preload="none" playsinline hidden></video>
                 <span class="enlarge" aria-hidden="true"><svg><use href="#i-zoom" /></svg>{g.enlarge}</span>
               </div>
               <div class="capture-strip" role="group" aria-label={g.choose}>
                 {m.map((x, k) => (
-                  <button type="button" class="capture-thumb" data-index={k} aria-pressed={k === 0 ? 'true' : 'false'}><img src={x.src} alt="" loading="lazy" /><span>{x.label[lang]}</span></button>
+                  <button type="button" class="capture-thumb" data-index={k} aria-pressed={k === 0 ? 'true' : 'false'}>
+                    {x.video ? <span class="thumb-video" aria-hidden="true">▶</span> : <img src={x.src} alt="" loading="lazy" />}
+                    <span>{x.label[lang]}</span>
+                  </button>
                 ))}
               </div>
-              <figcaption class="image-caption">{g.caption}</figcaption>
+              <figcaption class="image-caption"><span class="capture-caption-item">{m[0].caption?.[lang] ?? ''}</span> {g.caption}</figcaption>
             </figure>
           )}
           <div class="project-copy">
@@ -50,7 +54,7 @@ const categories: Record<string, string> = { 'j-grad': 'RAG / DOCUMENT RETRIEVAL
             {w.points && <ol class="project-points">{w.points.map((p, k) => <li><span class="n mono">{String(k + 1).padStart(2, '0')}</span>{p[lang]}</li>)}</ol>}
             {!m.length && <p class="note pending">{g.pending}</p>}
             <div class="links">
-              {w.links.map((l) => <a class="action" href={l.href} rel="noopener">{l.label} ↗</a>)}
+              {w.links.map((l) => <a class="action" href={l.href} rel="noopener">{typeof l.label === 'string' ? l.label : l.label[lang]} ↗</a>)}
               {w.noteId && <a class="action" href={`${href(lang, '/notes')}#${w.noteId}`}>{f.noteLink} →</a>}
             </div>
           </div>
@@ -78,17 +82,29 @@ const categories: Record<string, string> = { 'j-grad': 'RAG / DOCUMENT RETRIEVAL
   const dialog = document.getElementById('capture-lightbox') as HTMLDialogElement | null;
   const big = document.getElementById('capture-lightbox-img') as HTMLImageElement | null;
   document.querySelectorAll<HTMLElement>('.capture').forEach((fig) => {
-    const media = JSON.parse(fig.dataset.media!) as { src: string; w: number; h: number; alt: string }[];
+    const media = JSON.parse(fig.dataset.media!) as { src: string; w: number; h: number; alt: string; caption: string; video: boolean; poster: string }[];
     const main = fig.querySelector<HTMLImageElement>('.capture-main')!;
+    const zoomBtn = fig.querySelector<HTMLButtonElement>('.zoom-capture')!;
+    const video = fig.querySelector<HTMLVideoElement>('.capture-video')!;
+    const enlarge = fig.querySelector<HTMLElement>('.enlarge')!;
+    const capItem = fig.querySelector<HTMLElement>('.capture-caption-item')!;
     const thumbs = [...fig.querySelectorAll<HTMLButtonElement>('.capture-thumb')];
     let current = 0;
     const show = (k: number) => {
       current = k; const x = media[k];
-      main.src = x.src; main.alt = x.alt; main.width = x.w; main.height = x.h;
+      if (x.video) {
+        // the walkthrough clip: never autoplays, the visitor presses play
+        zoomBtn.hidden = true; enlarge.hidden = true; video.hidden = false;
+        video.src = x.src; video.poster = x.poster; video.setAttribute('aria-label', x.alt);
+      } else {
+        video.pause(); video.hidden = true; video.removeAttribute('src'); zoomBtn.hidden = false; enlarge.hidden = false;
+        main.src = x.src; main.alt = x.alt; main.width = x.w; main.height = x.h;
+      }
+      capItem.textContent = x.caption;
       thumbs.forEach((b, i) => b.setAttribute('aria-pressed', String(i === k)));
     };
     thumbs.forEach((b) => b.addEventListener('click', () => show(Number(b.dataset.index))));
-    fig.querySelector('.zoom-capture')?.addEventListener('click', () => {
+    zoomBtn.addEventListener('click', () => {
       if (!dialog || !big) return;
       const x = media[current]; big.src = x.src; big.alt = x.alt; big.width = x.w; big.height = x.h;
       document.getElementById('capture-lightbox-title')!.textContent = x.alt;
@@ -109,9 +125,11 @@ const categories: Record<string, string> = { 'j-grad': 'RAG / DOCUMENT RETRIEVAL
   .capture-image img { width: 100%; height: auto; aspect-ratio: 1.55; object-fit: cover; object-position: top; border-radius: 5px; border: 1px solid var(--line); background: #fff; display: block; }
   .enlarge { position: absolute; bottom: 32px; right: 32px; padding: 7px 12px; min-height: 36px; background: #faf9f5; color: #141413; border: 1px solid #66685e; border-radius: 30px; display: flex; gap: 7px; align-items: center; font-size: 0.75rem; pointer-events: none; font-family: var(--ui); }
   .enlarge svg { width: 14px; height: 14px; }
-  .capture-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 14px; }
-  .capture-thumb { display: block; padding: 0 0 8px; border: 0; border-bottom: 2px solid transparent; background: transparent; text-align: left; min-width: 0; min-height: 0; font-family: var(--ui); }
-  .capture-thumb img { height: 72px; width: 100%; object-fit: cover; object-position: top; border: 1px solid var(--line); border-radius: 4px; opacity: 0.78; display: block; background: #fff; }
+  .capture-video { width: 100%; height: auto; aspect-ratio: 1.44; border-radius: 5px; border: 1px solid var(--line); background: #000; display: block; }
+  .capture-strip { display: flex; gap: 12px; margin-top: 14px; overflow-x: auto; padding-bottom: 4px; scroll-snap-type: x proximity; }
+  .capture-thumb { display: block; flex: 0 0 118px; padding: 0 0 8px; border: 0; border-bottom: 2px solid transparent; background: transparent; text-align: left; min-width: 0; min-height: 0; font-family: var(--ui); scroll-snap-align: start; }
+  .capture-thumb img, .thumb-video { height: 72px; width: 100%; object-fit: cover; object-position: top; border: 1px solid var(--line); border-radius: 4px; opacity: 0.78; display: block; background: #fff; }
+  .thumb-video { display: grid; place-items: center; color: var(--accent); font-size: 1.25rem; background: var(--surface); }
   .capture-thumb span { font-size: 0.75rem; display: block; line-height: 1.7; margin-top: 7px; color: var(--muted); }
   .capture-thumb[aria-pressed='true'] { border-color: var(--accent); } .capture-thumb[aria-pressed='true'] img { opacity: 1; } .capture-thumb[aria-pressed='true'] span { color: var(--text); }
   .image-caption { font-size: 0.8125rem; color: var(--muted); line-height: 1.9; margin-top: 12px; }

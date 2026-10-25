@@ -92,8 +92,18 @@ const langShort: Record<Lang, string> = { ja: 'JA', zh: 'ZH', en: 'EN' };
             </label>
             <button type="button" class="tgl" data-toggle="grid" aria-pressed="false" aria-controls="main">{d.toggles.grid}</button>
           </div>
-          <p class="help">{d.toggles.help}</p>
+          <p class="help">{d.toggles.help} <button type="button" class="replay-link" id="intro-replay">{d.toggles.intro.replay} ↻</button></p>
         </fieldset>
+      </div>
+      <!-- first-visit introduction (GPT view-intro, 2026-10-25): the three views happen once on the first
+           text block, then one set of bracket corners flies to 見方を変える and a dismissable hint stays -->
+      <div class="guide-frame" id="guide-frame" hidden aria-hidden="true">
+        <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+        <span class="tour" id="tour"><b id="tour-title"></b><span id="tour-progress"></span></span>
+      </div>
+      <div class="intro-hint" id="intro-hint" hidden role="note" data-steps={JSON.stringify(d.toggles.intro.steps)} data-gather={d.toggles.intro.gather}>
+        <div class="hint-top"><strong>{d.toggles.intro.hintTitle}</strong><button type="button" class="hint-close" id="hint-close" aria-label={d.toggles.intro.close}>×</button></div>
+        <p id="hint-copy">{d.toggles.intro.hint}</p>
       </div>
       <main id="main">
         <slot />
@@ -151,6 +161,79 @@ const langShort: Record<Lang, string> = { ja: 'JA', zh: 'ZH', en: 'EN' };
       fontSel?.addEventListener('change', () => {
         if (fontSel.value) document.body.setAttribute('data-font', fontSel.value); else document.body.removeAttribute('data-font');
       });
+
+      // First-visit introduction: ~5 s, once. Structure → typeface → page frame on the first text block,
+      // then the bracket corners fly to the 見方を変える button and a hint stays until closed.
+      // Cancelled by any interaction or scroll; reduced motion or a small viewport shows only the hint.
+      (() => {
+        const frame = document.getElementById('guide-frame'); const hint = document.getElementById('intro-hint');
+        const sample = document.querySelector<HTMLElement>('[data-intro-sample]') ?? document.querySelector<HTMLElement>('main .page-lead') ?? document.querySelector<HTMLElement>('main > *');
+        if (!frame || !hint || !sample || !viewbtn) return;
+        const steps = JSON.parse(hint.dataset.steps!) as [string, string][];
+        const KEY = 'view-intro:v1', SKEY = KEY + ':interrupted';
+        const st = { get: (k: string, s = false) => { try { return (s ? sessionStorage : localStorage).getItem(k); } catch { return null; } }, set: (k: string, v: string, s = false) => { try { (s ? sessionStorage : localStorage).setItem(k, v); } catch {} } };
+        const rm = matchMedia('(prefers-reduced-motion: reduce)');
+        let state = 'idle', run = 0, ctrl: AbortController | null = null, flight: Animation | null = null, initial = true;
+        const rect = (el: Element, pad: number) => { const r = el.getBoundingClientRect(); return { left: r.left - pad, top: r.top - pad, width: r.width + pad * 2, height: r.height + pad * 2 }; };
+        const visible = (el: Element, whole = false) => { const r = el.getBoundingClientRect(); return r.width > 0 && r.bottom > 0 && r.top < innerHeight && (!whole || (r.top >= 8 && r.bottom <= innerHeight - 8)); };
+        const setRect = (r: { left: number; top: number; width: number; height: number }) => Object.assign(frame.style, { left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px' });
+        const modes = ['parse', 'font', 'grid'] as const;
+        const clearMode = () => { for (const m of modes) document.body.removeAttribute('data-' + m); };
+        const clear = () => { frame.hidden = true; hint.hidden = true; frame.classList.remove('static'); viewbtn.classList.remove('intro-target'); viewbtn.removeAttribute('aria-describedby'); };
+        const cancel = (reason: string) => { run++; ctrl?.abort(); ctrl = null; flight?.cancel(); flight = null; if (state === 'running') clearMode(); clear(); state = 'idle'; if (reason === 'manual' || reason === 'scroll' || reason === 'hidden') st.set(SKEY, '1', true); };
+        const showHint = (persist: boolean) => {
+          cancel('hint'); if (!visible(viewbtn, true)) return;
+          state = 'hint'; frame.classList.add('static'); setRect(rect(viewbtn, 6)); frame.hidden = false; hint.hidden = false;
+          viewbtn.classList.add('intro-target'); viewbtn.setAttribute('aria-describedby', 'hint-copy');
+          const r = viewbtn.getBoundingClientRect(); const w = hint.getBoundingClientRect().width;
+          const left = Math.max(16, Math.min(innerWidth - w - 16, r.right - w)); const top = Math.min(innerHeight - hint.offsetHeight - 16, r.bottom + 18);
+          hint.style.left = left + 'px'; hint.style.top = Math.max(16, top) + 'px'; hint.style.setProperty('--arrow', Math.max(14, Math.min(w - 20, r.left + r.width / 2 - left)) + 'px');
+          if (persist) st.set(KEY, 'complete');
+        };
+        const sleep = (ms: number, signal: AbortSignal) => new Promise<void>((res, rej) => { if (signal.aborted) return rej(new DOMException('Aborted', 'AbortError')); const id = setTimeout(() => res(), ms); signal.addEventListener('abort', () => { clearTimeout(id); rej(new DOMException('Aborted', 'AbortError')); }, { once: true }); });
+        const start = async (manual: boolean) => {
+          if (manual) initial = false;
+          cancel('restart');
+          if (!manual && (st.get(KEY) || st.get(SKEY, true))) return;
+          if (rm.matches) { showHint(!manual); return; }
+          if (document.hidden) return;
+          if (!visible(viewbtn, true) || !visible(sample, true)) { showHint(!manual); return; }
+          if (!manual && (!viewbar?.hidden || modes.some((m) => document.body.hasAttribute('data-' + m)))) return;
+          const id = run; const own = new AbortController(); ctrl = own; const signal = own.signal; state = 'waiting';
+          const title = document.getElementById('tour-title')!, progress = document.getElementById('tour-progress')!;
+          try {
+            await sleep(450, signal); if (id !== run) return;
+            state = 'running'; frame.classList.remove('static'); setRect(rect(sample, 10)); frame.hidden = false;
+            for (let i = 0; i < 3; i++) {
+              if (signal.aborted || id !== run) return;
+              clearMode(); document.body.setAttribute('data-' + modes[i], modes[i] === 'font' ? 'serif' : '');
+              title.textContent = steps[i][0]; progress.textContent = `${String(i + 1).padStart(2, '0')} / 03 — ${steps[i][1]}`;
+              await sleep(1300, signal);
+            }
+            if (signal.aborted || id !== run) return;
+            clearMode(); state = 'gathering'; title.textContent = hint.dataset.gather ?? ''; progress.textContent = '';
+            if (!visible(viewbtn, true)) { cancel('target-outside'); return; }
+            const from = rect(sample, 10), to = rect(viewbtn, 6); setRect(from);
+            flight = frame.animate([{ left: from.left + 'px', top: from.top + 'px', width: from.width + 'px', height: from.height + 'px' }, { left: to.left + 'px', top: to.top + 'px', width: to.width + 'px', height: to.height + 'px' }], { duration: 650, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'forwards' });
+            // a throttled background tab may never report the animation as finished; move on after its duration
+            await Promise.race([flight.finished.catch(() => {}), sleep(800, signal)]); if (signal.aborted || id !== run) return;
+            showHint(true);
+          } catch (e) { if ((e as Error).name !== 'AbortError' && state !== 'idle') { cancel('unavailable'); showHint(false); } }
+        };
+        const active = () => state === 'waiting' || state === 'running' || state === 'gathering';
+        const takeOver = (e: Event) => { if ((e.target as Element).closest?.('#intro-replay')) return; if (initial) { initial = false; st.set(SKEY, '1', true); } if (active()) cancel('manual'); };
+        viewbtn.addEventListener('click', () => { cancel('manual'); st.set(KEY, 'used'); }, { capture: true });
+        document.getElementById('intro-replay')?.addEventListener('click', () => { if (viewbar) { viewbar.hidden = true; viewbtn.setAttribute('aria-expanded', 'false'); } clearMode(); document.querySelectorAll<HTMLButtonElement>('.tgl').forEach((b) => b.setAttribute('aria-pressed', 'false')); if (fontSel) fontSel.value = ''; scrollTo({ top: 0, behavior: rm.matches ? 'auto' : 'smooth' }); setTimeout(() => start(true), rm.matches ? 0 : 400); });
+        document.getElementById('hint-close')?.addEventListener('click', () => { cancel('dismiss'); st.set(KEY, 'dismissed'); });
+        addEventListener('pointerdown', takeOver, { capture: true, passive: true });
+        addEventListener('keydown', (e) => { if (e.key === 'Escape' && (active() || state === 'hint')) { cancel('escape'); st.set(KEY, 'dismissed'); return; } takeOver(e); }, { capture: true });
+        // a real scroll (not the browser settling the page at load) hands the page back to the visitor
+        for (const ev of ['wheel', 'touchmove', 'scroll'] as const) addEventListener(ev, () => { if (ev === 'scroll' && scrollY < 12) return; if (initial) { initial = false; st.set(SKEY, '1', true); } if (active() || state === 'hint') cancel('scroll'); }, { passive: true });
+        addEventListener('resize', () => { if (active() || state === 'hint') showHint(false); });
+        document.addEventListener('visibilitychange', () => { if (document.hidden && (active() || state === 'hint')) cancel('hidden'); });
+        rm.addEventListener('change', () => { if (rm.matches && (active() || state === 'hint')) showHint(false); });
+        Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 1400))]).then(() => { if (initial) { initial = false; start(false); } });
+      })();
     </script>
   </body>
 </html>
@@ -246,6 +329,21 @@ const langShort: Record<Lang, string> = { ja: 'JA', zh: 'ZH', en: 'EN' };
   .tgl-select { display: block; font-size: 0.875rem; color: var(--muted); }
   .tgl-select select { display: block; margin-top: 4px; color: var(--text); }
   .viewbar .help { font-size: 0.875rem; color: var(--muted); margin-top: 12px; max-width: 52rem; }
+  .replay-link { border: 0; background: none; padding: 0; min-height: 0; color: var(--accent); text-decoration: underline; text-underline-offset: 0.22em; font-size: 0.875rem; cursor: pointer; font-family: var(--ui); }
+  /* first-visit introduction: one frame of bracket corners, a step label, and the hint that stays */
+  .viewbtn.intro-target { border-color: var(--accent); color: var(--accent); }
+  .guide-frame { position: fixed; z-index: 40; border: 1px solid var(--accent); pointer-events: none; box-shadow: 0 0 0 9999px color-mix(in srgb, var(--text) 7%, transparent); }
+  .guide-frame.static { box-shadow: none; }
+  .corner { position: absolute; width: 18px; height: 18px; border: 2px solid var(--accent); }
+  .corner.tl { top: -2px; left: -2px; border-right: 0; border-bottom: 0; } .corner.tr { top: -2px; right: -2px; border-left: 0; border-bottom: 0; }
+  .corner.bl { bottom: -2px; left: -2px; border-right: 0; border-top: 0; } .corner.br { bottom: -2px; right: -2px; border-left: 0; border-top: 0; }
+  .tour { position: absolute; left: -1px; bottom: calc(100% + 10px); display: flex; gap: 12px; align-items: baseline; white-space: nowrap; background: var(--accent); color: var(--bg); font: 500 0.8125rem/1.5 var(--ui); padding: 5px 12px; }
+  .tour b { font-weight: 600; } .tour span:empty, .guide-frame.static .tour { display: none; }
+  .intro-hint { position: fixed; z-index: 50; width: min(328px, calc(100vw - 32px)); padding: 12px 16px 16px; border: 1px solid var(--line-strong); background: var(--bg); box-shadow: 0 8px 30px #0002; font: 400 0.875rem/1.9 var(--ui); }
+  .intro-hint::before { content: ''; position: absolute; left: var(--arrow, 70%); top: -6px; width: 10px; height: 10px; border-left: 1px solid var(--line-strong); border-top: 1px solid var(--line-strong); background: var(--bg); transform: rotate(45deg); }
+  .hint-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; } .hint-top strong { font-weight: 600; }
+  .hint-close { border: 0; width: 44px; min-height: 44px; padding: 0; background: transparent; font-size: 22px; color: var(--muted); flex: none; }
+  .intro-hint p { margin: 2px 0 0; max-width: 24em; }
   /* 版面を見る: leading guide, text-block boundary and the measure of the headings, like a proof sheet.
      The caption says what the lines are (a 1.9rem leading guide), not what they are not. */
   body[data-grid] main { background-image: repeating-linear-gradient(to bottom, transparent 0 calc(1.9rem - 1px), color-mix(in srgb, var(--accent) 22%, transparent) calc(1.9rem - 1px) 1.9rem); background-attachment: local; }
