@@ -11,8 +11,8 @@ interface Props { lang: Lang }
 const { lang } = Astro.props;
 const d = t(lang);
 const h = d.home;
-const latestNotes = notes.slice(0, 3);
-const updated = '2026-10-25';
+const featuredNotes = notes.slice(0, 3);
+const updated = '2026-10-26';
 const stIndex = (s: string | null) => (s ? STATUS_ORDER.indexOf(s as any) + 1 : 0);
 ---
 
@@ -31,6 +31,7 @@ const stIndex = (s: string | null) => (s ? STATUS_ORDER.indexOf(s as any) + 1 : 
         <a class="action" href="https://github.com/yasu-isct" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
       </div>
       <p class="hero-note">{d.atlas.heroNote}</p>
+      <p class="demo-control"><button type="button" class="demo-replay" data-intro-replay>{d.toggles.intro.replay} ↻</button></p>
     </div>
 
     <Atlas lang={lang} />
@@ -69,12 +70,12 @@ const stIndex = (s: string | null) => (s ? STATUS_ORDER.indexOf(s as any) + 1 : 
 
   <div class="section-heading"><h2><span class="mono">03</span>{d.nav.notes}</h2><a class="note" href={href(lang, '/notes')}>{h.toNotes} →</a></div>
   <div class="split-note">
-    <p>{h.notesBlurb}</p>
+    <div><p>{h.notesBlurb}</p><p class="note">{d.notes.readingOrder}</p></div>
     <div>
       <p class="eyebrow">{lang === 'ja' ? '記録の構成' : lang === 'zh' ? '记录结构' : 'RECORD FORMAT'}</p>
       <p>{d.notes.flow}</p>
       <ul class="notelist">
-        {latestNotes.map((x) => (
+        {featuredNotes.map((x) => (
           <li><span class="mono muted">{x.date}</span> <a href={`${href(lang, '/notes')}#${x.id}`}>{x.title[lang]}</a></li>
         ))}
       </ul>
@@ -92,6 +93,8 @@ const stIndex = (s: string | null) => (s ? STATUS_ORDER.indexOf(s as any) + 1 : 
   .hero-actions { display: flex; flex-wrap: wrap; gap: 24px; align-items: center; margin-top: 28px; }
   .action { display: inline-flex; align-items: center; gap: 12px; min-height: 44px; font-weight: 500; }
   .hero-note { font-size: 0.8125rem; color: var(--muted); margin-top: 26px; padding-left: 12px; border-left: 2px solid var(--accent); max-width: 28em; }
+  .demo-control { margin-top: 12px; }
+  .demo-replay { padding: 4px 0; border: 0; background: transparent; color: var(--accent); text-decoration: underline; text-underline-offset: 0.22em; font-size: 0.875rem; min-height: 44px; }
   .projects { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 52px; }
   .project-item { padding-top: 24px; border-top: 1px solid var(--line); }
   .project-item h3 { font-size: 1.5rem; line-height: 1.45; margin: 12px 0; }
