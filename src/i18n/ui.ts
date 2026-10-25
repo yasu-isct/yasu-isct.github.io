@@ -7,7 +7,7 @@ export const ui = {
     siteName: 'CHEN YI AN',
     tagline: 'RAG・文書構造・AI協働開発',
     nav: { home: 'ホーム', works: '成果物', research: '研究マップ', notes: 'AI協働の記録' },
-    toggles: { open: '見方を変える', parse: '構造を重ねる', font: '書体を変える', fontSans: 'ゴシック', fontSerif: '明朝', fontUd: 'UDゴシック', grid: '版面を見る', help: '同じ文章を、異なる見た目で表示します。内容は変わりません。構造の枠は HTML をもとにした説明用の表示で、モデルの推論結果ではありません。このページ全体に適用されます。', gridCaption: '行送り 1.9rem のガイド・版心の境界（説明用）', intro: { steps: [['構造を重ねる', '文章のまとまりが、枠として見えます。'], ['書体を変える', '同じ文章を、明朝体で表示します。'], ['版面を見る', '余白と行の間隔を確認できます。']], gather: 'この見方の入口は、ここ。', hintTitle: 'ここから、いつでも。', hint: '「見方を変える」で、構造・書体・版面を切り替えられます。', close: '閉じる', replay: '紹介をもう一度見る' }, theme: '外観', system: '自動', light: 'ライト', dark: 'ダーク' },
+    toggles: { open: '見方を変える', parse: '構造を重ねる', font: '書体を変える', fontSans: 'ゴシック', fontSerif: '明朝', fontUd: 'UDゴシック', grid: '版面を見る', help: '同じ文章を、異なる見た目で表示します。内容は変わりません。構造の枠は HTML をもとにした説明用の表示で、モデルの推論結果ではありません。このページ全体に適用されます。', gridCaption: '行送り 1.9rem のガイド・版心の境界（説明用）', intro: { steps: [['構造を重ねる', '文章のまとまりが、枠として見えます。'], ['書体を変える', '同じ文章を、明朝体で表示します。'], ['版面を見る', '余白と行の間隔を確認できます。']], gather: 'この見方の入口は、ここ。', hintTitle: 'ここから、いつでも。', hint: '「見方を変える」で、構造・書体・版面を切り替えられます。', close: '閉じる', replay: '見方のデモを再生' }, theme: '外観', system: '自動', light: 'ライト', dark: 'ダーク' },
     home: {
       headline: '文書の見た目から、<br>機械の理解を考える。',
       positioning: '同じ文章でも、書体や余白、見出しが変わると、機械は同じ構造を読み取れるのでしょうか。文書構造の理解と RAG における検索の関係を研究し、文書を根拠に回答するシステムを開発しています。',
@@ -49,6 +49,7 @@ export const ui = {
     notes: {
       headline: 'AIとつくる。<br>判断を、残す。',
       intro: '提案を採用・修正した理由と、確かめた方法を記録しています。実際の出来事をもとに、判断の過程と数値・番号の出典を示しています。',
+      readingOrder: 'AI との進め方や検証のしかたから、個別の設計の問題へ。ほかの開発にも応用しやすい順に並べています。',
       what: '何が起きたか', changed: '判断と修正', evidence: '根拠', flow: '出来事 → 判断と修正 → 根拠', index: '記録を選ぶ（{n}件）', running: '記録',
     },
     footer: { line: '東京を拠点に、文書と機械のあいだを考える。', note: '内部プレビュー。公開範囲は未確定。' },
@@ -81,7 +82,7 @@ export const ui = {
     siteName: 'CHEN YI AN',
     tagline: 'RAG · 文档结构 · AI 协作开发',
     nav: { home: '首页', works: '成果', research: '研究地图', notes: 'AI 协作记录' },
-    toggles: { open: '换个看法', parse: '叠加结构', font: '切换字体', fontSans: '黑体', fontSerif: '明朝体', fontUd: 'UD 黑体', grid: '显示版面', help: '同一段文字，不同的外观。内容不变。结构框是基于 HTML 的说明，不是模型的推理结果。作用于整个页面；字体切换只影响日文样本。', gridCaption: '行距 1.9rem 参考线・版心边界（示意）', intro: { steps: [['叠加结构', '段落的边界，显示为框。'], ['切换字体', '同一段日文，换成明朝体。'], ['显示版面', '看留白和行距。']], gather: '这个视角的入口，在这里。', hintTitle: '随时从这里开始。', hint: '用「换个看法」切换结构、字体、版面。', close: '关闭', replay: '再看一次介绍' }, theme: '外观', system: '自动', light: '亮', dark: '暗' },
+    toggles: { open: '换个看法', parse: '叠加结构', font: '切换字体', fontSans: '黑体', fontSerif: '明朝体', fontUd: 'UD 黑体', grid: '显示版面', help: '同一段文字，不同的外观。内容不变。结构框是基于 HTML 的说明，不是模型的推理结果。作用于整个页面；字体切换只影响日文样本。', gridCaption: '行距 1.9rem 参考线・版心边界（示意）', intro: { steps: [['叠加结构', '段落的边界，显示为框。'], ['切换字体', '同一段日文，换成明朝体。'], ['显示版面', '看留白和行距。']], gather: '这个视角的入口，在这里。', hintTitle: '随时从这里开始。', hint: '用「换个看法」切换结构、字体、版面。', close: '关闭', replay: '重播视图演示' }, theme: '外观', system: '自动', light: '亮', dark: '暗' },
     home: {
       headline: '从文档的外观，<br>思考机器的理解。',
       positioning: '同一段文字，换了字体、留白、标题样式，机器还能读出同样的结构吗？我研究文档结构理解与 RAG 检索的关系，并开发使用它的系统。',
@@ -123,6 +124,7 @@ export const ui = {
     notes: {
       headline: '和 AI 一起做。<br>把判断留下来。',
       intro: '为什么采纳提案、为什么修改、怎么验证。用事后能解释的形式记录协作过程。全部是真实发生的事，数字和编号可追溯到原始记录。',
+      readingOrder: '先看其他 AI 开发也能借鉴的协作与验证方法，再进入具体项目的设计问题。',
       what: '发生了什么', changed: '人的修正', evidence: '根据', flow: '发生了什么 → 人的修正 → 根据', index: '选择记录（{n} 条）', running: '记录',
     },
     footer: { line: '在东京，思考文档与机器之间的事。', note: '内部预览，公开范围未定。' },
@@ -155,7 +157,7 @@ export const ui = {
     siteName: 'CHEN YI AN',
     tagline: 'RAG · document structure · AI-assisted development',
     nav: { home: 'Home', works: 'Works', research: 'Research map', notes: 'Working with AI' },
-    toggles: { open: 'Change the view', parse: 'Overlay structure', font: 'Change typeface', fontSans: 'Gothic', fontSerif: 'Mincho', fontUd: 'UD Gothic', grid: 'Show the page frame', help: 'Same text, different look. Nothing in the content changes. The structure boxes are an explanation derived from the HTML, not model output. Applies to this whole page; the typeface switch affects the Japanese samples.', gridCaption: '1.9rem leading guide · text-block boundary (illustrative)', intro: { steps: [['Overlay structure', 'Blocks become visible as boxes.'], ['Change typeface', 'The Japanese samples switch to Mincho.'], ['Show the page frame', 'Margins and leading, shown.']], gather: 'The entry to these views is here.', hintTitle: 'From here, any time.', hint: 'Use “Change the view” to switch structure, typeface and page frame.', close: 'Close', replay: 'Replay the introduction' }, theme: 'Theme', system: 'Auto', light: 'Light', dark: 'Dark' },
+    toggles: { open: 'Change the view', parse: 'Overlay structure', font: 'Change typeface', fontSans: 'Gothic', fontSerif: 'Mincho', fontUd: 'UD Gothic', grid: 'Show the page frame', help: 'Same text, different look. Nothing in the content changes. The structure boxes are an explanation derived from the HTML, not model output. Applies to this whole page; the typeface switch affects the Japanese samples.', gridCaption: '1.9rem leading guide · text-block boundary (illustrative)', intro: { steps: [['Overlay structure', 'Blocks become visible as boxes.'], ['Change typeface', 'The Japanese samples switch to Mincho.'], ['Show the page frame', 'Margins and leading, shown.']], gather: 'The entry to these views is here.', hintTitle: 'From here, any time.', hint: 'Use “Change the view” to switch structure, typeface and page frame.', close: 'Close', replay: 'Replay the view demo' }, theme: 'Theme', system: 'Auto', light: 'Light', dark: 'Dark' },
     home: {
       headline: 'From how a document looks,<br>to how a machine reads it.',
       positioning: 'Same text, different font, margins or headings — does a machine still recover the same structure? I study the link between document-structure understanding and RAG retrieval, and build systems that use it.',
@@ -197,6 +199,7 @@ export const ui = {
     notes: {
       headline: 'Building with AI.<br>Keeping the judgement.',
       intro: 'Why a proposal was accepted, why it was changed, how it was checked — recorded so it can be explained later. All of it happened; every number and ID traces to a source.',
+      readingOrder: 'Start with collaboration and verification practices you can use in other AI development, then move into project-specific design problems.',
       what: 'What happened', changed: 'Human correction', evidence: 'Evidence', flow: 'what happened → human correction → evidence', index: 'Choose a record ({n})', running: 'Record',
     },
     footer: { line: 'Thinking about the space between documents and machines, from Tokyo.', note: 'Internal preview. Public scope not yet decided.' },

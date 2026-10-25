@@ -97,10 +97,10 @@ const langShort: Record<Lang, string> = { ja: 'JA', zh: 'ZH', en: 'EN' };
             </label>
             <button type="button" class="tgl" data-toggle="grid" aria-pressed="false" aria-controls="main">{d.toggles.grid}</button>
           </div>
-          <p class="help">{d.toggles.help} <button type="button" class="replay-link" id="intro-replay">{d.toggles.intro.replay} ↻</button></p>
+          <p class="help">{d.toggles.help} <button type="button" class="replay-link" id="intro-replay" data-intro-replay>{d.toggles.intro.replay} ↻</button></p>
         </fieldset>
       </div>
-      <!-- first-visit introduction (GPT view-intro, 2026-10-25): the three views happen once on the first
+      <!-- Homepage introduction: the three views play once on each homepage load;
            text block, then one set of bracket corners flies to 見方を変える and a dismissable hint stays -->
       <div class="guide-frame" id="guide-frame" hidden aria-hidden="true">
         <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
@@ -167,42 +167,42 @@ const langShort: Record<Lang, string> = { ja: 'JA', zh: 'ZH', en: 'EN' };
         if (fontSel.value) document.body.setAttribute('data-font', fontSel.value); else document.body.removeAttribute('data-font');
       });
 
-      // First-visit introduction: ~5 s, once. Structure → typeface → page frame on the first text block,
+      // Homepage introduction: one ~5 s cycle per page load. Structure → typeface → page frame,
       // then the bracket corners fly to the 見方を変える button and a hint stays until closed.
-      // Cancelled by any interaction or scroll; reduced motion or a small viewport shows only the hint.
+      // Interaction hands control to the visitor; reduced motion uses a static hint.
       (() => {
         const frame = document.getElementById('guide-frame'); const hint = document.getElementById('intro-hint');
-        const sample = document.querySelector<HTMLElement>('[data-intro-sample]') ?? document.querySelector<HTMLElement>('main .page-lead') ?? document.querySelector<HTMLElement>('main > *');
-        if (!frame || !hint || !sample || !viewbtn) return;
+        const homeSample = document.querySelector<HTMLElement>('[data-intro-sample]');
+        const scope = homeSample ?? document.querySelector<HTMLElement>('main .page-lead') ?? document.querySelector<HTMLElement>('main > *');
+        if (!frame || !hint || !scope || !viewbtn) return;
         const steps = JSON.parse(hint.dataset.steps!) as [string, string][];
-        const KEY = 'view-intro:v1', SKEY = KEY + ':interrupted';
-        const st = { get: (k: string, s = false) => { try { return (s ? sessionStorage : localStorage).getItem(k); } catch { return null; } }, set: (k: string, v: string, s = false) => { try { (s ? sessionStorage : localStorage).setItem(k, v); } catch {} } };
         const rm = matchMedia('(prefers-reduced-motion: reduce)');
-        let state = 'idle', run = 0, ctrl: AbortController | null = null, flight: Animation | null = null, initial = true;
+        let state = 'idle', run = 0, ctrl: AbortController | null = null, flight: Animation | null = null, initial = true, pendingAuto = false;
         const rect = (el: Element, pad: number) => { const r = el.getBoundingClientRect(); return { left: r.left - pad, top: r.top - pad, width: r.width + pad * 2, height: r.height + pad * 2 }; };
         const visible = (el: Element, whole = false) => { const r = el.getBoundingClientRect(); return r.width > 0 && r.bottom > 0 && r.top < innerHeight && (!whole || (r.top >= 8 && r.bottom <= innerHeight - 8)); };
         const setRect = (r: { left: number; top: number; width: number; height: number }) => Object.assign(frame.style, { left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px' });
         const modes = ['parse', 'font', 'grid'] as const;
         const clearMode = () => { for (const m of modes) document.body.removeAttribute('data-' + m); };
         const clear = () => { frame.hidden = true; hint.hidden = true; frame.classList.remove('static'); viewbtn.classList.remove('intro-target'); viewbtn.removeAttribute('aria-describedby'); };
-        const cancel = (reason: string) => { run++; ctrl?.abort(); ctrl = null; flight?.cancel(); flight = null; if (state === 'running') clearMode(); clear(); state = 'idle'; if (reason === 'manual' || reason === 'scroll' || reason === 'hidden') st.set(SKEY, '1', true); };
-        const showHint = (persist: boolean) => {
+        const cancel = (reason: string) => { if (reason !== 'restart' && reason !== 'hint') pendingAuto = false; run++; ctrl?.abort(); ctrl = null; flight?.cancel(); flight = null; if (state === 'running') clearMode(); clear(); state = 'idle'; };
+        const showHint = () => {
           cancel('hint'); if (!visible(viewbtn, true)) return;
           state = 'hint'; frame.classList.add('static'); setRect(rect(viewbtn, 6)); frame.hidden = false; hint.hidden = false;
           viewbtn.classList.add('intro-target'); viewbtn.setAttribute('aria-describedby', 'hint-copy');
           const r = viewbtn.getBoundingClientRect(); const w = hint.getBoundingClientRect().width;
           const left = Math.max(16, Math.min(innerWidth - w - 16, r.right - w)); const top = Math.min(innerHeight - hint.offsetHeight - 16, r.bottom + 18);
           hint.style.left = left + 'px'; hint.style.top = Math.max(16, top) + 'px'; hint.style.setProperty('--arrow', Math.max(14, Math.min(w - 20, r.left + r.width / 2 - left)) + 'px');
-          if (persist) st.set(KEY, 'complete');
         };
         const sleep = (ms: number, signal: AbortSignal) => new Promise<void>((res, rej) => { if (signal.aborted) return rej(new DOMException('Aborted', 'AbortError')); const id = setTimeout(() => res(), ms); signal.addEventListener('abort', () => { clearTimeout(id); rej(new DOMException('Aborted', 'AbortError')); }, { once: true }); });
         const start = async (manual: boolean) => {
-          if (manual) initial = false;
+          if (manual) { initial = false; pendingAuto = false; }
           cancel('restart');
-          if (!manual && (st.get(KEY) || st.get(SKEY, true))) return;
-          if (rm.matches) { showHint(!manual); return; }
-          if (document.hidden) return;
-          if (!visible(viewbtn, true) || !visible(sample, true)) { showHint(!manual); return; }
+          if (document.hidden) { pendingAuto = !manual; return; }
+          pendingAuto = false;
+          if (rm.matches) { showHint(); return; }
+          // Short screens can demonstrate the heading without requiring the entire introduction to fit.
+          const sample = visible(scope, true) ? scope : (scope.querySelector<HTMLElement>('h1, h2') ?? scope);
+          if (!visible(viewbtn, true) || !visible(sample, true)) { showHint(); return; }
           if (!manual && (!viewbar?.hidden || modes.some((m) => document.body.hasAttribute('data-' + m)))) return;
           const id = run; const own = new AbortController(); ctrl = own; const signal = own.signal; state = 'waiting';
           const title = document.getElementById('tour-title')!, progress = document.getElementById('tour-progress')!;
@@ -222,22 +222,32 @@ const langShort: Record<Lang, string> = { ja: 'JA', zh: 'ZH', en: 'EN' };
             flight = frame.animate([{ left: from.left + 'px', top: from.top + 'px', width: from.width + 'px', height: from.height + 'px' }, { left: to.left + 'px', top: to.top + 'px', width: to.width + 'px', height: to.height + 'px' }], { duration: 650, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'forwards' });
             // a throttled background tab may never report the animation as finished; move on after its duration
             await Promise.race([flight.finished.catch(() => {}), sleep(800, signal)]); if (signal.aborted || id !== run) return;
-            showHint(true);
-          } catch (e) { if ((e as Error).name !== 'AbortError' && state !== 'idle') { cancel('unavailable'); showHint(false); } }
+            showHint();
+          } catch (e) { if ((e as Error).name !== 'AbortError' && state !== 'idle') { cancel('unavailable'); showHint(); } }
         };
         const active = () => state === 'waiting' || state === 'running' || state === 'gathering';
-        const takeOver = (e: Event) => { if ((e.target as Element).closest?.('#intro-replay')) return; if (initial) { initial = false; st.set(SKEY, '1', true); } if (active()) cancel('manual'); };
-        viewbtn.addEventListener('click', () => { cancel('manual'); st.set(KEY, 'used'); }, { capture: true });
-        document.getElementById('intro-replay')?.addEventListener('click', () => { if (viewbar) { viewbar.hidden = true; viewbtn.setAttribute('aria-expanded', 'false'); } clearMode(); document.querySelectorAll<HTMLButtonElement>('.tgl').forEach((b) => b.setAttribute('aria-pressed', 'false')); if (fontSel) fontSel.value = ''; scrollTo({ top: 0, behavior: rm.matches ? 'auto' : 'smooth' }); setTimeout(() => start(true), rm.matches ? 0 : 400); });
-        document.getElementById('hint-close')?.addEventListener('click', () => { cancel('dismiss'); st.set(KEY, 'dismissed'); });
+        const takeOver = (e: Event) => { if ((e.target as Element).closest?.('[data-intro-replay]')) return; initial = false; pendingAuto = false; if (active()) cancel('manual'); };
+        viewbtn.addEventListener('click', () => { initial = false; cancel('manual'); }, { capture: true });
+        document.querySelectorAll<HTMLButtonElement>('[data-intro-replay]').forEach((button) => button.addEventListener('click', () => {
+          initial = false; cancel('replay');
+          if (viewbar) { viewbar.hidden = true; viewbtn.setAttribute('aria-expanded', 'false'); }
+          clearMode(); document.querySelectorAll<HTMLButtonElement>('.tgl').forEach((b) => b.setAttribute('aria-pressed', 'false')); if (fontSel) fontSel.value = '';
+          scrollTo({ top: 0, behavior: 'auto' });
+          // Let the requested scroll settle before real visitor scrolling can cancel the new cycle.
+          requestAnimationFrame(() => requestAnimationFrame(() => start(true)));
+        }));
+        document.getElementById('hint-close')?.addEventListener('click', () => { initial = false; cancel('dismiss'); });
         addEventListener('pointerdown', takeOver, { capture: true, passive: true });
-        addEventListener('keydown', (e) => { if (e.key === 'Escape' && (active() || state === 'hint')) { cancel('escape'); st.set(KEY, 'dismissed'); return; } takeOver(e); }, { capture: true });
+        addEventListener('keydown', (e) => { if (e.key === 'Escape' && (active() || state === 'hint')) { initial = false; cancel('escape'); return; } takeOver(e); }, { capture: true });
         // a real scroll (not the browser settling the page at load) hands the page back to the visitor
-        for (const ev of ['wheel', 'touchmove', 'scroll'] as const) addEventListener(ev, () => { if (ev === 'scroll' && scrollY < 12) return; if (initial) { initial = false; st.set(SKEY, '1', true); } if (active() || state === 'hint') cancel('scroll'); }, { passive: true });
-        addEventListener('resize', () => { if (active() || state === 'hint') showHint(false); });
-        document.addEventListener('visibilitychange', () => { if (document.hidden && (active() || state === 'hint')) cancel('hidden'); });
-        rm.addEventListener('change', () => { if (rm.matches && (active() || state === 'hint')) showHint(false); });
-        Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 1400))]).then(() => { if (initial) { initial = false; start(false); } });
+        for (const ev of ['wheel', 'touchmove', 'scroll'] as const) addEventListener(ev, () => { if (ev === 'scroll' && scrollY < 12) return; initial = false; pendingAuto = false; if (active() || state === 'hint') cancel('scroll'); }, { passive: true });
+        addEventListener('resize', () => { if (active() || state === 'hint') showHint(); });
+        document.addEventListener('visibilitychange', () => {
+          if (document.hidden && (active() || state === 'hint')) cancel('hidden');
+          else if (!document.hidden && pendingAuto) start(false);
+        });
+        rm.addEventListener('change', () => { if (rm.matches && (active() || state === 'hint')) showHint(); });
+        Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 1400))]).then(() => { if (initial) { initial = false; if (homeSample) start(false); } });
       })();
     </script>
   </body>
@@ -344,8 +354,8 @@ const langShort: Record<Lang, string> = { ja: 'JA', zh: 'ZH', en: 'EN' };
   .corner { position: absolute; width: 18px; height: 18px; border: 2px solid var(--accent); }
   .corner.tl { top: -2px; left: -2px; border-right: 0; border-bottom: 0; } .corner.tr { top: -2px; right: -2px; border-left: 0; border-bottom: 0; }
   .corner.bl { bottom: -2px; left: -2px; border-right: 0; border-top: 0; } .corner.br { bottom: -2px; right: -2px; border-left: 0; border-top: 0; }
-  .tour { position: absolute; left: -1px; bottom: calc(100% + 10px); display: flex; gap: 12px; align-items: baseline; white-space: nowrap; background: var(--accent); color: var(--bg); font: 500 0.8125rem/1.5 var(--ui); padding: 5px 12px; }
-  .tour b { font-weight: 600; } .tour span:empty, .guide-frame.static .tour { display: none; }
+  .tour { position: absolute; left: -1px; bottom: calc(100% + 10px); display: flex; flex-wrap: wrap; gap: 2px 12px; align-items: baseline; width: max-content; max-width: min(38rem, calc(100vw - 32px)); white-space: normal; background: var(--accent); color: var(--bg); font: 500 0.8125rem/1.5 var(--ui); padding: 5px 12px; }
+  .tour b { font-weight: 600; white-space: nowrap; } .tour span { min-width: 0; } .tour span:empty, .guide-frame.static .tour { display: none; }
   .intro-hint { position: fixed; z-index: 50; width: min(328px, calc(100vw - 32px)); padding: 12px 16px 16px; border: 1px solid var(--line-strong); background: var(--bg); box-shadow: 0 8px 30px #0002; font: 400 0.875rem/1.9 var(--ui); }
   .intro-hint::before { content: ''; position: absolute; left: var(--arrow, 70%); top: -6px; width: 10px; height: 10px; border-left: 1px solid var(--line-strong); border-top: 1px solid var(--line-strong); background: var(--bg); transform: rotate(45deg); }
   .hint-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; } .hint-top strong { font-weight: 600; }
