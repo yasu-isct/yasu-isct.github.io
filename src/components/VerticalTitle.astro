@@ -1,0 +1,12 @@
+---
+// A vertical (縦書き) running title — the one place the site lets Japanese typesetting show itself.
+// Decorative: aria-hidden, the real heading is elsewhere on the page.
+interface Props { text: string; }
+const { text } = Astro.props;
+---
+<div class="vt" aria-hidden="true"><span>{text}</span></div>
+<style>
+  .vt { writing-mode: vertical-rl; text-orientation: mixed; font-size: 0.95rem; letter-spacing: 0.18em; color: var(--muted); border-right: 1px solid var(--line); padding-right: 10px; height: 100%; min-height: 12em; user-select: none; }
+  .vt span { font-weight: 500; }
+  @media (max-width: 900px) { .vt { display: none; } }
+</style>

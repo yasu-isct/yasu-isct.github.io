@@ -1,0 +1,32 @@
+<div class="workspace-head">
+        <div class="tabs" role="group" aria-label="表示するビュー">
+          <button id="view-map" aria-pressed="true"><span class="tab-index">A+C</span><span data-i18n="mapTab">テーマと年代</span></button>
+          <button id="view-stories" aria-pressed="false"><span class="tab-index">B</span><span data-i18n="storyTab">ストーリーをたどる</span></button>
+        </div>
+        <p id="stats" class="stats" aria-live="polite">研究マップを読み込んでいます…</p>
+      </div>
+      <div class="toolbar">
+        <div class="search-wrap"><svg class="search-icon" width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor"/><path d="m10 10 4 4" stroke="currentColor"/></svg><label class="sr-only" for="search" data-i18n="search">論文・問い・実験を検索</label><input id="search" type="search" placeholder="論文・問い・実験を検索" autocomplete="off" aria-controls="search-results"><div class="search-results" id="search-results"></div></div>
+        <div class="toolbar-actions"><label class="check"><input type="checkbox" id="citation-toggle" checked><span data-i18n="citations">引用の背景を表示</span></label><button id="expand-all" data-i18n="expandAll">全テーマを展開 ＋</button><button id="reset" data-i18n="reset">選択をリセット ↺</button></div>
+      </div>
+      <section id="story-view" class="story-view" hidden aria-label="ストーリーの再生">
+        <div class="story-selectors"><label class="field-label" for="story-theme"><span data-i18n="theme">テーマ</span><select id="story-theme"></select></label><label class="field-label" for="story-select"><span data-i18n="story">ストーリー</span><select id="story-select"></select></label></div>
+        <div class="story-content"><div class="story-top"><h2 id="story-title"></h2><div class="story-playback"><button id="story-prev" data-i18n="prev">← 前へ</button><span id="story-progress" class="story-progress" aria-live="polite">1 / 4</span><button id="story-next" data-i18n="next">次へ →</button><button id="story-play" data-i18n="play">再生</button></div></div><p id="story-caption" class="story-caption" aria-live="polite"></p><ol id="story-steps" class="story-steps" aria-label="読む順序"></ol><div class="story-core-wrap"><span data-i18n="corePapers">先に読む文献</span><div id="story-core" class="story-core"></div></div><p id="story-note" class="story-note" data-i18n="readingOrder">ステップは読む順序です。研究上の因果関係や、問題の解決を意味しません。</p></div>
+      </section>
+      <section id="map-view" class="map-view" aria-labelledby="figure-title">
+        <div class="figure-bar"><div class="figure-heading"><span class="figure-no">FIG. 01</span><h2 id="figure-title" data-i18n="figureTitle">テーマを選んで、文献と問いをひらく</h2></div><div class="legend" aria-label="凡例"><span class="legend-item"><i class="legend-point" aria-hidden="true"></i><span data-i18n="paper">論文</span></span><span class="legend-item"><i class="legend-point rq" aria-hidden="true"></i><span data-i18n="rq">問い</span></span><span class="legend-item"><i class="legend-point experiment" aria-hidden="true"></i><span data-i18n="experiment">実験</span></span><span class="legend-item"><i class="legend-line" aria-hidden="true"></i><span data-i18n="extends">発展</span></span><span class="legend-item"><i class="legend-line addresses" aria-hidden="true"></i><span data-i18n="addresses">限界への対処</span></span><span class="legend-item"><i class="legend-line contrasts" aria-hidden="true"></i><span data-i18n="contrasts">対比</span></span></div></div>
+        <div id="lane-controls" class="lane-controls"></div>
+        <div class="chart-wrap"><svg id="chart" viewBox="0 0 1440 520" role="img" aria-labelledby="chart-title chart-description"><title id="chart-title">年代と四つのテーマによる研究のつながり</title><desc id="chart-description">テーマを選ぶと文献、研究の問い、実験を展開します。ノードを選ぶと下に関係の説明が開きます。破線の縦線は同じ論文の別テーマでの表示です。</desc></svg></div>
+        <div class="chart-footer"><p id="map-hint" class="map-hint" data-i18n="mapHint">点の大きさは被引用数を示します。細い破線は同じ文献の再掲です。年のない問い・実験は右端に分けて表示します。</p><div class="zoom" role="group" aria-label="ズーム"><button id="zoom-out" aria-label="縮小">−</button><button id="zoom-in" aria-label="拡大">＋</button><button id="zoom-reset" data-i18n="fit">全体を見る</button></div></div>
+      </section>
+      <div id="mobile-list" class="mobile-list" aria-label="テーマごとの読む順序"></div>
+      <p id="status" class="status" role="status" aria-live="polite">研究マップを読み込んでいます…</p>
+      <noscript><p class="status">研究マップを表示するには JavaScript を有効にしてください。</p></noscript>
+      <section id="detail" class="detail" hidden aria-labelledby="detail-title">
+        <div class="detail-head"><div><p class="detail-meta"><span id="detail-id"></span><span id="detail-type" class="tag"></span></p><h2 id="detail-title" tabindex="-1"></h2></div><button id="detail-close" class="detail-close" aria-label="詳細を閉じる">×</button></div>
+        <p id="detail-summary" class="detail-summary"></p>
+        <div class="detail-controls"><div id="detail-status"></div><label class="depth" for="depth"><span data-i18n="depth">つながりの深さ</span><select id="depth"><option value="1">1</option><option value="2">2</option></select></label></div>
+        <div class="detail-grid"><section><h3 data-i18n="upstream">01　上流の文献・関連</h3><div id="upstream"></div></section><section><h3 data-i18n="downstream">02　下流の文献・関連</h3><div id="downstream"></div></section><section><h3 data-i18n="reachableRqs">03　つながる研究の問い</h3><div id="reachable-rqs"></div></section></div>
+        <section class="edge-section"><h3 class="evidence-heading" data-i18n="edgeEvidence">関係の根拠・限界・確かさ</h3><div id="edge-details"></div></section>
+        <details class="detail-sources"><summary data-i18n="sources">出典と表示に使った情報</summary><div id="detail-sources"></div></details>
+      </section>

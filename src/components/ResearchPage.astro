@@ -1,0 +1,208 @@
+---
+// Research section, v2: question → status → four theme bands (R's storylines, core papers, four tabs
+// from copy.jsonl) → bibliography. The time-axis lineage map is deliberately not here yet.
+import Base from '../layouts/Base.astro';
+import LineageMap from './LineageMap.astro';
+import MotionPages from './MotionPages.astro';
+import VerticalTitle from './VerticalTitle.astro';
+import { researchPlain, glossary } from '../content/research-plain';
+import {
+  themes, papers, byId, localId, copyOf, oneLine, storiesOfTheme, papersOfTheme,
+  rqsOfTheme, experimentsOfRq, lineageFrom, STATUS_ORDER, counts, storyTitle, stepCaption, type Node,
+} from '../lib/research';
+import { label, shortId } from '../lib/labels';
+import { t, fill, type Lang } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const d = t(lang).research;
+const stIndex = (n: Node) => (n.status ? STATUS_ORDER.indexOf(n.status) + 1 : 0);
+const checkedAt = themes[0]?.checked_at ?? '';
+const doiUrl = (doi: string) => `https://doi.org/${doi}`;
+const arxivUrl = (id: string) => `https://arxiv.org/abs/${id}`;
+const tabs = ['direction', 'literature', 'experiments', 'mine'] as const;
+const kindMark = (n: Node) => (n.object_type === 'paper' ? '○' : n.object_type === 'rq' ? '◇' : n.object_type === 'experiment' ? '□' : '·');
+---
+
+<Base title={d.title} description={copyOf('research.question', lang)} path="/research">
+  <div class="page-lead">
+    <div><p class="eyebrow">{lang === 'ja' ? `研究 / 文献${counts.papers}件・${counts.themes}テーマ` : `RESEARCH / ${counts.papers} PAPERS · ${counts.themes} THEMES`}</p><h1 set:html={d.headline} /></div>
+    <div class="lead-plain">
+      <p class="big">{d.plainLead}</p>
+      <dl class="gloss">
+        {glossary.map((g) => (<div><dt class="mono">{g.key[lang]}</dt><dd>{g.text[lang]}</dd></div>))}
+      </dl>
+    </div>
+  </div>
+
+  <div class="status-row">
+    <div>
+      <p class="reading">{copyOf('research.status', lang)}</p>
+      <details class="rtext"><summary>{d.rText}</summary><p>{copyOf('research.question', lang)}</p></details>
+    </div>
+    <ul class="legend">
+      {STATUS_ORDER.map((s, i) => (<li><span class={`st st-${i + 1}`}>{d.status[s]}</span><span class="note">{d.statusHelp[s]}</span></li>))}
+    </ul>
+  </div>
+
+  <LineageMap lang={lang} />
+
+  <div class="section-heading"><h2><span class="mono">02</span>{d.themes}</h2><span class="note">{d.bandsNote}</span></div>
+
+  {themes.map((th, ti) => {
+    const id = localId(th.node_id);
+    const sts = storiesOfTheme(th);
+    const ps = papersOfTheme(th);
+    const rqs = rqsOfTheme(th);
+    const core = Array.from(new Set(sts.flatMap((s) => s.core_papers))).map((pid) => byId.get(pid)).filter((n): n is Node => Boolean(n));
+    return (
+      <section class="theme-band" id={id} aria-labelledby={`${id}-h`}>
+        <div class="band-head">
+          <div>
+            <p class="eyebrow">{lang === 'ja' ? `テーマ${ti + 1} / 文献${ps.length}件・研究の問い${rqs.length}件` : `THEME ${String(ti + 1).padStart(2, '0')} / ${ps.length} PAPERS · ${rqs.length} ${d.rqs}`}</p>
+            <h2 id={`${id}-h`}>{label(th, lang)}</h2>
+          </div>
+          {th.status && <span class={`st st-${stIndex(th)}`}>{d.status[th.status]}</span>}
+        </div>
+        {researchPlain[id] && (
+          <div class="plain">
+            <VerticalTitle text={researchPlain[id].vt[lang]} />
+            <dl class="qwn">
+              <div><dt class="mono">{d.plain.q}</dt><dd class="qq">{researchPlain[id].q[lang]}</dd></div>
+              <div><dt class="mono">{d.plain.now}</dt><dd>{researchPlain[id].now[lang]}</dd></div>
+            </dl>
+            <figure class="example">
+              <figcaption class="mono muted">{d.plain.example}</figcaption>
+              <p>{researchPlain[id].example[lang]}</p>
+            </figure>
+          </div>
+        )}
+        {id === 'T01' && <MotionPages lang={lang} />}
+        <details class="rtext"><summary>{d.rText}</summary>
+          {researchPlain[id] && <p><span class="mono accent">{d.plain.why}</span> {researchPlain[id].why[lang]}</p>}
+          <p>{oneLine(th, lang)}</p>
+        </details>
+
+        <div class="band-grid">
+          <div class="stories">
+            {sts.map((s) => (
+              <figure class="story">
+                <figcaption><span class="figure-number">{s.story_id.replace('story:', '').toUpperCase()}</span> <span lang={storyTitle(s, lang).lang}>{storyTitle(s, lang).text}</span></figcaption>
+                <ol class="steps">
+                  {s.steps.map((st, si) => {
+                    const n = byId.get(st.node_id);
+                    if (!n) return null;
+                    const cap = stepCaption(s, si, lang);
+                    return (
+                      <li>
+                        <span class="node-kind mono">{kindMark(n)} {localId(n.node_id)}</span>
+                        <span class="step-title" lang={n.object_type === 'paper' ? 'en' : (lang === 'ja' && n.title_ja) ? 'ja' : (lang === 'zh' ? 'zh' : (n.title_ja ? 'ja' : 'zh'))}>{n.object_type === 'paper' ? n.title : label(n, lang)}{n.bib?.year && <span class="muted mono"> {n.bib.year}</span>}</span>
+                        <span class="caption" lang={cap.lang}>{cap.text}</span>
+                      </li>
+                    );
+                  })}
+                </ol>
+              </figure>
+            ))}
+            {core.length > 0 && (
+              <p class="core note"><span class="mono">{d.coreFirst}</span> {core.map((p, i) => <>{i > 0 && ' · '}<a href={`#${localId(p.node_id)}`}>{localId(p.node_id)}</a></>)}</p>
+            )}
+          </div>
+
+          <div class="tabs">
+            {tabs.map((tab, i) => (
+              <details open={i === 0}>
+                <summary>{d.tabs[tab]}</summary>
+                <p>{copyOf(`${id}.${tab}`, lang)}</p>
+                {tab === 'experiments' && rqs.length > 0 && (
+                  <ul class="rqlist">
+                    {rqs.map((rq) => (
+                      <li><span class="mono muted">◇ {localId(rq.node_id)}</span> <span lang={lang === 'ja' ? 'ja' : 'zh'}>{lang === 'ja' ? label(rq, lang) : rq.title}</span>{rq.status && <span class={`st st-${stIndex(rq)} tiny`}>{d.status[rq.status]}</span>}
+                        {experimentsOfRq(rq).length > 0 && <span class="muted mono"> □ {experimentsOfRq(rq).map((e) => localId(e.node_id)).join(' ')}</span>}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  })}
+
+  <div class="section-heading"><h2><span class="mono">{counts.papers}</span>{fill(d.papersTitle, { n: '' }).replace(/[（(][^）)]*[）)]/, '').trim()}</h2><span class="note">{d.papersNote}</span></div>
+  <div class="paper-scroll" role="region" aria-label={d.papersScroll} tabindex="0">
+  <table class="papers">
+    <thead><tr><th>ID</th><th>{d.th.title}</th><th>{d.th.authors}</th><th>{d.th.year}</th><th>{d.th.themes}</th><th></th></tr></thead>
+    <tbody>
+      {papers.map((p) => {
+        const ths = (themes.filter((th) => papersOfTheme(th).some((x) => x.node_id === p.node_id))).map((th) => shortId(th, lang));
+        const out = lineageFrom(p.node_id).filter((e) => e.to.startsWith('font-cards')).length;
+        return (
+          <tr id={localId(p.node_id)}>
+            <td class="mono muted">{localId(p.node_id)}</td>
+            <td>{p.title}{p.bib?.venue && <span class="note"> · {p.bib.venue}</span>}<br /><span class="note">{oneLine(p, lang)}</span></td>
+            <td class="small">{p.bib?.authors ?? '—'}</td>
+            <td class="mono">{p.bib?.year ?? '—'}</td>
+            <td class="mono small">{ths.join(' ')}</td>
+            <td class="mono small">
+              {p.bib?.identifiers.doi?.[0] && <a href={doiUrl(p.bib.identifiers.doi[0])} rel="noopener">[DOI]</a>}
+              {p.bib?.identifiers.arxiv?.[0] && <a href={arxivUrl(p.bib.identifiers.arxiv[0])} rel="noopener"> [arXiv]</a>}
+              {out > 0 && <span class="muted"> →{out}</span>}
+            </td>
+          </tr>
+        );
+      })}
+    </tbody>
+  </table>
+  </div>
+
+  <p class="note mono" style="margin-top:24px">{fill(d.dataNote, { date: checkedAt })}</p>
+</Base>
+
+<style>
+  .status-row { display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; padding: 8px 0 32px; border-top: 1px solid var(--line-strong); }
+  .lead-plain .big { font-size: 1.15rem; line-height: 1.7; max-width: 34em; }
+  .gloss { display: grid; gap: 4px; margin-top: 14px; font-size: 0.85rem; }
+  .gloss div { display: grid; grid-template-columns: 5em 1fr; gap: 10px; }
+  .gloss dt { color: var(--accent); } .gloss dd { margin: 0; color: var(--muted); }
+  .rtext { margin-top: 10px; border-top: 1px solid var(--line); } .rtext summary { font-size: 0.85rem; color: var(--muted); font-weight: 400; min-height: 32px; padding: 6px 0; }
+  .rtext p { font-size: 0.9rem; color: var(--muted); padding-bottom: 8px; } .rtext p + p { margin-top: 0; }
+  .plain { display: grid; grid-template-columns: auto 1.2fr 1fr; gap: 24px; margin-top: 18px; align-items: start; }
+  .qwn { margin: 0; display: grid; gap: 14px; }
+  .qwn div { display: grid; grid-template-columns: 4.5em 1fr; gap: 12px; align-items: baseline; }
+  .qwn dt { font-size: 0.875rem; color: var(--accent); letter-spacing: 0.04em; }
+  .qwn dd { margin: 0; } .qwn .qq { font-size: 1.15rem; font-weight: 500; line-height: 1.6; }
+  .example { margin: 0; padding: 16px 18px; background: var(--surface); border-left: 2px solid var(--line-strong); }
+  .example figcaption { font-size: 0.875rem; letter-spacing: 0.04em; margin-bottom: 6px; }
+  .example p { font-size: 0.95rem; line-height: 1.8; }
+  @media (max-width: 900px) { .plain { grid-template-columns: 1fr; } }
+  .legend { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+  .legend li { display: flex; gap: 12px; align-items: baseline; }
+  .theme-band { border-top: 1px solid var(--line-strong); padding: 28px 0 40px; scroll-margin-top: 2rem; }
+  .band-head { display: flex; justify-content: space-between; gap: 24px; align-items: flex-start; }
+  .band-head h2 { font-size: 1.75rem; line-height: 1.45; margin-top: 6px; max-width: 30em; }
+  .band-line { margin-top: 12px; max-width: 48em; color: var(--muted); }
+  .band-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 40px; margin-top: 24px; }
+  .story { border-left: 2px solid var(--accent); padding-left: 18px; margin-bottom: 24px; }
+  .story figcaption { font-weight: 500; margin-bottom: 8px; }
+  .steps { list-style: none; padding: 0; margin: 0; }
+  .steps li { display: grid; grid-template-columns: 7em minmax(0, 1fr); gap: 4px 14px; padding: 8px 0; border-top: 1px solid var(--line); }
+  .steps .node-kind { color: var(--muted); font-size: 0.8rem; white-space: nowrap; }
+  .steps .step-title { font-size: 0.95rem; }
+  .steps .caption { grid-column: 2; font-size: 0.85rem; color: var(--muted); }
+  .core { margin-top: 8px; } .core .mono { color: var(--accent); margin-right: 8px; }
+  .tabs details { margin-top: 0; border-top: 1px solid var(--line); } .tabs details:first-child { border-top: 1px solid var(--line-strong); }
+  .tabs summary { font-size: 0.95rem; } .tabs p { font-size: 0.95rem; padding-bottom: 12px; }
+  .rqlist { list-style: none; padding: 0 0 12px; margin: 0; font-size: 0.9rem; }
+  .rqlist li { padding: 6px 0; border-top: 1px dashed var(--line); }
+  .st.tiny { font-size: 0.68rem; padding: 0 6px; margin-left: 6px; }
+  .papers td:nth-child(2) { min-width: 18em; } .small { font-size: 0.85rem; }
+  /* the bibliography scrolls sideways inside its own named region instead of squeezing six columns */
+  .paper-scroll { max-width: 100%; overflow-x: auto; }
+  .paper-scroll .papers { min-width: 58rem; }
+  .paper-scroll :is(th, td) { overflow-wrap: normal; }
+  .paper-scroll:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+  @media (max-width: 900px) { .status-row, .band-grid { grid-template-columns: 1fr; gap: 24px; } }
+</style>
