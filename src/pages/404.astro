@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="404" description="ページが見つかりません。找不到页面。Page not found." path="/404" shared404>
+  <div class="page-lead">
+    <div>
+      <p class="eyebrow">404 / PAGE NOT FOUND</p>
+      <h1>ページが見つかりません。</h1>
+    </div>
+    <p lang="ja">URL を確認するか、ホームに戻ってページをお探しください。</p>
+  </div>
+  <section class="error-links" aria-label="ホーム / 首页 / Home">
+    <p lang="ja"><a class="action" href="/">日本語のホームに戻る →</a></p>
+    <p lang="zh-CN">找不到页面。<a class="action" href="/zh/">返回中文首页 →</a></p>
+    <p lang="en">Page not found. <a class="action" href="/en/">Go to the English homepage →</a></p>
+  </section>
+</Base>
+
+<style>
+  .error-links { display: grid; gap: 24px; padding-bottom: 62px; }
+</style>

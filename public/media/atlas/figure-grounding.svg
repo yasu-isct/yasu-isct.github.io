@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="figure-svg-title figure-svg-desc">
+  <title id="figure-svg-title">画像・図題・本文を、同じ対象へ。</title>
+  <desc id="figure-svg-desc">自作の幾何図と架空の文書を使い、画像領域、図題、本文中の参照を対応付けています。画像認識モデルの実出力や実験結果ではありません。</desc>
+  <style>text{font-family:Inter,"Noto Sans JP","Yu Gothic",sans-serif}.fg-mono{font-family:"IBM Plex Mono",monospace;letter-spacing:.05em}.fg-rule{stroke:#66685e;stroke-width:1.5;fill:none}.fg-flow{stroke:#2166b5;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}.fg-ink{fill:#141413}.fg-muted{fill:#595951}.fg-blue{fill:#2166b5}</style>
+  <rect width="1200" height="800" fill="#faf9f5"/>
+  <text x="54" y="55" font-size="18" class="fg-mono fg-muted">GROUNDING STUDY / 04</text>
+  <text x="1146" y="55" font-size="18" text-anchor="end" class="fg-muted">架空資料 / EDITORIAL STUDY</text>
+  <path d="M54 78H1146" class="fg-rule"/>
+  <text x="54" y="139" font-size="37" font-weight="600" class="fg-ink">画像・図題・本文を、同じ対象へ。</text>
+  <g id="figure-document">
+    <g id="figure-image">
+      <rect x="54" y="197" width="590" height="359" fill="#e6e9e7"/>
+      <path d="M95 505L325 254L571 469L391 525Z" fill="#c0c9c1"/>
+      <path d="M163 462L327 267L348 472Z" fill="#faf9f5"/>
+      <path d="M327 267L526 437L348 472Z" fill="#66736c"/>
+      <path d="M348 472L526 437L419 363Z" fill="#2166b5"/>
+      <path d="M163 462L348 472L419 363L294 404Z" fill="#a8b2aa"/>
+      <path d="M327 267L294 404L163 462" fill="none" stroke="#595951" stroke-width="1.5"/>
+      <path d="M327 267L348 472" fill="none" stroke="#faf9f5" stroke-width="1.5"/>
+      <path d="M146 257V239H169M537 489H555V466" fill="none" stroke="#2166b5" stroke-width="3"/>
+      <rect x="146" y="239" width="409" height="250" fill="none" stroke="#2166b5" stroke-width="1.5" stroke-dasharray="6 6"/>
+      <rect x="70" y="212" width="183" height="32" fill="#faf9f5"/>
+      <text x="82" y="234" font-size="16" class="fg-mono fg-blue">IMAGE REGION</text>
+      <text x="76" y="533" font-size="17" class="fg-muted">説明用に作成した幾何図</text>
+    </g>
+    <g id="figure-caption">
+      <text x="54" y="603" font-size="27" font-weight="600" class="fg-ink">図2 — 折りの構造を示す模型</text>
+      <path d="M54 619H644" fill="none" stroke="#2166b5" stroke-width="1.5"/>
+      <text x="54" y="651" font-size="20" class="fg-muted">図題は、画像領域が何を示すかを説明します。</text>
+    </g>
+  </g>
+  <g id="figure-connections" class="fg-flow">
+    <path d="M555 363H688C721 363 735 263 772 263H794"/>
+    <path d="M644 603H703C738 603 751 410 772 410H794"/>
+    <path d="M785 255L794 263L785 271M785 402L794 410L785 418"/>
+    <circle cx="555" cy="363" r="5" fill="#2166b5" stroke="none"/>
+    <circle cx="644" cy="603" r="5" fill="#2166b5" stroke="none"/>
+  </g>
+  <g id="figure-image-label">
+    <text x="820" y="238" font-size="18" class="fg-mono fg-blue">01 / IMAGE</text>
+    <text x="820" y="279" font-size="28" font-weight="600" class="fg-ink">何が写っているか。</text>
+    <text x="820" y="316" font-size="20" class="fg-muted">領域と対象を特定します。</text>
+    <path d="M820 342H1146" class="fg-rule"/>
+  </g>
+  <g id="figure-caption-label">
+    <text x="820" y="386" font-size="18" class="fg-mono fg-blue">02 / CAPTION</text>
+    <text x="820" y="427" font-size="28" font-weight="600" class="fg-ink">どの図題に属するか。</text>
+    <text x="820" y="464" font-size="20" class="fg-muted">画像と図題を対応させます。</text>
+  </g>
+  <g id="figure-ref">
+    <rect x="794" y="510" width="352" height="152" fill="#f0efe9"/>
+    <text x="820" y="546" font-size="18" class="fg-mono fg-blue">03 / TEXT REFERENCE</text>
+    <text x="820" y="585" font-size="21" font-weight="600" class="fg-ink">「図2の模型を参照する。」</text>
+    <text x="820" y="625" font-size="19" class="fg-muted">本文も同じ対象を指します。</text>
+  </g>
+  <path d="M54 720H1146" class="fg-rule"/>
+  <text x="54" y="760" font-size="17" class="fg-muted">幾何図・図題・本文はすべて自作です。画像認識モデルの実出力や実験結果ではありません。</text>
+</svg>

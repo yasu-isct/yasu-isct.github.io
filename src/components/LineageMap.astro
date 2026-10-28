@@ -1,0 +1,24 @@
+---
+// The research lineage map (GPT/Codex prototype, 2026-10-25) embedded without its standalone chrome.
+// Markup/CSS/JS are derived from public/prototype-lineage/{index.html,map.js} by the embed script;
+// the renderer reads /prototype-lineage/layout.json (built by build-layout.mjs from site/data/research-map).
+import markup from './lineage-map.html?raw';
+interface Props { lang: 'ja' | 'zh' | 'en' }
+const { lang } = Astro.props;
+---
+
+<link rel="stylesheet" href="/prototype-lineage/map.embed.css" />
+<div id="lineage-map" class="lineage-map" data-lang={lang} set:html={markup} />
+<!-- D3 is served from this site (public/prototype-lineage/d3.v7.9.0.min.js, ISC licence beside it), not a CDN -->
+<script is:inline src="/prototype-lineage/d3.v7.9.0.min.js" defer></script>
+<script is:inline src="/prototype-lineage/map.embed.js" defer></script>
+
+<style is:global>
+  .lineage-map { margin: 8px 0 32px; }
+  /* the prototype's tooltip is appended to <body>; give it the site tokens */
+  #map-tooltip { position: fixed; z-index: 20; max-width: 300px; padding: 10px 13px; border: 1px solid var(--line-strong); background: var(--bg); color: var(--text); font-size: 13px; line-height: 1.8; pointer-events: none; }
+  /* the prototype set most of its UI text at 10–12px; lift the reading parts to 13–14px */
+  #lineage-map.lineage-map :is(.legend, .map-hint, .lane-status, .lane-count, .lane-code, .field-label, .story-core-wrap, .story-note, .evidence-grid dt, .tag, .status-badge, .detail-sources, .toolbar-actions button, .check, .neighbor .mono, .node-button .mono) { font-size: 13px; }
+  #lineage-map.lineage-map :is(.lane-description, .depth, .depth select, .detail-grid h3, .evidence-heading, .neighbor, .node-button, .empty, .field-label select, .story-playback button, .search-wrap input, .search-hit, .figure-no, .eyebrow, .mobile-step p) { font-size: 14px; }
+  #lineage-map.lineage-map .legend { gap: 16px 22px; }
+</style>

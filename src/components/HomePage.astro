@@ -1,0 +1,121 @@
+---
+import Base from '../layouts/Base.astro';
+import Atlas from './Atlas.astro';
+import { t, href, fill, type Lang } from '../i18n/ui';
+import { works } from '../content/works';
+import { notes } from '../content/notes';
+import { themes, counts, STATUS_ORDER, copyOf } from '../lib/research';
+import { label, shortId } from '../lib/labels';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const d = t(lang);
+const h = d.home;
+const featuredNotes = notes.slice(0, 3);
+const updated = '2026-10-26';
+const stIndex = (s: string | null) => (s ? STATUS_ORDER.indexOf(s as any) + 1 : 0);
+---
+
+<Base title={d.nav.home} description={h.positioning} path="/">
+  <section class="hero">
+    <div>
+      <div data-intro-sample>
+        <p class="eyebrow">NLP / DOCUMENT UNDERSTANDING</p>
+        <h1 set:html={h.headline} />
+        <p class="intro">{h.positioning}</p>
+      </div>
+      <p class="identity" set:html={h.who} />
+      <div class="hero-actions">
+        <a class="action" href={href(lang, '/works')}>{h.ctaWorks} <span aria-hidden="true">→</span></a>
+        <a class="action" href={href(lang, '/research')}>{h.ctaResearch} <span aria-hidden="true">→</span></a>
+        <a class="action" href="https://github.com/yasu-isct" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+      </div>
+      <p class="hero-note">{d.atlas.heroNote}</p>
+      <p class="demo-control"><button type="button" class="demo-replay" data-intro-replay>{d.toggles.intro.replay} ↻</button></p>
+    </div>
+
+    <Atlas lang={lang} />
+  </section>
+
+  <div class="section-heading"><h2><span class="mono">01</span>{d.nav.works}</h2><a class="note" href={href(lang, '/works')}>{h.toWorks} →</a></div>
+  <div class="projects">
+    {works.map((w, i) => (
+      <article class="project-item">
+        <div class="project-index"><span class="eyebrow">PROJECT {String(i + 1).padStart(2, '0')}</span><span class="state">{w.status[lang]}</span></div>
+        <h3 lang="en">{w.name}</h3>
+        <p>{w.tagline[lang]}</p>
+        <div class="project-footer">
+          <a class="action" href={`${href(lang, '/works')}#${w.id}`}>{h.readProject} →</a>
+          <div class="project-measure">
+            <p class="tag mono">{w.number.display?.[lang] ?? w.number.value}</p>
+            <p class="number-caption">{w.number.summary?.[lang] ?? w.number.label[lang]}</p>
+          </div>
+        </div>
+      </article>
+    ))}
+  </div>
+
+  <div class="section-heading"><h2><span class="mono">02</span>{d.nav.research}</h2><span class="note">{h.researchNote}</span></div>
+  <p class="reading">{copyOf('research.question', lang)}</p>
+  <div class="map-preview" role="group">
+    {themes.map((th) => (
+      <a class="map-node" href={`${href(lang, '/research')}#${th.node_id.split(':')[1]}`}>
+        <span class="eyebrow">{shortId(th, lang)}</span>
+        <b>{label(th, lang)}</b>
+        {th.status && <span class={`st st-${stIndex(th.status)}`}>{d.research.status[th.status]}</span>}
+      </a>
+    ))}
+  </div>
+  <p class="note" style="margin-bottom:36px">{d.research.honesty} · {fill(d.research.counts, counts)}</p>
+
+  <div class="section-heading"><h2><span class="mono">03</span>{d.nav.notes}</h2><a class="note" href={href(lang, '/notes')}>{h.toNotes} →</a></div>
+  <div class="split-note">
+    <div><p>{h.notesBlurb}</p><p class="note">{d.notes.readingOrder}</p></div>
+    <div>
+      <p class="eyebrow">{lang === 'ja' ? '記録の構成' : lang === 'zh' ? '记录结构' : 'RECORD FORMAT'}</p>
+      <p>{d.notes.flow}</p>
+      <ul class="notelist">
+        {featuredNotes.map((x) => (
+          <li><span class="mono muted">{x.date}</span> <a href={`${href(lang, '/notes')}#${x.id}`}>{x.title[lang]}</a></li>
+        ))}
+      </ul>
+    </div>
+  </div>
+
+  <p class="note updated mono">{h.updated} {updated}</p>
+</Base>
+
+<style>
+  .hero { display: grid; grid-template-columns: 0.85fr 1.4fr; gap: 42px; padding: 56px 0 44px; align-items: center; }
+  .hero h1 { font-size: clamp(1.625rem, 2.7vw, 2.25rem); line-height: 1.45; letter-spacing: -0.025em; margin-top: 20px; font-weight: 600; }
+  .hero .intro { margin-top: 26px; max-width: 37em; }
+  .identity { margin-top: 24px; color: var(--muted); font-size: 0.875rem; line-height: 1.9; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 24px; align-items: center; margin-top: 28px; }
+  .action { display: inline-flex; align-items: center; gap: 12px; min-height: 44px; font-weight: 500; }
+  .hero-note { font-size: 0.8125rem; color: var(--muted); margin-top: 26px; padding-left: 12px; border-left: 2px solid var(--accent); max-width: 28em; }
+  .demo-control { margin-top: 12px; }
+  .demo-replay { padding: 4px 0; border: 0; background: transparent; color: var(--accent); text-decoration: underline; text-underline-offset: 0.22em; font-size: 0.875rem; min-height: 44px; }
+  .projects { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 52px; }
+  .project-item { padding-top: 24px; border-top: 1px solid var(--line); }
+  .project-item h3 { font-size: 1.5rem; line-height: 1.45; margin: 12px 0; }
+  .project-item p { max-width: 36em; }
+  .project-index { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: flex-start; }
+  .project-index .eyebrow { flex-shrink: 0; }
+  .tag { font-size: 0.8rem; color: var(--muted); }
+  .project-footer { margin-top: 22px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+  .project-measure { width: 100%; }
+  .number-caption { font-size: 0.8125rem; color: var(--muted); line-height: 1.85; margin-top: 8px; }
+  .map-preview { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin: 24px 0 16px; padding: 24px 0 0; }
+  .map-node { border-left: 2px solid var(--line-strong); padding-left: 16px; min-width: 0; color: var(--text); text-decoration: none; }
+  .map-node:hover { border-color: var(--accent); }
+  .map-node b { display: block; font-size: 1.05rem; font-weight: 500; margin: 8px 0 10px; line-height: 1.5; }
+  .split-note { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+  .split-note p { max-width: 35em; }
+  .notelist { list-style: none; padding: 0; margin: 12px 0 0; font-size: 0.95rem; }
+  .notelist li { padding: 6px 0; border-top: 1px solid var(--line); }
+  .updated { margin-top: 24px; }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; gap: 36px; padding-top: 44px; } .map-preview { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 650px) {
+    .hero { gap: 32px; padding: 40px 0; } .hero h1 { font-size: clamp(1.625rem, 7vw, 2rem); } .projects, .split-note, .map-preview { grid-template-columns: 1fr; gap: 24px; }
+  }
+</style>

@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="overview-title overview-desc">
+  <title id="overview-title">文書は、関係の集まり。</title>
+  <desc id="overview-desc">自作の架空資料です。文書内の画像、複雑な表、脚注の構造上の関係を青い線で示しています。モデルの出力ではありません。</desc>
+  <style>text{font-family:Inter,"Noto Sans JP","Yu Gothic",sans-serif}.ov-mono{font-family:"IBM Plex Mono",monospace;letter-spacing:.06em}.ov-label{font-size:18px;fill:#595951}.ov-ink{fill:#141413}.ov-blue{fill:#2166b5}.ov-rule{stroke:#66685e;stroke-width:1.5}.ov-flow{fill:none;stroke:#2166b5;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}</style>
+  <rect width="1200" height="800" fill="#faf9f5"/>
+  <text x="54" y="55" class="ov-mono ov-label">DOCUMENT STUDY / 01</text>
+  <text x="1146" y="55" class="ov-label" text-anchor="end">架空資料 / EDITORIAL STUDY</text>
+  <path d="M54 78H1146" class="ov-rule"/>
+  <g id="overview-document">
+    <rect x="108" y="136" width="520" height="570" fill="#e8e7e0"/>
+    <rect x="96" y="124" width="520" height="570" fill="#fff" stroke="#66685e" stroke-width="1.5"/>
+    <text x="138" y="172" class="ov-mono ov-label">DOCUMENT 01 / FICTIONAL</text>
+    <text x="138" y="217" font-size="31" font-weight="600" class="ov-ink">文書は、関係の集まり。</text>
+    <path d="M138 238H574" class="ov-rule"/>
+    <g id="overview-image">
+      <rect x="138" y="266" width="200" height="134" fill="#e6e9e7"/>
+      <path d="M158 376L220 287L254 338L279 310L321 376Z" fill="#66736c"/>
+      <path d="M220 287L229 376H158Z" fill="#a8b2aa"/>
+      <path d="M254 338L279 310L285 376H229Z" fill="#2166b5"/>
+      <circle cx="304" cy="290" r="10" fill="#faf9f5"/>
+      <text x="151" y="391" font-size="16" fill="#141413">自作の幾何図</text>
+      <path d="M132 280V260H154M322 406H344V384" fill="none" stroke="#2166b5" stroke-width="3"/>
+    </g>
+    <g id="overview-text">
+      <text x="366" y="284" font-size="22" font-weight="600" class="ov-ink">図と本文の対応</text>
+      <text x="366" y="322" font-size="18" class="ov-ink">本文の参照は、図題と</text>
+      <text x="366" y="353" font-size="18" class="ov-ink">同じ対象を示しているか。</text>
+      <text x="366" y="386" font-size="18" class="ov-blue">図1を参照 →</text>
+    </g>
+    <g id="overview-table">
+      <rect x="138" y="432" width="436" height="132" fill="#fff" stroke="#66685e" stroke-width="1.5"/>
+      <rect x="138" y="432" width="436" height="44" fill="#f0efe9"/>
+      <rect x="138" y="476" width="112" height="88" fill="#f0efe9"/>
+      <path d="M138 476H574M250 432V564M358 476V564M466 432V564M250 520H574" class="ov-rule" fill="none"/>
+      <text x="194" y="460" text-anchor="middle" font-size="18" class="ov-ink">区分</text>
+      <text x="358" y="460" text-anchor="middle" font-size="18" class="ov-ink">複数列の見出し</text>
+      <text x="520" y="460" text-anchor="middle" font-size="18" class="ov-ink">注</text>
+      <text x="194" y="525" text-anchor="middle" font-size="18" class="ov-ink">結合セル</text>
+      <text x="304" y="505" text-anchor="middle" font-size="18" class="ov-ink">本文A</text>
+      <text x="412" y="505" text-anchor="middle" font-size="18" class="ov-ink">図1</text>
+      <text x="520" y="505" text-anchor="middle" font-size="18" class="ov-ink">※1</text>
+      <text x="304" y="549" text-anchor="middle" font-size="18" class="ov-ink">本文B</text>
+      <text x="412" y="549" text-anchor="middle" font-size="18" class="ov-ink">表2</text>
+      <text x="520" y="549" text-anchor="middle" font-size="18" class="ov-ink">※2</text>
+    </g>
+    <g id="overview-note">
+      <path d="M138 600H238" class="ov-rule"/>
+      <text x="138" y="630" font-size="18" class="ov-ink">※1　本文に対応する補足。</text>
+      <text x="138" y="660" font-size="18" class="ov-blue">※2　別ページの例外を参照。</text>
+    </g>
+  </g>
+  <g id="overview-connections" class="ov-flow">
+    <path d="M344 333H658C704 333 708 232 758 232H804"/>
+    <path d="M574 498H804"/>
+    <path d="M553 653H657C713 653 724 655 804 655"/>
+    <circle cx="344" cy="333" r="5" fill="#2166b5" stroke="none"/>
+    <circle cx="574" cy="498" r="5" fill="#2166b5" stroke="none"/>
+    <circle cx="553" cy="653" r="5" fill="#2166b5" stroke="none"/>
+    <path d="M795 225L804 232L795 239M795 491L804 498L795 505M795 648L804 655L795 662"/>
+  </g>
+  <g id="overview-figure-node">
+    <text x="828" y="197" class="ov-mono ov-label">01 / FIGURE</text>
+    <text x="828" y="240" font-size="30" font-weight="600" class="ov-ink">何を描いた図か。</text>
+    <text x="828" y="280" font-size="19" class="ov-label">画像領域・図題・本文参照</text>
+    <path d="M828 306H1146" class="ov-rule"/>
+  </g>
+  <g id="overview-table-node">
+    <text x="828" y="443" class="ov-mono ov-label">02 / TABLE</text>
+    <text x="828" y="486" font-size="30" font-weight="600" class="ov-ink">どの値の、見出しか。</text>
+    <text x="828" y="528" font-size="19" class="ov-label">多段見出し・結合セル・脚注</text>
+    <path d="M828 554H1146" class="ov-rule"/>
+  </g>
+  <g id="overview-link-node">
+    <text x="828" y="616" class="ov-mono ov-label">03 / CROSS-PAGE</text>
+    <text x="828" y="659" font-size="30" font-weight="600" class="ov-ink">別のページへ、続く。</text>
+    <text x="828" y="700" font-size="19" class="ov-label">条件・例外・根拠のつながり</text>
+  </g>
+  <text x="54" y="760" font-size="17" fill="#595951">自作の模式図です。実在資料・モデルの推論・研究結果を示すものではありません。</text>
+</svg>
