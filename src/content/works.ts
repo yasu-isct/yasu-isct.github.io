@@ -42,16 +42,16 @@ export const works: Work[] = [
       en: 'Advisers at a study-abroad school re-check the same facts across shared and program-specific guidelines; handing it to an LLM loses the source.',
     },
     role: {
-      ja: '要件定義、仕様の判断、受け入れ判断、方針の見直しは私が担当しました。実装の大半は Codex / Claude Code が行い、私は実データと回帰テストで検証しました。',
-      zh: '需求、规格判断、验收、方向调整是我；实现大半由 Codex / Claude Code 写，我用真实数据和回归测试验证。',
-      en: 'Requirements, spec decisions, acceptance and course changes were mine; most code was written by Codex / Claude Code and verified by me against real data and regression tests.',
+      ja: '最初に三つの原則を決めました。事実と判定はプログラムが持ち、言葉にするのは AI。「分からない」を「いいえ」にしない。資料どうしの関係は人が確認してから使う。要件、受け入れ、方針の変更は私が担当し、実装の大半は Codex / Claude Code が書き、私は実データと回帰テストで検証しました。',
+      zh: '一开始定了三条原则：事实和判定归程序、写成文字归 AI；"不知道"不能当成"不用"；资料之间的关系要人确认过再用。需求、验收、方向调整是我；实现大半由 Codex / Claude Code 写，我用真实数据和回归测试验证。',
+      en: 'Three principles were fixed at the start: facts and decisions live in code and the AI only puts them into words; "unknown" never becomes "no"; relations between documents are human-checked before use. Requirements, acceptance and course changes were mine; most code was written by Codex / Claude Code and verified by me against real data and regression tests.',
     },
     stack: ['Python', 'FastAPI', 'PyMuPDF', 'BGE-M3', 'BM25 / RRF', 'Pydantic', 'pytest', 'Playwright', 'GitHub Actions'],
     number: {
       value: 'Recall@10 0.8852 · MRR 0.8323',
       display: { ja: '検索評価：Recall@10 0.8852 · MRR 0.8323' },
-      summary: { ja: '固定42問・391件のKBでの検索評価です（2026-09-24保存）。' },
-      label: { ja: '固定42問・391件のKBでの評価結果（2026-09-24保存）', zh: '固定 42 题 · 391 条 KB 的保存评测（2026-09-24）', en: 'saved evaluation, 42 fixed queries, 391-entry KB (2026-09-24)' },
+      summary: { ja: '決めておいた 42 の質問で、正しい根拠が検索結果の上位 10 件に入った割合の平均です（2026-09-24 保存）。回答そのものの正解率ではありません。' },
+      label: { ja: '固定42問・391件のKBでの評価結果（2026-09-24保存）。正しい根拠が上位10件に入った割合で、回答の正解率ではありません', zh: '固定 42 题 · 391 条 KB 的保存评测（2026-09-24）。指"正确根据进入前 10 条检索结果"的比例，不是回答的正确率', en: 'saved evaluation, 42 fixed queries, 391-entry KB (2026-09-24): how often the right evidence appears in the top 10 results, not answer accuracy' },
       href: 'https://github.com/yasu-isct/J-Grad-Admission-RAG/blob/main/tests/fixtures/grounded_rag_retrieval_report_v1.json',
     },
     verification: {
@@ -60,14 +60,15 @@ export const works: Work[] = [
       en: 'End-to-end runs on the real PDF, a regression gate on a fixed benchmark, browser acceptance on desktop and mobile. CI does not re-measure the model each run — the docs say so.',
     },
     change: {
-      ja: '最初の7マイルストーンでは基盤を作り込みすぎ、ユーザーが一連の操作を完了できる画面を M8 まで出せませんでした。次は範囲を絞り、一連の操作を完了できる機能を先に届けます。',
-      zh: '前 7 个里程碑把基础设施做得太满，用户能走通一条路径的界面到 M8 才出现。下次先出窄而完整的垂直切片。',
-      en: 'The first seven milestones over-built the foundation; a screen a user could walk through only appeared at M8. Next time: a narrow vertical slice first.',
+      ja: '二つあります。基盤を作り込みすぎて、利用者が一連の操作を終えられる画面が出るまでに時間がかかりました。次は狭くても最後まで通る機能を先に出します。もう一つは、二校・数十人の規模に対して手続きが重くなりすぎたことです。設計判断の文書は 17 件書きましたが、残す価値があったのは 7 件でした。次は「後で蒸し返したくない判断」だけを文書にします。',
+      zh: '两点。基础设施做得太满，用户能走完一条路径的界面出现得太晚，下次先出窄而完整的一条。另一点是流程相对于两所学校、几十位试用者的规模太重：设计判断文档写了 17 份，值得留下的是 7 份。下次只给"以后不想再争论的判断"写文档。',
+      en: 'Two things. The foundation was over-built, so a screen a user could walk through end to end came late; next time, a narrow but complete path first. And the process was too heavy for two schools and a few dozen users: seventeen decision records were written, seven were worth keeping. Next time, only decisions I never want to re-argue get a record.',
     },
     links: [
       { label: { ja: '公開デモ', zh: 'Demo', en: 'Demo' }, href: 'https://yasu-isct.github.io/J-Grad-Admission-RAG/' },
       { label: 'GitHub', href: 'https://github.com/yasu-isct/J-Grad-Admission-RAG' },
       { label: { ja: '技術解説', zh: '技术解说（日文）', en: 'Engineering notes (ja)' }, href: 'https://github.com/yasu-isct/J-Grad-Admission-RAG/blob/main/docs/portfolio/engineering-ja.md' },
+      { label: { ja: '設計判断の案内', zh: '设计判断索引（日文）', en: 'Decision guide (ja)' }, href: 'https://github.com/yasu-isct/J-Grad-Admission-RAG/blob/main/docs/decisions/README.md' },
     ],
     // Public-demo captures, bytes unchanged: isct-overview from docs/assets/portfolio/public-demo (2026-10-21);
     // the rest from docs/assets/portfolio/public-demo-2 (PR #303, captured 2026-10-25, gh-pages 112211e).
@@ -91,7 +92,7 @@ export const works: Work[] = [
       { ja: '原文に戻って、適用条件を読み直せます。', zh: '回到原文，重读条件', en: 'Go back to the source and re-read the condition' },
     ],
     mediaNote: { ja: '公開デモの画面です。保存済みサンプルを使っています。操作内容と撮影日は各図の説明をご覧ください。', zh: '公开演示画面，使用保存的样例。操作和拍摄日期见各图说明。', en: 'Public demo using saved samples. See each caption for the action and capture date.' },
-    noteId: 'm10-drift',
+    noteId: 'two-calls',
   },
   {
     id: 'coach',
