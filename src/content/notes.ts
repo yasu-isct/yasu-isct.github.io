@@ -21,6 +21,28 @@ export interface Note {
 
 export const notes: Note[] = [
   {
+    id: 'one-page-first',
+    date: '2026-10-30',
+    title: { ja: '七つの版を作り直した。間違っていたのは道具ではなく、進め方だった', zh: '七个版本推倒重来：错的不是工具，是做法', en: 'Seven versions rebuilt: the tool was fine, the way of working was not' },
+    scene: {
+      ja: '一日で七つの版を作り、七つとも作り直しになりました。HTML から PDF を出す道具は一度も止まらなかった——止まらなかったからこそ、間違いも速く積み上がりました。',
+      zh: '一天做了七个版本，七个都被推倒重来。从 HTML 出 PDF 的工具一次都没出错——正因为它不出错，错误才积得这么快。',
+      en: 'Seven versions in one day, all seven rebuilt. The HTML-to-PDF tool never failed once — and because it never failed, the mistakes piled up just as fast.',
+    },
+    what: {
+      ja: ['「流れ」を出力の仕組みだけだと思っていました。切る、描く、はみ出しを見る。そこは数分で回ります。けれど「この頁に何を置き、なぜか」を決める関所がどこにもなく、そのうえ七頁をまとめて作って見せていました。判断が一つ違えば七頁が同時に違い、道具が速いほど間違いも速く出ます。', '言葉どおりに動いて、意図を確かめませんでした。「規則を出して」と言われて十二条の規則を作り、その規則を守るために良い素材を外した。「定稿」と言われた文章を逐語で条目に落とした。合う素材が無い頁にも、数字の表や箱の流れ図を置いた——「無ければ空けておいて」と言われていたのに。どれも「読む人はこの頁で何を受け取るか」を一度も問わなかったことの現れです。', '文章は指摘を受けるたびに一文ずつ継ぎ足したもので、頁と頁のつながりを通して書き直したことがありませんでした。数字に対する慎重さがそのまま版面に漏れ、どの頁にも灰色の但し書きが付きました。そして作り手が三者——本人、私、別の AI——いて、誰が最終版に責任を持つかが決まっていなかった。版は増えても、良くはなりませんでした。'],
+      zh: ['我把"流程"只理解成了出图的机制：切页、渲染、查溢出，几分钟转一圈。可是"这页放什么、为什么"没有任何一道关口在把守，而且每次都七页一起做完再拿去看。一个判断错，七页同时错；工具越快，错得越快。', '按字面执行，不确认意图。对方说"出规则"，我造了十二条规则，又为了守这些规则把更好的素材换掉；说"定稿"，我就把文字逐字落成条目；没有合适素材的页也放上数字表、方框流程图——事先明明说过"没有就空着"。这些都是同一件事：从没问过"读的人在这页要带走什么"。', '文字是每收到一条指摘就补一句堆出来的，页与页的衔接从未整体重写。对数字的谨慎原样漏进了版面，每页都挂着灰色的但书。再加上三方都在产出——本人、我、另一个 AI——没有人对最终版负责，版本越来越多而不是越来越好。'],
+      en: ['I took "the workflow" to mean only the output machinery: split, render, check overflow, a few minutes per loop. But nothing guarded the question "what goes on this page and why", and I built and showed all seven pages at once. One wrong call meant seven wrong pages; the faster the tool, the faster the mistakes.', 'I acted on the words and never checked the intent. Asked for "rules", I wrote twelve and then swapped out better material to obey them. Told the text was "final", I dropped it verbatim into bullet points. Pages with no fitting material got a table of numbers or a box diagram anyway, although I had been told to leave them empty. All of it is one failure: never asking what the reader should take from this page.', 'The text had grown one sentence per review comment, never rewritten for the flow between pages. My caution about numbers leaked into the layout as grey caveats on every page. And three parties were producing — the author, me, another AI — with no one owning the final version, so versions multiplied without improving.'],
+    },
+    changed: {
+      ja: ['順番を固定し、各段階で一つだけ見せる。相手の骨組み → 続けて読める文章 → 削る（最後の頁が回収するものだけ残す）→ 一頁か一枚の図で方向を決める → 残りを作る。道具の検査は下限だけ（はみ出さない、字が小さすぎない、但し書きを頁ごとに置かない）。「毎頁に図が要る」のような上限は作らない。素材が無い頁は空けて「未定」と書く。', '始める前に確かめる——読むのは誰で、何分で、何を一文で持ち帰ってほしいか。「良い」の参照は形容詞ではなく実物を二、三枚。素材の可・不可・空けてよい。そして誰が最終版を決めるか。言われた言葉を実行する前に、この質問を必ず先に置く。'],
+      zh: ['固定顺序，每一步只给一样东西看：对方的骨架 → 连贯的文字 → 删减（只留最后一页会回收的）→ 一页或一张图定方向 → 再做其余。工具的检查只做下限：不溢出、字不过小、不在每页挂但书；不设"每页必须有图"这类上限。没有素材的页空着写"未定"。', '动手前先确认：谁读、读几分钟、希望用一句话带走什么；"好"的参照不是形容词，是两三张实物；素材哪些可用、哪些禁用、哪些可以空着；以及谁拍板最终版。执行任何一句话之前，先把这些问题放在前面。'],
+      en: ['Fix the order and show one thing per step: the author\'s skeleton → prose that reads straight through → cut (keep only what the last page pays off) → one page or one figure to settle the direction → then the rest. Tool checks are floors only — no overflow, no tiny type, no per-page caveats — never ceilings like "every page needs a figure". A page without material stays empty and says so.', 'Before starting, confirm: who reads, for how long, and what one sentence they should leave with; what "good" looks like as two or three real examples, not adjectives; which materials are allowed, banned, or may be left out; and who decides the final version. Put these questions before executing any instruction.'],
+    },
+    facts: [{ label: '課題選考デッキ v3〜v7 の作業記録（非公開）' }],
+    tags: ['process', 'design', 'communication'],
+  },
+  {
     id: 'two-calls',
     date: '2026-09-26',
     work: 'j-grad',
