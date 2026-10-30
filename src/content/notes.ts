@@ -21,6 +21,28 @@ export interface Note {
 
 export const notes: Note[] = [
   {
+    id: 'one-page-first',
+    date: '2026-10-30',
+    title: { ja: '七頁をまとめて作らず、一頁だけ先に見せる', zh: '不要七页一起做，先给一页看', en: 'Do not build all seven pages; show one first' },
+    scene: {
+      ja: '一日で七つの版を作り、七つとも作り直しになりました。PDF を出す道具は一度も止まらなかったのに。',
+      zh: '一天做了七个版本，七个都被推倒重来。出 PDF 的工具一次都没出过错。',
+      en: 'Seven versions in one day, all seven rebuilt. The tool that makes the PDF never failed once.',
+    },
+    what: {
+      ja: ['企業の課題選考に出す資料を、文章と図を HTML で組んで PDF にする方法で作りました。直せば数分で新しい PDF が出ます。だから直すたびに七頁まとめて作り直し、まとめて見せていました。一つの判断が違うと、七頁が同時に違います。', '「規則を出して」と言われれば十二条の規則を作り、「図の位置を枠で示して」と言われれば七頁すべてを左に文章・右に枠にしました。言葉どおりに動くたびに、「読む人はこの頁で何を受け取るか」という問いが抜けていました。', '合う素材がない頁にも、何かを置きました。数字だけの表、六つの箱の流れ図。「無ければ空けておいて」と先に言われていたのに。弱い図のせいで、良い頁まで一緒に疑われました。'],
+      zh: ['给企业课题选考做的资料，用 HTML 排文字和图再导出 PDF。改一处，几分钟就有新 PDF。于是每次都七页一起重做、一起拿去看。一个判断错，七页同时错。', '对方说"出规则"，我就造了十二条规则；说"图的位置用框标出来"，我就把七页全排成左文右框。每一次都按字面执行，漏掉的是同一个问题："读的人在这页要带走什么"。', '没有合适素材的页，我也放了东西：只有数字的表、六个框的流程图。对方事先说过"没有就空着"。弱的图让好的页也一起被怀疑。'],
+      en: ['A deck for a company\'s selection task, laid out in HTML and exported to PDF. Fix something and a new PDF appears in minutes. So every fix rebuilt all seven pages and showed all seven at once. One wrong call, seven wrong pages.', 'Asked for "rules", I wrote twelve. Asked to "mark where figures go", I put text left and a box right on every page. Each time I acted on the words and skipped the question underneath: what should the reader take from this page?', 'Pages with no fitting material got something anyway — a table of numbers, a six-box flow chart — although I had been told "leave it empty if there is nothing". Weak figures made the good pages suspect too.'],
+    },
+    changed: {
+      ja: ['順番を固定しました。相手の骨組み → 続けて読める文章 → 一頁か一枚の図だけ先に見せて方向を決める → それから残り。道具の検査は「はみ出さない・字が小さすぎない」という下限だけにして、「毎頁に図が要る」のような上限は作らない。', '素材が無い頁は空けて「未定」と書く。始める前に質問で意図を確かめる——読むのは誰か、何分で読むか、一文で何を持ち帰ってほしいか。'],
+      zh: ['把顺序固定下来：对方的骨架 → 连贯的文字 → 先只做一页或一张图定方向 → 再做其余。工具的检查只保留下限（不溢出、字不过小），不设"每页必须有图"这类上限。', '没有素材的页空着写"未定"。动手前先用问题确认意图：谁读、读几分钟、希望用一句话带走什么。'],
+      en: ['Fixed the order: the author\'s skeleton → prose that reads straight through → one page or one figure to settle the direction → then the rest. Tool checks are floors only (no overflow, no tiny type), never ceilings like "every page needs a figure".', 'A page without material stays empty and says so. Before starting, confirm intent with questions: who reads, for how long, and what one sentence they should leave with.'],
+    },
+    facts: [{ label: '課題選考デッキ v3〜v7 の作業記録（非公開）' }],
+    tags: ['process', 'design', 'communication'],
+  },
+  {
     id: 'two-calls',
     date: '2026-09-26',
     work: 'j-grad',
