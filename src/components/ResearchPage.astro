@@ -21,6 +21,12 @@ const checkedAt = themes[0]?.checked_at ?? '';
 const doiUrl = (doi: string) => `https://doi.org/${doi}`;
 const arxivUrl = (id: string) => `https://arxiv.org/abs/${id}`;
 const tabs = ['direction', 'literature', 'experiments', 'mine'] as const;
+const cleanBib = (v?: string) => v ? v.replace(/[（(][^（）()]*(待原文核实|待核实|不补猜|不补全|仅材料|来源未给|材料给出|材料给定|来源登记)[^（）()]*[）)]/g, '').replace(/[；;]\s*$/, '').trim() : v;
+const pipeline = {
+  ja: { title: '四つの問いは、一本の処理の流れに対応します', main: '主線', rows: [['切り分けと文字での検索', 'T1'], ['ページ画像での検索', 'T3'], ['文字を読むことと、答えること', 'T2'], ['どの根拠を選ぶか', 'T4']] },
+  zh: { title: '四个问题对应处理流程的四段', main: '主线', rows: [['切分与文字检索', 'T1'], ['页面图像检索', 'T3'], ['读字与作答', 'T2'], ['选哪条根据', 'T4']] },
+  en: { title: 'The four questions map onto one pipeline', main: 'main line', rows: [['Chunking and text retrieval', 'T1'], ['Page-image retrieval', 'T3'], ['Reading vs. answering', 'T2'], ['Choosing the evidence', 'T4']] },
+}[lang];
 const kindMark = (n: Node) => (n.object_type === 'paper' ? '○' : n.object_type === 'rq' ? '◇' : n.object_type === 'experiment' ? '□' : '·');
 ---
 
@@ -43,6 +49,13 @@ const kindMark = (n: Node) => (n.object_type === 'paper' ? '○' : n.object_type
     <ul class="legend">
       {STATUS_ORDER.map((s, i) => (<li><span class={`st st-${i + 1}`}>{d.status[s]}</span><span class="note">{d.statusHelp[s]}</span></li>))}
     </ul>
+  </div>
+
+  <div class="pipeline">
+    <p class="note"><b>{pipeline.title}</b></p>
+    <ol>
+      {pipeline.rows.map(([stage, th]) => (<li><span class="mono">{th}</span><span>{stage}</span>{th === 'T1' && <span class="st st-4 tiny">{pipeline.main}</span>}</li>))}
+    </ol>
   </div>
 
   <LineageMap lang={lang} />
@@ -142,9 +155,9 @@ const kindMark = (n: Node) => (n.object_type === 'paper' ? '○' : n.object_type
         return (
           <tr id={localId(p.node_id)}>
             <td class="mono muted">{localId(p.node_id)}</td>
-            <td>{p.title}{p.bib?.venue && <span class="note"> · {p.bib.venue}</span>}<br /><span class="note">{oneLine(p, lang)}</span></td>
-            <td class="small">{p.bib?.authors ?? '—'}</td>
-            <td class="mono">{p.bib?.year ?? '—'}</td>
+            <td>{p.title}{p.bib?.venue && <span class="note"> · {cleanBib(p.bib.venue)}</span>}<br /><span class="note">{oneLine(p, lang)}</span></td>
+            <td class="small">{cleanBib(p.bib?.authors) || '—'}</td>
+            <td class="mono">{cleanBib(p.bib?.year) || '—'}</td>
             <td class="mono small">{ths.join(' ')}</td>
             <td class="mono small">
               {p.bib?.identifiers.doi?.[0] && <a href={doiUrl(p.bib.identifiers.doi[0])} rel="noopener">[DOI]</a>}
@@ -191,6 +204,10 @@ const kindMark = (n: Node) => (n.object_type === 'paper' ? '○' : n.object_type
   .steps li { display: grid; grid-template-columns: 7em minmax(0, 1fr); gap: 4px 14px; padding: 8px 0; border-top: 1px solid var(--line); }
   .steps .node-kind { color: var(--muted); font-size: 0.8rem; white-space: nowrap; }
   .steps .step-title { font-size: 0.95rem; }
+  .pipeline { margin: 8px 0 28px; padding: 14px 18px; border: 1px solid var(--line); }
+  .pipeline ol { list-style: none; margin: 8px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px 24px; }
+  .pipeline li { display: flex; gap: 10px; align-items: baseline; }
+  .pipeline li .mono { color: var(--accent); min-width: 2.2em; }
   .steps .caption { grid-column: 2; font-size: 0.85rem; color: var(--muted); }
   .core { margin-top: 8px; } .core .mono { color: var(--accent); margin-right: 8px; }
   .tabs details { margin-top: 0; border-top: 1px solid var(--line); } .tabs details:first-child { border-top: 1px solid var(--line-strong); }

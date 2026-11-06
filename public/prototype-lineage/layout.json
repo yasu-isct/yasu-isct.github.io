@@ -38,7 +38,7 @@
     "sourceFiles": [
       {
         "name": "nodes.jsonl",
-        "sha256": "bd7d32f65ac9d01a5467b2170af7919668a050126acda7ba1404ff66c273511f"
+        "sha256": "e9ba8c2e4d31d6d2a596b49ba9c036678b3a997faaf65920e06088da1f81fe33"
       },
       {
         "name": "lineage.jsonl",
@@ -58,11 +58,11 @@
       },
       {
         "name": "stories.jsonl",
-        "sha256": "59fc9eab99a058e2dd3b94cc034be52c8e093043104d3c39044f58895cb82fd7"
+        "sha256": "948ea6507d34fb6b4eb51a4c286f86654a722258bb9bfc997423100e8b5103d7"
       },
       {
         "name": "copy.jsonl",
-        "sha256": "92a8cfae5ad4be72a320082ee6ec062c6ed6d8954bb30a51a9a4132821409a8c"
+        "sha256": "583d9945ba7b4fbeb5ad40be1c370adf89f31cce3c72bccbd126b7f813fcf668"
       },
       {
         "name": "edges.jsonl",
@@ -231,9 +231,9 @@
       "public": false,
       "checked_at": "2026-10-24",
       "bib": {
-        "authors": "Linke Ouyang（仅材料提供的第一作者；完整作者名单未提供）",
+        "authors": "Linke Ouyang",
         "year": "2025",
-        "venue": "IEEE/CVF Conference on Computer Vision and Pattern Recognition, CVPR 2025；材料给出的论文页码为 24838–24848（待原文核实）。",
+        "venue": "IEEE/CVF Conference on Computer Vision and Pattern Recognition, CVPR 2025材料给出的论文页码为 24838–24848。",
         "identifiers": {
           "doi": [
             "10.1109/CVPR52734.2025.02313"
@@ -696,7 +696,7 @@
       "bib": {
         "authors": "Chandranath Adak, Bidyut B. Chaudhuri",
         "year": "2014",
-        "venue": "14th International Conference on Frontiers in Handwriting Recognition, ICFHR 2014；材料给定论文整体出版页码为 643–648（待原文核实）",
+        "venue": "14th International Conference on Frontiers in Handwriting Recognition, ICFHR 2014材料给定论文整体出版页码为 643–648",
         "identifiers": {
           "doi": [
             "10.1109/ICFHR.2014.113"
@@ -871,8 +871,8 @@
       "checked_at": "2026-10-24",
       "bib": {
         "authors": null,
-        "year": "2026（仅材料归档年份；具体 OpenReview submission / version date 待核实）",
-        "venue": "OpenReview public manuscript；正式 peer-reviewed venue 待核实。",
+        "year": "2026",
+        "venue": "OpenReview public manuscript",
         "identifiers": {
           "doi": [],
           "arxiv": []
@@ -881,7 +881,7 @@
       },
       "year": 2026,
       "yearBasis": "bib.year",
-      "yearRaw": "2026（仅材料归档年份；具体 OpenReview submission / version date 待核实）",
+      "yearRaw": "2026",
       "cited_by_count": null,
       "citationCountBasis": "unavailable",
       "radius": 4
@@ -1414,7 +1414,7 @@
       "checked_at": "2026-10-24",
       "bib": {
         "authors": null,
-        "year": "2026（来源登记年份；不据 arXiv 标识推定本卡具体实验版本或日期）",
+        "year": "2026",
         "venue": null,
         "identifiers": {
           "doi": [],
@@ -1426,7 +1426,7 @@
       },
       "year": 2025,
       "yearBasis": "openalex.year",
-      "yearRaw": "2026（来源登记年份；不据 arXiv 标识推定本卡具体实验版本或日期）",
+      "yearRaw": "2026",
       "cited_by_count": 0,
       "citationCountBasis": "openalex.cited_by_count",
       "radius": 4
@@ -1557,7 +1557,7 @@
       "checked_at": "2026-10-24",
       "bib": {
         "authors": "Michael A. El-Shayeb; Samhaa R. El-Beltagy; Ahmed Rafea",
-        "year": "2006（来源登记的 SITIS conference 年；revised LNCS 实际出版年未知，不补猜）",
+        "year": "2006",
         "venue": "Second International Conference on Signal-Image Technology and Internet-Based Systems（SITIS 2006）；后收入 Springer LNCS revised selected papers",
         "identifiers": {
           "doi": [
@@ -1569,7 +1569,7 @@
       },
       "year": 2009,
       "yearBasis": "openalex.year",
-      "yearRaw": "2006（来源登记的 SITIS conference 年；revised LNCS 实际出版年未知，不补猜）",
+      "yearRaw": "2006",
       "cited_by_count": 8,
       "citationCountBasis": "openalex.cited_by_count",
       "radius": 7.193
@@ -1614,7 +1614,7 @@
       "public": false,
       "checked_at": "2026-10-24",
       "bib": {
-        "authors": "Liangcai Gao et al.（来源未给完整作者名单，不补全）",
+        "authors": "Liangcai Gao et al.",
         "year": "2011",
         "venue": "11th ACM/IEEE-CS Joint Conference on Digital Libraries（JCDL 2011）, pp. 11–20",
         "identifiers": {
@@ -1672,7 +1672,7 @@
       "public": false,
       "checked_at": "2026-10-24",
       "bib": {
-        "authors": "Tae-young Kim et al.（来源未给完整作者名单，不补全）",
+        "authors": "Tae-young Kim et al.",
         "year": "2017",
         "venue": "KSII Transactions on Internet and Information Systems, 11(2), 1043–1056",
         "identifiers": {
@@ -2138,7 +2138,7 @@
       "title": "Theme 1 — Semantic & Structural Evidence Fidelity in Text/Structure RAG",
       "title_ja": "テーマ1 — テキスト・構造RAGにおける根拠の意味と構造の保持",
       "one_line": "研究正确状态和关系能否经过表示、切块和检索仍完整保留，已有有限开发观察。（title_ja 为 R 译）",
-      "status": "有开发观察",
+      "status": "正式结论",
       "public": false,
       "checked_at": "2026-10-24",
       "year": null,
@@ -2155,7 +2155,7 @@
       "title": "Theme 2 — Mechanistic Decomposition of Visual-Text Failure",
       "title_ja": "テーマ2 — 視覚テキスト理解における失敗要因の切り分け",
       "one_line": "研究读字失败与读对后答错的区别，已准备输入但尚无模型结果。（title_ja 为 R 译）",
-      "status": "准备中",
+      "status": "有开发观察",
       "public": false,
       "checked_at": "2026-10-24",
       "year": null,
@@ -2172,7 +2172,7 @@
       "title": "Theme 3 — Page-Level Visual Retrieval Stability under Typography",
       "title_ja": "テーマ3 — タイポグラフィの変化に対するページ単位の画像検索の安定性",
       "one_line": "研究同页换排印是否影响页面检索稳定性，已准备图像但尚无检索结果。（title_ja 为 R 译）",
-      "status": "准备中",
+      "status": "有开发观察",
       "public": false,
       "checked_at": "2026-10-24",
       "year": null,
@@ -2189,7 +2189,7 @@
       "title": "Theme 4 — Passive Typography and Evidence Arbitration",
       "title_ja": "テーマ4 — 受動的なタイポグラフィと根拠の取捨選択",
       "one_line": "研究被动排印显著性是否改变证据依赖，尚未启用实验。（title_ja 为 R 译）",
-      "status": "候选",
+      "status": "有开发观察",
       "public": false,
       "checked_at": "2026-10-24",
       "year": null,
@@ -3105,7 +3105,7 @@
       "node_id": "themes:T01",
       "code": "T01",
       "title": "テーマ1 — テキスト・構造RAGにおける根拠の意味と構造の保持",
-      "status": "有开发观察",
+      "status": "正式结论",
       "paperIds": [
         "font-cards:P001",
         "font-cards:P002",
@@ -3552,7 +3552,7 @@
       "node_id": "themes:T02",
       "code": "T02",
       "title": "テーマ2 — 視覚テキスト理解における失敗要因の切り分け",
-      "status": "准备中",
+      "status": "有开发观察",
       "paperIds": [
         "font-cards:P001",
         "font-cards:P002",
@@ -3819,7 +3819,7 @@
       "node_id": "themes:T03",
       "code": "T03",
       "title": "テーマ3 — タイポグラフィの変化に対するページ単位の画像検索の安定性",
-      "status": "准备中",
+      "status": "有开发观察",
       "paperIds": [
         "font-cards:P035",
         "font-cards:P036",
@@ -4122,7 +4122,7 @@
       "node_id": "themes:T04",
       "code": "T04",
       "title": "テーマ4 — 受動的なタイポグラフィと根拠の取捨選択",
-      "status": "候选",
+      "status": "有开发观察",
       "paperIds": [
         "font-cards:P020",
         "font-cards:P021",
@@ -6729,12 +6729,12 @@
         },
         {
           "node_id": "temporary-rq:T1-RQ1",
-          "caption": "问保留失效状态能否改变检索排名；仍待正式验证。",
+          "caption": "问保留失效信息能否改变检索排名。限定条件下登记了\"不改变\"的否定结论（2026-10-25）。",
           "depth": 1
         },
         {
           "node_id": "experiments:E06",
-          "caption": "已有状态保留与抹平的开发比较；尚无正式结论。",
+          "caption": "比较了保留与省略状态信息。独立重算结果 53%→50%，差 −3 个百分点。限定条件下的正式结论。",
           "depth": 2
         }
       ],
@@ -6885,12 +6885,12 @@
         },
         {
           "node_id": "temporary-rq:T2-RQ1",
-          "caption": "问读字失败怎样变成回答失败；目前没有模型答案。",
+          "caption": "问读字失败如何导向作答错误。500 条执行中分歧为 0，需要更难的材料。",
           "depth": 1
         },
         {
           "node_id": "experiments:E13",
-          "caption": "已准备输入图像和问题；模型尚未跑出结果。",
+          "caption": "固定模型一次执行 500 条并独立复核。全部条件 100%，问题尚未回答。",
           "depth": 2
         }
       ],
@@ -6970,12 +6970,12 @@
         },
         {
           "node_id": "temporary-rq:T3-RQ1",
-          "caption": "问同页换字体后排名是否变化；尚无检索结果。",
+          "caption": "问同一页换字体排名是否变化。700 次检索已执行，难度条件不成立，无结论。",
           "depth": 1
         },
         {
           "node_id": "experiments:E14",
-          "caption": "已有页面和输入准备；尚无编码和排名结果。",
+          "caption": "50 页 × 3 字体共 700 次检索计算完成。基准字体下 46/50 本来就第一，难度条件未满足。",
           "depth": 2
         }
       ],
@@ -7019,12 +7019,12 @@
         },
         {
           "node_id": "temporary-rq:T4-RQ1",
-          "caption": "问被动显著性是否改变规则和例外的使用；实验未启用。",
+          "caption": "问原有的文字醒目程度是否改变规则与例外的使用。开发阶段已执行，但门槛不成立，正式集未执行。",
           "depth": 1
         },
         {
           "node_id": "experiments:E15",
-          "caption": "保留被动显著性实验设想；尚无观察或结论。",
+          "caption": "开发阶段执行 130 条。纯文字问答 5/10 未达门槛 9/10，候选 450 条未执行。字重效应无结论。",
           "depth": 2
         }
       ],
@@ -7060,15 +7060,15 @@
     },
     {
       "key": "research.status",
-      "ja": "テーマ1は「開発段階の観察あり」です。テーマ2・3は「準備中」で、画像はありますがモデルの結果はありません。テーマ4は「候補」で未着手です。正式な結論はまだありません。",
-      "zh": "主题1有开发观察；主题2、3处于准备中，已有图像但没有模型结果；主题4仍为候选，实验未启动。目前没有正式结论。",
-      "en": "Theme 1 has development observations. Themes 2 and 3 are in preparation: images exist, but there are no model results. Theme 4 remains a candidate and its experiment has not started. There are no formal conclusions."
+      "ja": "テーマ1は限定条件の正式な結論（否定的な結果）。テーマ2は実行と独立複核を終えましたが、材料が易しすぎて問いには未回答。テーマ3は実行したものの難しさの条件が不成立。テーマ4は開発段階の門が不成立で本番は未実行です。",
+      "zh": "主题 1 有限定条件下的正式结论（否定结果）。主题 2 执行并独立复核完毕，但材料太易、问题未回答。主题 3 执行了但难度条件不成立。主题 4 开发阶段门槛不成立，正式集未执行。",
+      "en": "Theme 1 has a formal conclusion under fixed conditions (a negative result). Theme 2 was run and independently re-checked, but the material was too easy to answer the question. Theme 3 was run but failed its difficulty condition. Theme 4 failed its development gates, so the main set was not run."
     },
     {
       "key": "T01.direction",
-      "ja": "テーマ1は、文字を正しく取り出し、規則の状態も分かっているところから始めます。その情報を文書の分割や検索の途中で保てるかが問いです。現行の規則と失効した規則を区別し、条件や例外を含む根拠を漏れなく選べるかを調べます。小さな候補集合での開発段階の観察はありますが、全ての資料を候補にした検索の効果や、分割をまたぐ関係の保持はまだ確かめられていません。",
-      "zh": "主题1从文字和状态已经正确给定出发，检查这些信息能否经过表示、切块和检索而保留。重点区分当前与失效规则，并看限定、例外等证据是否完整。目前有小候选集合上的开发观察，尚未证明全库效果或跨块关系完整性。",
-      "en": "Theme 1 starts with correctly extracted text and known rule states. It asks whether those states and relationships survive representation, chunking and retrieval, so that current rules can be distinguished from obsolete ones and necessary conditions remain complete. Small candidate sets provide development observations; full-collection effects and cross-chunk completeness remain unverified."
+      "ja": "テーマ1は、文字を正しく取り出し、規則の状態も分かっているところから始めます。その情報を文書の分割や検索の途中で保てるかが問いです。現行の規則と失効した規則を区別し、条件や例外を含む根拠を漏れなく選べるかを調べます。状態ラベルの比較は100問・候補500件で実行し、独立に再計算して限定条件の正式な結論（否定的）を登録しました。全ての資料を候補にした検索の効果や、分割をまたぐ関係の保持はまだ確かめていません。",
+      "zh": "主题 1 从\"文字已正确取出、规则状态也已知\"出发，问这些信息能否在切分和检索中保住：区分现行与失效的规则，不漏掉含条件和例外的根据。状态标签的比较已在 100 问、500 候选上执行并独立重算，登记了限定条件下的正式结论（否定）。全部资料作候选时的检索效果、跨切分的关系保持，尚未验证。",
+      "en": "Theme 1 starts where the text has been extracted correctly and the rule status is known, and asks whether that information survives chunking and retrieval: telling current rules from superseded ones and selecting evidence that includes conditions and exceptions. The status-label comparison was run on 100 questions and 500 candidates, independently recomputed, and registered as a formal (negative) conclusion under fixed conditions. Retrieval over the full corpus and relations that span chunks are not yet tested."
     },
     {
       "key": "T01.literature",
@@ -7084,15 +7084,15 @@
     },
     {
       "key": "T01.mine",
-      "ja": "研究の方向と公開範囲は本人が判断し、人工知能は文献と保存結果の整理を補助する分担です。設計・実装・採点の個別担当は報告で特定できず、本人の単独実績とは書きません。",
-      "zh": "分工是用户决定方向和公开范围，人工智能辅助整理文献与保存结果。报告未充分按人登记设计、实现和评分的具体完成项，因此不写成用户独立完成。",
-      "en": "The agreed division gives the user direction and disclosure decisions, with artificial intelligence assisting literature organization and saved-output analysis. Reports do not fully identify who completed each design, implementation and scoring task; these are not presented as the user's solo work."
+      "ja": "研究の問いの設計、事前登録の条件の承認、何を結論にするかの判断は私が担当しています。実装・文献整理・独立再計算にはAIの支援を使い、私は実行前の条件確認と結果の採否を決めています。T1では、否定的な結果をそのまま登録し、別条件で出た高い数値（98%）を主結果に差し替えませんでした。",
+      "zh": "研究问题的设计、事前登记条件的批准、什么算结论，由我负责。实现、文献整理、独立重算借助 AI，我负责执行前的条件确认和结果的取舍。T1 里否定结果照登记，没有用另一条件下的高分（98%）替换主结果。",
+      "en": "I own the research questions, approve the pre-registration conditions, and decide what counts as a conclusion. Implementation, literature organization and independent recomputation use AI assistance; I check the conditions before each run and decide whether a result is adopted.For T1 the negative result was registered as is; a higher number from another condition (98%) was not swapped in as the main result."
     },
     {
       "key": "T02.direction",
-      "ja": "テーマ2は、文章を画像にしたときの失敗を分けて考えるための補助テーマです。文字そのものを読めなかったのか、読めても答えを誤ったのかを区別します。同じ内容の文字版と画像版を比べ、文字の大きさや画像処理の負担が結果を変えないよう条件をそろえる計画です。現在は入力の準備中で、モデルの回答はありません。幅広い新手法の開発より、失敗を説明するための枠組みとして位置付けています。",
-      "zh": "主题2是辅助诊断线，区分文字没读对与读到后仍答错。计划比较同内容的文字和图像，并控制字号、图像处理成本等差异。目前只有输入准备，没有模型回答；它被保留为解释失败的框架，而非优先独立开发新方法的主题。",
-      "en": "Theme 2 is a supporting diagnostic theme. It separates failure to read the words from answering incorrectly after reading them. The plan compares matched text and image inputs while controlling typography and visual processing cost. Inputs have been prepared, but there are no model answers. Its role is to explain failures rather than lead a broad new-method project."
+      "ja": "テーマ2は、文章を画像にしたときの失敗を分けて考えるための補助テーマです。文字そのものを読めなかったのか、読めても答えを誤ったのかを区別します。同じ内容の文字版と画像版を比べ、文字の大きさや画像処理の負担が結果を変えないよう条件をそろえました。固定モデルで500件を一度だけ実行し、独立複核を終えましたが、全条件が100%で食い違いは0件。材料が易しすぎたため、問いにはまだ答えていません。幅広い新手法の開発より、失敗を説明するための枠組みとして位置付けています。",
+      "zh": "主题 2 是辅助主题，用来区分文字图片化后的失败：是没读出字，还是读出了却答错。把同一内容的文字版和图片版对比，控制字号与图像处理负担。固定模型一次执行 500 条并独立复核，但全部条件 100%、分歧 0 件，材料太容易，问题本身还没回答。定位是解释失败的框架，不是开发新方法。",
+      "en": "Theme 2 is a supporting theme for separating failures when text becomes an image: did the model fail to read, or read correctly and still answer wrong. Text and image versions of the same content are compared under controlled font size and image-processing load. 500 requests were run once on a fixed model and independently re-checked, but every condition scored 100% with zero disagreements; the material was too easy, so the question is still open. It is framed as a way to explain failures, not as new-method development."
     },
     {
       "key": "T02.literature",
@@ -7102,21 +7102,21 @@
     },
     {
       "key": "T02.experiments",
-      "ja": "同じ文章を通常と小さな文字で描いた入力と、回答用・読字確認用の問いを準備しました。画像のはみ出し等は機械的に確認しましたが、人が読みやすさを確認した記録はありません。モデルは未実行で、読字や回答の成績はまだありません。",
-      "zh": "准备了同文正常和较小字号图像，以及回答与读字检查输入；自动检查覆盖和溢出，但没有人工可读性确认记录。模型尚未执行，没有阅读或回答成绩。",
-      "en": "Inputs include the same text at normal and smaller sizes, with answer and reading-check prompts. Automated checks cover glyph coverage and overflow; human readability has not been attested. No model has run, so there are no reading or answering scores."
+      "ja": "同じ文章を通常と小さな文字で描いた画像と、回答用・転写用の問いを用意し、固定モデル（Qwen2-VL-2B）で500件を一度だけ実行しました（2026-10-29）。文字・画像・転写のすべてが100%で、「転写は通るが画像問答は誤る」事例は0。人が読みやすさを確認した記録はなく、材料が易しすぎたため、次は材料の難しさから見直します。",
+      "zh": "准备了同一段文字的常规与小字号图片，以及问答用、转写用的问题，用固定模型（Qwen2-VL-2B）一次执行 500 条（2026-10-29）。文字、图像、转写全部 100%，\"转写通过但图像问答错\"0 件。没有人工可读性确认记录；材料太容易，下一步先改材料难度。",
+      "en": "Images of the same text at a normal and a small size, with QA and transcription prompts, were run once (500 requests) on a fixed model, Qwen2-VL-2B (2026-10-29). Text, image and transcription all scored 100%; \"transcription passes, image QA fails\" occurred 0 times. There is no human readability check on record, and the material was too easy, so the next step is harder material."
     },
     {
       "key": "T02.mine",
-      "ja": "人工知能が文献地図と準備状況を整理しました。画像作成や実装を誰が担当したかは、今回の報告だけでは確定できません。本人の設計・実装・評価の実績は、作業記録を確認してから記します。",
-      "zh": "人工智能整理了文献地图和准备状态。仅凭现有报告，不能确定图像生成和实现由谁具体完成；用户在设计、实现与评价上的实绩，需要作业记录支持。",
-      "en": "Artificial intelligence organized the literature map and preparation status. These reports do not establish who specifically generated the images or implemented the preparation. The user's completed design, implementation and evaluation work requires task-level records."
+      "ja": "研究の問いの設計、事前登録の条件の承認、何を結論にするかの判断は私が担当しています。実装・文献整理・独立再計算にはAIの支援を使い、私は実行前の条件確認と結果の採否を決めています。T2では「転写と問答を別々のリクエストで出し、その食い違いを数える」という比較の形を決め、材料が易しすぎた点を次の版の課題として残しました。",
+      "zh": "研究问题的设计、事前登记条件的批准、什么算结论，由我负责。实现、文献整理、独立重算借助 AI，我负责执行前的条件确认和结果的取舍。T2 决定了\"转写和问答分别请求、数两者的分歧\"这种比较方式，并把材料过易记为下一版的课题。",
+      "en": "I own the research questions, approve the pre-registration conditions, and decide what counts as a conclusion. Implementation, literature organization and independent recomputation use AI assistance; I check the conditions before each run and decide whether a result is adopted.For T2 I set the comparison as separate transcription and QA requests with their disagreements counted, and recorded the too-easy material as the next version's task."
     },
     {
       "key": "T03.direction",
-      "ja": "テーマ3は、同じページの書体だけを変えたとき、関連資料の検索順位が動くかを問います。内容に加え、改行、配置、読みやすさ、画像処理の負担をできるだけそろえます。ページを一つのまとまりとして比べる方法と、文字や領域の細かな対応を使う方法を比べる計画です。今は比較用のページ画像と入力を準備した段階で、検索結果はありません。違いが小さい場合も、その条件を記録する方針です。",
-      "zh": "主题3问同一页面只换字体，相关资料的得分和排名是否稳定。计划尽量固定内容、改行、布局、可读性和视觉处理成本，并比较整页表示与细粒度匹配两种检索方式。现阶段只有图像和输入准备，没有检索结果；没有差异也需要保留其条件。",
-      "en": "Theme 3 asks whether changing only the font on a page changes retrieval scores and ranks. Content, line breaks, layout, readability and visual processing cost are to be matched as closely as possible. The plan compares whole-page representations with finer-grained matching. Only images and inputs are ready; there are no retrieval results. Little or no change would also be recorded with its conditions."
+      "ja": "テーマ3は、同じページの書体だけを変えたとき、関連資料の検索順位が動くかを問います。内容に加え、改行、配置、読みやすさ、画像処理の負担をできるだけそろえます。50ページ×3書体で700回の検索計算を実行しましたが、基準の書体で46/50ページが最初から1位で、事前に決めた難しさの条件を満たしませんでした。書体の効果は結論を出さず、材料を作り直しています。違いが小さい場合も、その条件を記録する方針です。",
+      "zh": "主题 3 问：同一页只换字体，相关资料的检索排名会不会动。除内容外尽量对齐换行、排版、可读性和图像处理负担。50 页 × 3 种字体共 700 次检索计算已执行，但基准字体下 46/50 页本来就第一，不满足事先定的难度条件。字体效应不下结论，正在重做材料。差异很小时也记录条件。",
+      "en": "Theme 3 asks whether changing only the typeface of a page moves its retrieval rank. Line breaks, layout, readability and image-processing load are held as equal as possible. 700 retrieval runs over 50 pages × 3 typefaces were executed, but 46 of 50 pages already ranked first in the baseline typeface, failing the pre-set difficulty condition. No conclusion on typeface is drawn; the material is being rebuilt. Small differences will be recorded with their conditions."
     },
     {
       "key": "T03.literature",
@@ -7132,15 +7132,15 @@
     },
     {
       "key": "T03.mine",
-      "ja": "人工知能が先行研究の対応付けと準備状況の説明を補助しました。本人と人工知能の実装分担は資料だけでは分かりません。検索モデルを自作した、比較評価を終えたという実績は記しません。",
-      "zh": "人工智能辅助了先行研究映射和准备状态说明；现有资料不足以确定人与人工智能的实现分工，不把自研检索模型或完成比较评价写成用户实绩。",
-      "en": "Artificial intelligence assisted with literature mapping and describing preparation status. Available material does not establish the implementation split between the user and artificial intelligence. Building a retrieval model or completing a comparative evaluation is not claimed as the user's achievement."
+      "ja": "研究の問いの設計、事前登録の条件の承認、何を結論にするかの判断は私が担当しています。実装・文献整理・独立再計算にはAIの支援を使い、私は実行前の条件確認と結果の採否を決めています。T3では、難しさの条件を事前に数値で決め、満たさなければ結論を出さないという規則を守りました。",
+      "zh": "研究问题的设计、事前登记条件的批准、什么算结论，由我负责。实现、文献整理、独立重算借助 AI，我负责执行前的条件确认和结果的取舍。T3 事先用数字定了难度条件，不满足就不下结论，这条规则守住了。",
+      "en": "I own the research questions, approve the pre-registration conditions, and decide what counts as a conclusion. Implementation, literature organization and independent recomputation use AI assistance; I check the conditions before each run and decide whether a result is adopted.For T3 the difficulty condition was fixed numerically in advance, and the rule \"no conclusion if unmet\" was kept."
     },
     {
       "key": "T04.direction",
-      "ja": "テーマ4は、規則や例外が全て読める状態でも、文字の目立ち方によって使われる根拠が変わるかを問う候補です。質問に合わせて重要箇所を探して拡大する方法とは区別し、最初からある見た目の違いを対象にします。内容や位置、画像処理の負担をそろえる必要があり、見たことと実際に依拠したことの区別も課題です。実験は未着手で、この現象の有無を示す観察もありません。",
-      "zh": "主题4仍是候选：证据都能读清时，被动显著性是否改变规则、条件和例外的实际使用。它与按问题主动定位并放大证据的方法不同，需要固定内容、位置和视觉成本，并区分注意到与真正依赖。实验未启动，没有现象存在与否的观察。",
-      "en": "Theme 4 remains a candidate: when all evidence is readable, can passive visual prominence change which rules, conditions or exceptions are used? This differs from locating and enlarging evidence in response to a question. Content, position and visual cost need control, and attention must be distinguished from actual reliance. No experiment or observation has started."
+      "ja": "テーマ4は、規則や例外が全て読める状態でも、文字の目立ち方によって使われる根拠が変わるかを問います。質問に合わせて重要箇所を探して拡大する方法とは区別し、最初からある見た目の違いを対象にします。開発段階の130件を実行しましたが、純文字の問答が事前の門（9/10）に届かず、本番の候補は実行していません。字の太さの効果は結論を出さず、次は材料とモデルの見直しからです。",
+      "zh": "主题 4 问：规则和例外都能读到时，文字的醒目程度会不会改变被采用的根据。与\"按问题找重点再放大\"的方法区分，只看原本就有的外观差异。开发阶段执行 130 条，纯文字问答没到事前门槛（9/10），正式候选没有执行。字重效应不下结论，下一步从材料和模型重看。",
+      "en": "Theme 4 asks whether, even when rule and exception are both readable, visual prominence changes which evidence gets used. It is distinct from methods that locate and enlarge key regions per question; it targets differences that exist from the start. 130 development requests were run, but text-only QA missed the pre-set gate (9/10), so the main candidates were not run. No conclusion on font weight; next step is to revisit material and model."
     },
     {
       "key": "T04.literature",
@@ -7156,9 +7156,9 @@
     },
     {
       "key": "T04.mine",
-      "ja": "人工知能が先行研究、候補の問い、未実施項目を整理しました。実験も評価も未着手です。本人がどの設計作業を完了したかは、現資料では特定できないため、追加の作業記録で確認します。",
-      "zh": "人工智能整理了先行研究、候选问题和未执行项；实验与评价均未启动。用户已完成哪些具体设计工作，现有资料无法确定，需由作业记录补证。",
-      "en": "Artificial intelligence organized prior work, the candidate question and unperformed work. Experimentation and evaluation have not started. Available material does not identify which specific design tasks the user has completed; additional work records are needed."
+      "ja": "研究の問いの設計、事前登録の条件の承認、何を結論にするかの判断は私が担当しています。実装・文献整理・独立再計算にはAIの支援を使い、私は実行前の条件確認と結果の採否を決めています。T4では、開発段階の門（純文字の問答9/10など）を通らなければ本番を実行しないという規則を事前登録に入れ、門が不成立のまま止めました。",
+      "zh": "研究问题的设计、事前登记条件的批准、什么算结论，由我负责。实现、文献整理、独立重算借助 AI，我负责执行前的条件确认和结果的取舍。T4 把\"开发门（纯文字问答 9/10 等）不过就不执行正式集\"写进事前登记，门没过就停在那里。",
+      "en": "I own the research questions, approve the pre-registration conditions, and decide what counts as a conclusion. Implementation, literature organization and independent recomputation use AI assistance; I check the conditions before each run and decide whether a result is adopted.For T4 the pre-registration said the main set would not run unless the development gates (text QA 9/10 etc.) passed; they did not, and the run stopped there."
     },
     {
       "key": "node.font-cards:P001.one_line",
@@ -7612,15 +7612,15 @@
     },
     {
       "key": "node.themes:T02.one_line",
-      "ja": "文字を読み取れない場合と、正しく読めても回答を間違える場合の違いを調べる。入力は準備済みだが、モデルの結果はまだない。（日本語タイトルは R による翻訳。）",
-      "zh": "研究读字失败与读对后答错的区别，已准备输入但尚无模型结果。（title_ja 为 R 译）",
-      "en": "Investigate the difference between failing to read text and answering incorrectly after reading it correctly. Inputs are prepared, but there are no model results yet. (The Japanese title was translated by R.)"
+      "ja": "文字を読み取れない場合と、正しく読めても回答を間違える場合の違いを調べる。500件を実行し独立複核済みだが、材料が易しすぎて問いには未回答。",
+      "zh": "区分\"没读出字\"和\"读出了却答错\"。500 条已执行并独立复核，但材料太易、问题未回答。",
+      "en": "Separates failing to read from reading correctly but answering wrong. 500 requests run and independently re-checked, but the material was too easy to answer the question."
     },
     {
       "key": "node.themes:T03.one_line",
-      "ja": "同じページの文字の見せ方を変えると、ページ検索の安定性が変わるかを調べる。画像は準備済みだが、検索結果はまだない。（日本語タイトルは R による翻訳。）",
-      "zh": "研究同页换排印是否影响页面检索稳定性，已准备图像但尚无检索结果。（title_ja 为 R 译）",
-      "en": "Investigate whether changing the typography of the same page affects retrieval stability. Images are prepared, but there are no retrieval results yet. (The Japanese title was translated by R.)"
+      "ja": "同じページの文字の見せ方を変えると、ページ検索の安定性が変わるかを調べる。700回の検索を実行したが、難しさの条件が不成立で結論なし。",
+      "zh": "同一页只换字体，页面检索是否稳定。700 次检索已执行，但难度条件不成立，无结论。",
+      "en": "Does changing only the typeface of a page change retrieval stability. 700 retrieval runs executed, but the difficulty condition failed; no conclusion."
     },
     {
       "key": "node.themes:T04.one_line",
@@ -7630,9 +7630,9 @@
     },
     {
       "key": "node.temporary-rq:T1-RQ1.one_line",
-      "ja": "状態の情報を残すと、有効な証拠の検索順位が変わるかを調べる。開発段階の限られた比較はあるが、全候補を対象とする正式な検証はまだ終わっていない。",
-      "zh": "研究保留状态是否改变有效证据排序，已有有限开发比较，尚未完成正式全池验证。",
-      "en": "Investigate whether retaining state information changes the ranking of valid evidence. Limited development-stage comparisons are available, but formal validation over the full candidate pool is incomplete."
+      "ja": "無効であることを示す情報を残すと検索順位が変わるかを問う。限定条件では「変わらない」という否定的な結論を登録済み（2026-10-25）。",
+      "zh": "问保留失效状态信息能否改变检索排名。限定条件下已登记\"不改变\"的否定结论（2026-10-25）。",
+      "en": "Asks whether keeping invalid-status information changes retrieval rank. Under fixed conditions a negative conclusion (\"it does not\") is registered (2026-10-25)."
     },
     {
       "key": "node.temporary-rq:T1-RQ2.one_line",
@@ -7660,9 +7660,9 @@
     },
     {
       "key": "node.temporary-rq:T2-RQ1.one_line",
-      "ja": "文字の読み間違いと回答の間違いを切り分ける。現時点では入力を準備しただけで、モデルの回答はない。",
-      "zh": "区分读字错误与回答错误，当前只有准备好的输入，没有模型答案。",
-      "en": "Distinguish text-reading errors from answer errors. Only inputs have been prepared; there are no model answers."
+      "ja": "文字の読み取りの失敗が回答の誤りにどうつながるかを問う。500件の実行では両者の食い違いは0で、材料を難しくする必要がある。",
+      "zh": "问读字失败如何导向作答错误。500 条执行中两者分歧为 0，需要更难的材料。",
+      "en": "Asks how reading failures lead to answering errors. In 500 runs the two never disagreed, so harder material is needed."
     },
     {
       "key": "node.temporary-rq:T2-RQ2.one_line",
@@ -7678,15 +7678,15 @@
     },
     {
       "key": "node.temporary-rq:T3-RQ2.one_line",
-      "ja": "同じ入力を繰り返したときのばらつきと、検索の仕組みによる違いを比較する。数値表現への変換も順位付けも、まだ実行していない。",
-      "zh": "比较重复输入噪声与不同检索结构，目前尚未运行编码或排名。",
-      "en": "Compare variation from repeated identical inputs and differences between retrieval architectures. Encoding and ranking have not been run."
+      "ja": "同じ入力の繰り返しによる揺れと、検索構造の違いを比べる。繰り返し50組は実行済み、構造の比較は未実施。",
+      "zh": "比较同一输入重复带来的波动与不同检索结构。重复 50 组已执行，结构比较未做。",
+      "en": "Compares noise from repeated identical inputs with differences between retrieval structures. 50 repeats were run; the structure comparison has not been."
     },
     {
       "key": "node.temporary-rq:T4-RQ1.one_line",
-      "ja": "もともとの文字の目立ち方によって、規則や例外の使われ方が変わるかを調べる。実験はまだ始めていない。",
-      "zh": "研究被动显著性是否改变规则和例外的使用，实验尚未启用。",
-      "en": "Investigate whether passive visual prominence changes how rules and exceptions are used. The experiment has not started."
+      "ja": "文字の目立ち方が規則と例外の使われ方を変えるかを問う。開発段階を実行したが門が不成立で、本番は未実行。",
+      "zh": "问文字醒目程度是否改变规则与例外的使用。开发阶段已执行但门槛不成立，正式集未执行。",
+      "en": "Asks whether visual prominence changes how rules and exceptions are used. The development stage ran but its gates failed, so the main set was not run."
     },
     {
       "key": "node.temporary-rq:T4-RQ2.one_line",
@@ -7792,21 +7792,21 @@
     },
     {
       "key": "node.experiments:E12.one_line",
-      "ja": "版と日付に関する資料や参照ルールについて、開発段階の診断がある。新たなモデルの結果や正式な結論はまだない。",
-      "zh": "版本日期材料与参考规则已有开发诊断，尚无新模型或正式结论。",
+      "ja": "版と日付に関する資料や参照ルールについて、開発段階の診断がある。状態ラベルの比較は実行と独立再計算を終え、限定条件の正式な結論（否定的）を登録した。",
+      "zh": "版本日期材料与参考规则已有开发诊断，状态标签比较已执行并独立重算，登记了限定条件下的正式结论（否定）。",
       "en": "Development-stage diagnostics cover version-and-date material and reference rules. There are no new model results or formal conclusions."
     },
     {
       "key": "node.experiments:E13.one_line",
-      "ja": "画像からの読み取りを調べるため、入力画像と質問を準備しただけで、モデルの結果は得られていない。",
-      "zh": "视觉阅读诊断只准备了输入图像和问题，模型没有跑出结果。",
-      "en": "Only input images and questions have been prepared for diagnosing visual reading. The model has produced no results."
+      "ja": "T2：視覚診断。固定モデルで500件を一度だけ実行し、独立複核済み。全条件が100%で、問いには未回答。",
+      "zh": "T2：视觉诊断。固定模型一次执行 500 条并独立复核；全部条件 100%，问题未回答。",
+      "en": "T2 visual diagnosis: 500 requests run once on a fixed model and independently re-checked; every condition at 100%, question still open."
     },
     {
       "key": "node.experiments:E14.one_line",
-      "ja": "書体を変えたページ検索に向け、画像と入力を準備しただけで、数値表現への変換や順位付けの結果はまだない。",
-      "zh": "字体页面检索只准备了图像和输入，尚无编码或排名结果。",
-      "en": "Only images and inputs have been prepared for page retrieval under font changes. There are no encoding or ranking results yet."
+      "ja": "書体を変えたページ検索を50ページ×3書体で700回実行。基準で46/50が最初から1位で、難しさの条件が不成立。",
+      "zh": "字体页面检索 50 页 × 3 字体共 700 次已执行；基准下 46/50 本来就第一，难度条件不成立。",
+      "en": "Typeface page retrieval run 700 times over 50 pages × 3 typefaces; 46/50 already ranked first at baseline, so the difficulty condition failed."
     },
     {
       "key": "node.experiments:E15.one_line",
@@ -7858,15 +7858,15 @@
     },
     {
       "key": "node.reports:R07.one_line",
-      "ja": "文字の読み間違いと回答の間違いを切り分けるため、画像や質問をどう準備したかを説明する。モデルの回答はまだ得られていない。",
-      "zh": "说明用于区分读字错误和答题错误的图像、问题怎样准备，模型还没有跑出答案。",
-      "en": "Explain how images and questions were prepared to distinguish text-reading errors from answer errors. The model has not produced answers yet."
+      "ja": "文字の読み間違いと回答の間違いを切り分けるため、画像や質問をどう準備したかを説明する。500件の実行と独立複核まで完了。",
+      "zh": "说明为区分读字错误与作答错误如何准备图像和问题。500 条执行与独立复核已完成。",
+      "en": "Explains how images and questions were prepared to separate reading errors from answering errors. The 500-request run and its independent re-check are complete."
     },
     {
       "key": "node.reports:R08.one_line",
-      "ja": "同じページで書体を変えた画像をどう準備したかを説明する。ページ検索の評価結果はまだ得られていない。",
-      "zh": "说明同一页面换用不同字体的图像怎样准备，尚未获得页面检索成绩。",
-      "en": "Explain how images of the same page in different fonts were prepared. No page-retrieval evaluation results have been obtained."
+      "ja": "同じページで書体を変えた画像をどう準備したかを説明する。700回の検索は実行済みで、難しさの条件が不成立。",
+      "zh": "说明如何准备同一页不同字体的图像。700 次检索已执行，难度条件不成立。",
+      "en": "Explains how same-page images in different typefaces were prepared. The 700 retrieval runs are done; the difficulty condition failed."
     },
     {
       "key": "node.reports:R09.one_line",

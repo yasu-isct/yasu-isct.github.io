@@ -42,7 +42,7 @@ const dataDir = resolve(process.cwd(), 'data/public/research-map');
 
 // Presentation-only Japanese edits. The hashed research snapshots stay byte-for-byte intact.
 interface EditorialJa {
-  copy: Record<string, string>;
+  copy: Record<string, string | Record<'ja' | 'zh' | 'en', string>>;
   titles: Record<string, string>;
   stories: Record<string, { title: string; steps: Record<string, string> }>;
 }
@@ -144,7 +144,9 @@ const copyMap = new Map(copyRows.map((r) => [r.key, r]));
 
 /** Trilingual copy from R's copy.jsonl; falls back to zh, then ''. */
 export function copyOf(key: string, lang: 'ja' | 'zh' | 'en'): string {
-  if (lang === 'ja' && editorialJa.copy[key]) return editorialJa.copy[key];
+  const e = editorialJa.copy[key];
+  if (typeof e === 'string') { if (lang === 'ja') return e; }
+  else if (e && e[lang]) return e[lang];
   const r = copyMap.get(key);
   if (!r) return '';
   return (r[lang] && r[lang].trim()) || r.zh || '';
