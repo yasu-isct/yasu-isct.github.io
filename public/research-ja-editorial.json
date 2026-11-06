@@ -2,88 +2,63 @@
   "schemaVersion": 1,
   "copy": {
     "research.question": "文書を根拠に回答する仕組みで、必要な根拠が処理の途中で失われないかを研究しています。RAG は、関連資料を検索し、その内容を参照して回答する方法です。文書には、廃止された規則や例外条件が含まれることがあります。文字を読み取れても、規則の有効性や適用条件を取り落とすと、もっともらしい誤答につながります。同じ文章の状態表示や見た目を変え、検索・読解・根拠の選択のどの段階で違いが生じるかを分けて確かめることが狙いです。",
-    "research.status": "テーマ1は「開発段階の観察あり」です。テーマ2・3は「準備中」で、画像はありますがモデルの結果はありません。テーマ4は「候補」で未着手です。正式な結論はまだありません。",
-    "T01.direction": "テーマ1は、文字を正しく取り出し、規則の状態も分かっているところから始めます。その情報を文書の分割や検索の途中で保てるかが問いです。現行の規則と失効した規則を区別し、条件や例外を含む根拠を漏れなく選べるかを調べます。小さな候補集合での開発段階の観察はありますが、全ての資料を候補にした検索の効果や、分割をまたぐ関係の保持はまだ確かめられていません。",
+    "research.status": {
+      "ja": "テーマ1は限定条件の正式な結論（否定的な結果）。テーマ2は実行と独立複核を終えましたが、材料が易しすぎて問いには未回答。テーマ3は実行したものの難しさの条件が不成立。テーマ4は開発段階の門が不成立で本番は未実行です。",
+      "zh": "主题 1 有限定条件下的正式结论（否定结果）。主题 2 执行并独立复核完毕，但材料太易、问题未回答。主题 3 执行了但难度条件不成立。主题 4 开发阶段门槛不成立，正式集未执行。",
+      "en": "Theme 1 has a formal conclusion under fixed conditions (a negative result). Theme 2 was run and independently re-checked, but the material was too easy to answer the question. Theme 3 was run but failed its difficulty condition. Theme 4 failed its development gates, so the main set was not run."
+    },
+    "T01.direction": {
+      "ja": "テーマ1は、文字を正しく取り出し、規則の状態も分かっているところから始めます。その情報を文書の分割や検索の途中で保てるかが問いです。現行の規則と失効した規則を区別し、条件や例外を含む根拠を漏れなく選べるかを調べます。状態ラベルの比較は100問・候補500件で実行し、独立に再計算して限定条件の正式な結論（否定的）を登録しました。全ての資料を候補にした検索の効果や、分割をまたぐ関係の保持はまだ確かめていません。",
+      "zh": "主题 1 从\"文字已正确取出、规则状态也已知\"出发，问这些信息能否在切分和检索中保住：区分现行与失效的规则，不漏掉含条件和例外的根据。状态标签的比较已在 100 问、500 候选上执行并独立重算，登记了限定条件下的正式结论（否定）。全部资料作候选时的检索效果、跨切分的关系保持，尚未验证。",
+      "en": "Theme 1 starts where the text has been extracted correctly and the rule status is known, and asks whether that information survives chunking and retrieval: telling current rules from superseded ones and selecting evidence that includes conditions and exceptions. The status-label comparison was run on 100 questions and 500 candidates, independently recomputed, and registered as a formal (negative) conclusion under fixed conditions. Retrieval over the full corpus and relations that span chunks are not yet tested."
+    },
     "T01.literature": "まずParseBenchで文字と書式を分けて評価する考え方を見ます。次にStyleDFSで構造を検索につなぐ流れを見ます。最後に取り消し線で消された手書き文字の認識研究を読みます。読めることと根拠として使えることは別問題です。MarkupLMとFontHaluも補助になります。",
     "T01.experiments": "状態を残す場合と消す場合、状態を入れ替える場合などの小規模な開発比較があります。保存結果から、候補があること、状態が合うこと、必要な根拠を選び切ることを分けて点検しています。資料全体を候補とした検索の改善や未知の文書への有効性は未検証です。",
-    "T01.mine": "研究の方向と公開範囲は私が判断し、AI は文献と保存結果の整理を補助する分担です。設計・実装・採点の個別担当は報告から特定できないため、私の単独実績とは記していません。",
-    "T02.direction": "テーマ2は、文章を画像にしたときの失敗を分けて考えるための補助テーマです。文字そのものを読めなかったのか、読めても答えを誤ったのかを区別します。同じ内容の文字版と画像版を比べ、文字の大きさや画像処理の負担が結果を変えないよう条件をそろえる計画です。現在は入力の準備中で、モデルの回答はありません。幅広い新手法の開発より、失敗を説明するための枠組みとして位置付けています。",
+    "T01.mine": {
+      "ja": "研究の問いの設計、事前登録の条件の承認、何を結論にするかの判断は私が担当しています。実装・文献整理・独立再計算にはAIの支援を使い、私は実行前の条件確認と結果の採否を決めています。T1では、否定的な結果をそのまま登録し、別条件で出た高い数値（98%）を主結果に差し替えませんでした。",
+      "zh": "研究问题的设计、事前登记条件的批准、什么算结论，由我负责。实现、文献整理、独立重算借助 AI，我负责执行前的条件确认和结果的取舍。T1 里否定结果照登记，没有用另一条件下的高分（98%）替换主结果。",
+      "en": "I own the research questions, approve the pre-registration conditions, and decide what counts as a conclusion. Implementation, literature organization and independent recomputation use AI assistance; I check the conditions before each run and decide whether a result is adopted.For T1 the negative result was registered as is; a higher number from another condition (98%) was not swapped in as the main result."
+    },
+    "T02.direction": {
+      "ja": "テーマ2は、文章を画像にしたときの失敗を分けて考えるための補助テーマです。文字そのものを読めなかったのか、読めても答えを誤ったのかを区別します。同じ内容の文字版と画像版を比べ、文字の大きさや画像処理の負担が結果を変えないよう条件をそろえました。固定モデルで500件を一度だけ実行し、独立複核を終えましたが、全条件が100%で食い違いは0件。材料が易しすぎたため、問いにはまだ答えていません。幅広い新手法の開発より、失敗を説明するための枠組みとして位置付けています。",
+      "zh": "主题 2 是辅助主题，用来区分文字图片化后的失败：是没读出字，还是读出了却答错。把同一内容的文字版和图片版对比，控制字号与图像处理负担。固定模型一次执行 500 条并独立复核，但全部条件 100%、分歧 0 件，材料太容易，问题本身还没回答。定位是解释失败的框架，不是开发新方法。",
+      "en": "Theme 2 is a supporting theme for separating failures when text becomes an image: did the model fail to read, or read correctly and still answer wrong. Text and image versions of the same content are compared under controlled font size and image-processing load. 500 requests were run once on a fixed model and independently re-checked, but every condition scored 100% with zero disagreements; the material was too easy, so the question is still open. It is framed as a way to explain failures, not as new-method development."
+    },
     "T02.literature": "ReadBenchで同じ内容の文字と画像の比較をつかみ、VISTA-Benchで描画条件の違いを見ます。次にReading, Not Thinkingで失敗の種類を整理します。Glyphは、画像の処理量もそろえる必要を考えるための補助文献です。",
-    "T02.experiments": "同じ文章を通常と小さな文字で描いた入力と、回答用・読字確認用の問いを準備しました。画像のはみ出し等は機械的に確認しましたが、人が読みやすさを確認した記録はありません。モデルは未実行で、読字や回答の成績はまだありません。",
-    "T02.mine": "AI が文献マップと準備状況を整理しました。画像作成や実装を誰が担当したかは、今回の報告だけでは確定できません。私の設計・実装・評価の実績は、作業記録を確認してから記載します。",
-    "T03.direction": "テーマ3は、同じページの書体だけを変えたとき、関連資料の検索順位が動くかを問います。内容に加え、改行、配置、読みやすさ、画像処理の負担をできるだけそろえます。ページを一つのまとまりとして比べる方法と、文字や領域の細かな対応を使う方法を比べる計画です。今は比較用のページ画像と入力を準備した段階で、検索結果はありません。違いが小さい場合も、その条件を記録する方針です。",
+    "T02.experiments": {
+      "ja": "同じ文章を通常と小さな文字で描いた画像と、回答用・転写用の問いを用意し、固定モデル（Qwen2-VL-2B）で500件を一度だけ実行しました（2026-10-29）。文字・画像・転写のすべてが100%で、「転写は通るが画像問答は誤る」事例は0。人が読みやすさを確認した記録はなく、材料が易しすぎたため、次は材料の難しさから見直します。",
+      "zh": "准备了同一段文字的常规与小字号图片，以及问答用、转写用的问题，用固定模型（Qwen2-VL-2B）一次执行 500 条（2026-10-29）。文字、图像、转写全部 100%，\"转写通过但图像问答错\"0 件。没有人工可读性确认记录；材料太容易，下一步先改材料难度。",
+      "en": "Images of the same text at a normal and a small size, with QA and transcription prompts, were run once (500 requests) on a fixed model, Qwen2-VL-2B (2026-10-29). Text, image and transcription all scored 100%; \"transcription passes, image QA fails\" occurred 0 times. There is no human readability check on record, and the material was too easy, so the next step is harder material."
+    },
+    "T02.mine": {
+      "ja": "研究の問いの設計、事前登録の条件の承認、何を結論にするかの判断は私が担当しています。実装・文献整理・独立再計算にはAIの支援を使い、私は実行前の条件確認と結果の採否を決めています。T2では「転写と問答を別々のリクエストで出し、その食い違いを数える」という比較の形を決め、材料が易しすぎた点を次の版の課題として残しました。",
+      "zh": "研究问题的设计、事前登记条件的批准、什么算结论，由我负责。实现、文献整理、独立重算借助 AI，我负责执行前的条件确认和结果的取舍。T2 决定了\"转写和问答分别请求、数两者的分歧\"这种比较方式，并把材料过易记为下一版的课题。",
+      "en": "I own the research questions, approve the pre-registration conditions, and decide what counts as a conclusion. Implementation, literature organization and independent recomputation use AI assistance; I check the conditions before each run and decide whether a result is adopted.For T2 I set the comparison as separate transcription and QA requests with their disagreements counted, and recorded the too-easy material as the next version's task."
+    },
+    "T03.direction": {
+      "ja": "テーマ3は、同じページの書体だけを変えたとき、関連資料の検索順位が動くかを問います。内容に加え、改行、配置、読みやすさ、画像処理の負担をできるだけそろえます。50ページ×3書体で700回の検索計算を実行しましたが、基準の書体で46/50ページが最初から1位で、事前に決めた難しさの条件を満たしませんでした。書体の効果は結論を出さず、材料を作り直しています。違いが小さい場合も、その条件を記録する方針です。",
+      "zh": "主题 3 问：同一页只换字体，相关资料的检索排名会不会动。除内容外尽量对齐换行、排版、可读性和图像处理负担。50 页 × 3 种字体共 700 次检索计算已执行，但基准字体下 46/50 页本来就第一，不满足事先定的难度条件。字体效应不下结论，正在重做材料。差异很小时也记录条件。",
+      "en": "Theme 3 asks whether changing only the typeface of a page moves its retrieval rank. Line breaks, layout, readability and image-processing load are held as equal as possible. 700 retrieval runs over 50 pages × 3 typefaces were executed, but 46 of 50 pages already ranked first in the baseline typeface, failing the pre-set difficulty condition. No conclusion on typeface is drawn; the material is being rebuilt. Small differences will be recorded with their conditions."
+    },
     "T03.literature": "Document Screenshot Embeddingでページ画像の検索をつかみ、ColPaliで細かな対応を使う検索を見ます。次にVision-Text Augmentationで文字の見た目を変える比較軸を確認します。この順番は読書案内で、研究の発展順ではありません。",
     "T03.experiments": "同じ内容を複数の書体で描いたページと、対応する検索入力を準備しました。改行や位置は共有していますが、実際のモデル処理量は未計測です。モデルによるページの処理や検索順位の比較はまだ行っておらず、書体の影響や方式間の優劣は述べられません。",
-    "T03.mine": "AI が先行研究の対応付けと準備状況の説明を補助しました。私と AI の実装分担は、資料だけでは分かりません。検索モデルを自作した、比較評価を終えたという実績は記載していません。",
-    "T04.direction": "テーマ4は、規則や例外が全て読める状態でも、文字の目立ち方によって使われる根拠が変わるかを問う候補です。質問に合わせて重要箇所を探して拡大する方法とは区別し、最初からある見た目の違いを対象にします。内容や位置、画像処理の負担をそろえる必要があり、見たことと実際に依拠したことの区別も課題です。実験は未着手で、この現象の有無を示す観察もありません。",
+    "T03.mine": {
+      "ja": "研究の問いの設計、事前登録の条件の承認、何を結論にするかの判断は私が担当しています。実装・文献整理・独立再計算にはAIの支援を使い、私は実行前の条件確認と結果の採否を決めています。T3では、難しさの条件を事前に数値で決め、満たさなければ結論を出さないという規則を守りました。",
+      "zh": "研究问题的设计、事前登记条件的批准、什么算结论，由我负责。实现、文献整理、独立重算借助 AI，我负责执行前的条件确认和结果的取舍。T3 事先用数字定了难度条件，不满足就不下结论，这条规则守住了。",
+      "en": "I own the research questions, approve the pre-registration conditions, and decide what counts as a conclusion. Implementation, literature organization and independent recomputation use AI assistance; I check the conditions before each run and decide whether a result is adopted.For T3 the difficulty condition was fixed numerically in advance, and the rule \"no conclusion if unmet\" was kept."
+    },
+    "T04.direction": {
+      "ja": "テーマ4は、規則や例外が全て読める状態でも、文字の目立ち方によって使われる根拠が変わるかを問います。質問に合わせて重要箇所を探して拡大する方法とは区別し、最初からある見た目の違いを対象にします。開発段階の130件を実行しましたが、純文字の問答が事前の門（9/10）に届かず、本番の候補は実行していません。字の太さの効果は結論を出さず、次は材料とモデルの見直しからです。",
+      "zh": "主题 4 问：规则和例外都能读到时，文字的醒目程度会不会改变被采用的根据。与\"按问题找重点再放大\"的方法区分，只看原本就有的外观差异。开发阶段执行 130 条，纯文字问答没到事前门槛（9/10），正式候选没有执行。字重效应不下结论，下一步从材料和模型重看。",
+      "en": "Theme 4 asks whether, even when rule and exception are both readable, visual prominence changes which evidence gets used. It is distinct from methods that locate and enlarge key regions per question; it targets differences that exist from the start. 130 development requests were run, but text-only QA missed the pre-set gate (9/10), so the main candidates were not run. No conclusion on font weight; next step is to revisit material and model."
+    },
     "T04.literature": "Seeing but Not Believingで、注目しても正答とは限らない点を押さえます。次にMagnifying What Mattersで能動的な拡大を見ます。最後にDocAttriBenchで、根拠を隠して依存を調べる考え方を確認します。",
     "T04.experiments": "実験はまだ始めていません。規則と例外の目立ち方を入れ替え、回答と根拠への依存を確かめる案だけがあります。読みやすさや画像処理の負担をそろえる方法、依存を測る方法も未確定です。効果があるとも、ないとも述べられません。",
-    "T04.mine": "AI が先行研究、候補の問い、未実施項目を整理しました。実験も評価も未着手です。私がどの設計作業を完了したかは、現資料では特定できないため、追加の作業記録で確認します。",
-    "node.font-cards:P001.one_line": "書体のスタイルと医学文献の文字認識エラーとの関係についての記録です。",
-    "node.font-cards:P002.one_line": "印刷やスキャンによる劣化が文字認識の学習にどう影響するかについての記録です。",
-    "node.font-cards:P003.one_line": "コードのスクリーンショットにおける書体、文字サイズ、文字認識エンジンの比較についての記録です。",
-    "node.font-cards:P004.one_line": "画像と言語を扱うモデルが書体を識別する際、見た目の質感と文字の意味をどう区別するかについての記録です。",
-    "node.font-cards:P005.one_line": "さまざまなPDF 文書の解析課題における評価と正解データの付与についての記録です。",
-    "node.font-cards:P006.one_line": "透かしが加わった文書の理解をどう評価するかについての記録です。",
-    "node.font-cards:P007.one_line": "文字認識の誤りが検索や回答にどう波及するかについての記録です。",
-    "node.font-cards:P008.one_line": "画像内の文字を認識するマルチモーダルモデルの評価についての記録です。",
-    "node.font-cards:P009.one_line": "マルチモーダルモデルが密に並んだ文字を読み取る能力についての記録です。",
-    "node.font-cards:P010.one_line": "文字の位置の特定や推論に評価を広げる際の課題についての記録です。",
-    "node.font-cards:P011.one_line": "長く密に並んだ文章が画像として示された場合の読み取りについての記録です。",
-    "node.font-cards:P012.one_line": "同じ内容を画像またはテキストで入力した際の理解の違いについての記録です。",
-    "node.font-cards:P013.one_line": "文字を画素で表した場合の、読み取り能力と推論能力の違いについての記録です。",
-    "node.font-cards:P014.one_line": "文字認識の誤りが検索や回答に及ぼす連鎖的な影響についての記録です。",
-    "node.font-cards:P015.one_line": "文字を細部まで認識する能力の限界についての記録です。",
-    "node.font-cards:P016.one_line": "画像と言語を扱うモデルにおける、書体の知覚と文字の読み取りの隔たりについての記録です。",
-    "node.font-cards:P017.one_line": "長いテキストを画像に変換して入力を圧縮する際の課題についての記録です。",
-    "node.font-cards:P018.one_line": "解像度を適応的に調整して画像内の文字を圧縮する際の課題についての記録です。",
-    "node.font-cards:P019.one_line": "知識が食い違う状況で、同じ内容を異なる形式で入力した際の一貫性についての記録です。",
-    "node.font-cards:P020.one_line": "数学文書における上付き文字と下付き文字の認識についての記録です。",
-    "node.font-cards:P021.one_line": "手書き文書における取り消し線付き文字の認識についての記録です。",
-    "node.font-cards:P022.one_line": "ウェブページの構造を踏まえた読解のデータと課題についての記録です。",
-    "node.font-cards:P023.one_line": "書体のスタイルを表す情報が文書からの情報抽出で果たす役割についての記録です。",
-    "node.font-cards:P024.one_line": "テキストとウェブページのマークアップを一緒にモデル化する際の課題についての記録です。",
-    "node.font-cards:P025.one_line": "発電所の資料における書式の階層に基づく分割と質疑応答についての記録です。",
-    "node.font-cards:P026.one_line": "取り消し線で消された単語を含む手書きテキストの認識についての記録です。",
-    "node.font-cards:P027.one_line": "書体の変化によるマルチモーダルモデルの誤判断をどう評価するかについての記録です。",
-    "node.font-cards:P028.one_line": "AI エージェント向けの文書解析の評価課題についての記録です。",
-    "node.font-cards:P029.one_line": "文字を視覚的に表して、扱えるテキストの文脈を広げる際の課題についての記録です。",
-    "node.font-cards:P030.one_line": "視覚的な表現で言語モデルへの入力を圧縮する際の課題についての記録です。",
-    "node.font-cards:P031.one_line": "テキストの文脈を視覚的な表現に変換して圧縮する際の課題についての記録です。",
-    "node.font-cards:P032.one_line": "画像内の文字を圧縮した後の、長い文脈の理解をどう評価するかについての記録です。",
-    "node.font-cards:P033.one_line": "見た目の再現度と圧縮の条件下でのモデル評価についての記録です。",
-    "node.font-cards:P034.one_line": "視覚テキストの圧縮表現と、その理論上の課題を扱う文献メモです。",
-    "node.font-cards:P035.one_line": "画像とテキストの共同学習で、互いに比較できる表現を作る課題を扱う文献メモです。",
-    "node.font-cards:P036.one_line": "視覚的な概念と文字で表された概念を区別する課題を扱う文献メモです。",
-    "node.font-cards:P037.one_line": "書体が伝える意味と、多言語にわたる書体表現を扱う文献メモです。",
-    "node.font-cards:P038.one_line": "文書のスクリーンショットから得た表現を使う、マルチモーダル検索を扱う文献メモです。",
-    "node.font-cards:P039.one_line": "画像と言語を組み合わせた表現で文書ページを検索する課題を扱う文献メモです。",
-    "node.font-cards:P040.one_line": "根拠となる画像を直接検索し、回答に用いるアプローチを扱う文献メモです。",
-    "node.font-cards:P041.one_line": "文字の見た目や配置の組み合わせが言語タスクに与える影響を扱う文献メモです。",
-    "node.font-cards:P042.one_line": "文字の見た目による妨害を利用して商品検索を改善する課題を扱う文献メモです。",
-    "node.font-cards:P043.one_line": "テキストと画像の表現を対応づけることと、文字を用いた視覚的な攻撃との関係を扱う文献メモです。",
-    "node.font-cards:P044.one_line": "文書質問応答で、文脈に応じた視覚的な説明を行う課題を扱う文献メモです。",
-    "node.font-cards:P045.one_line": "視覚的な注意の向きと回答の正しさが一致しない問題を扱う文献メモです。",
-    "node.font-cards:P046.one_line": "科学研究に関する質問応答で、回答を根拠に基づかせるためのデータを扱う文献メモです。",
-    "node.font-cards:P047.one_line": "注意に応じて一部を描画し、画像内の文字を読む課題を扱う文献メモです。",
-    "node.font-cards:P048.one_line": "文字の多い画像で、モデルが視覚的な根拠の位置を特定する課題を扱う文献メモです。",
-    "node.font-cards:P049.one_line": "検証済みの推論過程を使い、根拠に基づく文書質問応答を学習させる課題を扱う文献メモです。",
-    "node.font-cards:P050.one_line": "文書質問応答の回答が実際に根拠で裏づけられているかを評価する課題を扱う文献メモです。",
-    "node.font-cards:P051.one_line": "ウェブページの見た目から、隠れた論理的な階層を復元する課題を扱う文献メモです。",
-    "node.font-cards:P052.one_line": "文書の特徴から学術論文の論理構造を復元する課題を扱う文献メモです。",
-    "node.font-cards:P053.one_line": "PDF 形式の書籍から文書構造を抽出する課題を扱う文献メモです。",
-    "node.font-cards:P054.one_line": "見出しをもとにHTML 文書の階層を復元する課題を扱う文献メモです。",
-    "node.font-cards:P055.one_line": "機械学習で、書式付き文書の論理構造を復元する課題を扱う文献メモです。",
-    "node.font-cards:P056.one_line": "描画されたページから文書の階層構造を復元する課題を扱う文献メモです。",
-    "node.font-cards:P057.one_line": "長い文書の深さが一定でない階層を復元する手法と、その応用を扱う文献メモです。",
-    "node.font-cards:P058.one_line": "文書の階層構造を再構築するためのデータと、比較の基準となる手法を扱う文献メモです。",
-    "node.font-cards:P059.one_line": "入力から文書構造の生成までを一貫して行う課題を扱う文献メモです。",
-    "node.font-cards:P060.one_line": "文書の階層構造を解析するための、多様なデータを扱う文献メモです。",
-    "node.font-cards:P061.one_line": "要素の検出、順序付け、木構造の構築を通じて文書の階層を復元する課題を扱う文献メモです。",
-    "node.font-cards:P062.one_line": "関係を統一的に予測して文書の階層を復元する課題を扱う文献メモです。",
-    "node.font-cards:P063.one_line": "グラフ表現を使って文書構造を分析する課題を扱う文献メモです。",
-    "node.font-cards:P064.one_line": "レイアウト上の関係を表すグラフで、検索した根拠を整理する課題を扱う文献メモです。",
-    "node.font-cards:P065.one_line": "ページをまたぐ関係と、根拠を動的に検索する課題を扱う文献メモです。",
+    "T04.mine": {
+      "ja": "研究の問いの設計、事前登録の条件の承認、何を結論にするかの判断は私が担当しています。実装・文献整理・独立再計算にはAIの支援を使い、私は実行前の条件確認と結果の採否を決めています。T4では、開発段階の門（純文字の問答9/10など）を通らなければ本番を実行しないという規則を事前登録に入れ、門が不成立のまま止めました。",
+      "zh": "研究问题的设计、事前登记条件的批准、什么算结论，由我负责。实现、文献整理、独立重算借助 AI，我负责执行前的条件确认和结果的取舍。T4 把\"开发门（纯文字问答 9/10 等）不过就不执行正式集\"写进事前登记，门没过就停在那里。",
+      "en": "I own the research questions, approve the pre-registration conditions, and decide what counts as a conclusion. Implementation, literature organization and independent recomputation use AI assistance; I check the conditions before each run and decide whether a result is adopted.For T4 the pre-registration said the main set would not run unless the development gates (text QA 9/10 etc.) passed; they did not, and the run stopped there."
+    },
     "node.directions:D01.one_line": "書体が変わっても、機械は文字やページ内の要素を正しく取り出せるのでしょうか。",
     "node.directions:D02.one_line": "機械は見出しの階層、本文が属する部分、読む順番をどのように判断するのでしょうか。",
     "node.directions:D03.one_line": "文字を読み間違える問題と、正しく読めても回答を間違える問題を切り分けます。",
@@ -94,19 +69,43 @@
     "node.routes:ROUTE_A.one_line": "文書から文字と構造を取り出してから検索する研究の進め方です。この経路全体の効果を独立して検証した結果はないため、慎重に「準備中」としています。",
     "node.routes:ROUTE_B.one_line": "ページ画像を直接検索し、その後で根拠を読み取る研究の進め方です。この経路全体の効果を独立して検証した結果はないため、慎重に「準備中」としています。",
     "node.themes:T01.one_line": "正しい状態や関係が、データ表現、文章の分割、検索を経ても欠けずに残るかを調べます。開発段階の限られた観察があります。",
-    "node.themes:T02.one_line": "文字を読み取れない場合と、正しく読めても回答を間違える場合の違いを調べます。入力は準備済みですが、モデルの結果はまだありません。",
-    "node.themes:T03.one_line": "同じページの文字の見せ方を変えると、ページ検索の安定性が変わるかを調べます。画像は準備済みですが、検索結果はまだありません。",
+    "node.themes:T02.one_line": {
+      "ja": "文字を読み取れない場合と、正しく読めても回答を間違える場合の違いを調べる。500件を実行し独立複核済みだが、材料が易しすぎて問いには未回答。",
+      "zh": "区分\"没读出字\"和\"读出了却答错\"。500 条已执行并独立复核，但材料太易、问题未回答。",
+      "en": "Separates failing to read from reading correctly but answering wrong. 500 requests run and independently re-checked, but the material was too easy to answer the question."
+    },
+    "node.themes:T03.one_line": {
+      "ja": "同じページの文字の見せ方を変えると、ページ検索の安定性が変わるかを調べる。700回の検索を実行したが、難しさの条件が不成立で結論なし。",
+      "zh": "同一页只换字体，页面检索是否稳定。700 次检索已执行，但难度条件不成立，无结论。",
+      "en": "Does changing only the typeface of a page change retrieval stability. 700 retrieval runs executed, but the difficulty condition failed; no conclusion."
+    },
     "node.themes:T04.one_line": "文書にもともとある文字の目立ち方によって、実際に依拠する根拠が変わるかを調べます。実験はまだ始めていません。",
-    "node.temporary-rq:T1-RQ1.one_line": "状態の情報を残すと、有効な根拠の検索順位が変わるかを調べます。開発段階の限られた比較はありますが、全候補を対象とする正式な検証はまだ終わっていません。",
+    "node.temporary-rq:T1-RQ1.one_line": {
+      "ja": "無効であることを示す情報を残すと検索順位が変わるかを問う。限定条件では「変わらない」という否定的な結論を登録済み（2026-10-25）。",
+      "zh": "问保留失效状态信息能否改变检索排名。限定条件下已登记\"不改变\"的否定结论（2026-10-25）。",
+      "en": "Asks whether keeping invalid-status information changes retrieval rank. Under fixed conditions a negative conclusion (\"it does not\") is registered (2026-10-25)."
+    },
     "node.temporary-rq:T1-RQ2.one_line": "状態を入れ替えたり表現を変えたりした後も、モデルが質問で要求された状態に従うかを調べます。開発段階の手がかりはありますが、仕組みはまだ切り分けられていません。",
     "node.temporary-rq:T1-RQ3.one_line": "状態の条件に合うこと、本文が関連すること、必要な根拠をすべて選ぶことを区別します。保存済みの結果を分析していますが、回答の抜けは残っています。",
     "node.temporary-rq:T1-RQ4.one_line": "文章の分割や検索を経ても、関係が欠けずに保たれるかを調べます。現状は、文脈全体を与えた場合に関係を確認できる資料だけなので、慎重に「準備中」としています。",
     "node.temporary-rq:T1-RQ5.one_line": "現行、失効、日付による適用条件、直前の版を区別します。ルールについて開発段階の診断はありますが、時間関係についての正式な結論はありません。",
-    "node.temporary-rq:T2-RQ1.one_line": "文字の読み間違いと回答の間違いを切り分けます。現時点では入力を準備しただけで、モデルの回答はありません。",
+    "node.temporary-rq:T2-RQ1.one_line": {
+      "ja": "文字の読み取りの失敗が回答の誤りにどうつながるかを問う。500件の実行では両者の食い違いは0で、材料を難しくする必要がある。",
+      "zh": "问读字失败如何导向作答错误。500 条执行中两者分歧为 0，需要更难的材料。",
+      "en": "Asks how reading failures lead to answering errors. In 500 runs the two never disagreed, so harder material is needed."
+    },
     "node.temporary-rq:T2-RQ2.one_line": "画像入力のコストをそろえても、文字の見せ方による違いが残るかを調べます。モデルに実際に渡される画像入力の量は、まだ測定していません。",
     "node.temporary-rq:T3-RQ1.one_line": "同じページの書体を変えたときの検索スコアと順位を調べます。現時点では画像を準備した段階です。",
-    "node.temporary-rq:T3-RQ2.one_line": "同じ入力を繰り返したときのばらつきと、検索の仕組みによる違いを比較します。数値表現への変換も順位付けも、まだ実行していません。",
-    "node.temporary-rq:T4-RQ1.one_line": "もともとの文字の目立ち方によって、規則や例外の使われ方が変わるかを調べます。実験はまだ始めていません。",
+    "node.temporary-rq:T3-RQ2.one_line": {
+      "ja": "同じ入力の繰り返しによる揺れと、検索構造の違いを比べる。繰り返し50組は実行済み、構造の比較は未実施。",
+      "zh": "比较同一输入重复带来的波动与不同检索结构。重复 50 组已执行，结构比较未做。",
+      "en": "Compares noise from repeated identical inputs with differences between retrieval structures. 50 repeats were run; the structure comparison has not been."
+    },
+    "node.temporary-rq:T4-RQ1.one_line": {
+      "ja": "文字の目立ち方が規則と例外の使われ方を変えるかを問う。開発段階を実行したが門が不成立で、本番は未実行。",
+      "zh": "问文字醒目程度是否改变规则与例外的使用。开发阶段已执行但门槛不成立，正式集未执行。",
+      "en": "Asks whether visual prominence changes how rules and exceptions are used. The development stage ran but its gates failed, so the main set was not run."
+    },
     "node.temporary-rq:T4-RQ2.one_line": "根拠を隠すことで、モデルが実際にその根拠に依存しているかを確かめられるかを調べます。測り方はまだ確立していません。",
     "node.temporary-rq:LEGACY-RQ1.one_line": "以前のページをまたぐ研究で計画した問いです。対応する実験はまだ行っておらず、現在の4つのテーマにも無理に分類していません。",
     "node.temporary-rq:LEGACY-RQ2.one_line": "以前のページをまたぐ研究で計画した問いです。対応する実験はまだ行っておらず、現在の4つのテーマにも無理に分類していません。",
@@ -125,8 +124,16 @@
     "node.experiments:E10.one_line": "全候補を対象にした以前のキーワード検索の結果を再分析しました。開発段階でうまくいかなかった結果を説明するもので、新たなモデル実験ではありません。",
     "node.experiments:E11.one_line": "文脈全体を与えた場合に関係を確認した資料はありますが、関係を検索できるかはまだ検証していないため、慎重に「準備中」としています。",
     "node.experiments:E12.one_line": "版と日付に関する資料や参照ルールについて、開発段階の診断があります。新たなモデルの結果や正式な結論はまだありません。",
-    "node.experiments:E13.one_line": "画像からの読み取りを調べるため、入力画像と質問を準備しただけで、モデルの結果は得られていません。",
-    "node.experiments:E14.one_line": "書体を変えたページ検索に向け、画像と入力を準備しただけで、数値表現への変換や順位付けの結果はまだありません。",
+    "node.experiments:E13.one_line": {
+      "ja": "T2：視覚診断。固定モデルで500件を一度だけ実行し、独立複核済み。全条件が100%で、問いには未回答。",
+      "zh": "T2：视觉诊断。固定模型一次执行 500 条并独立复核；全部条件 100%，问题未回答。",
+      "en": "T2 visual diagnosis: 500 requests run once on a fixed model and independently re-checked; every condition at 100%, question still open."
+    },
+    "node.experiments:E14.one_line": {
+      "ja": "書体を変えたページ検索を50ページ×3書体で700回実行。基準で46/50が最初から1位で、難しさの条件が不成立。",
+      "zh": "字体页面检索 50 页 × 3 字体共 700 次已执行；基准下 46/50 本来就第一，难度条件不成立。",
+      "en": "Typeface page retrieval run 700 times over 50 pages × 3 typefaces; 46/50 already ranked first at baseline, so the difficulty condition failed."
+    },
     "node.experiments:E15.one_line": "文字の目立ちやすさだけで根拠の使われ方が変わるかを調べる実験は、まだ計画段階で始めておらず、観察もありません。",
     "node.experiments:ENG.one_line": "実行手順やリソースの記録など、実装面の確認だけで、研究上の効果を示す観察はありません。そのため、慎重に「準備中」としています。",
     "node.reports:R01.one_line": "ページをまたぐ表の検索で当初何を解決しようとしていたか、どの発想に先行例があるか、その後の実験をなぜ中断したかを振り返ります。",
@@ -135,8 +142,16 @@
     "node.reports:R04.one_line": "7本の文献をもとに、書体やレイアウトが文字認識、文書構造、検索、回答のどの段階に影響し得るかを説明します。",
     "node.reports:R05.one_line": "最初の準備をまとめています。キーワード検索には開発段階の記録があり、画像を使う課題は入力を作成しただけで、4つ目のテーマはまだ始めていません。",
     "node.reports:R06.one_line": "最初のキーワード検索の比較を記録しています。現行の条項と失効した条項は依然として混在して順位付けされ、正式な評価は終わっていません。",
-    "node.reports:R07.one_line": "文字の読み間違いと回答の間違いを切り分けるため、画像や質問をどう準備したかを説明します。モデルの回答はまだ得られていません。",
-    "node.reports:R08.one_line": "同じページで書体を変えた画像をどう準備したかを説明します。ページ検索の評価結果はまだ得られていません。",
+    "node.reports:R07.one_line": {
+      "ja": "文字の読み間違いと回答の間違いを切り分けるため、画像や質問をどう準備したかを説明する。500件の実行と独立複核まで完了。",
+      "zh": "说明为区分读字错误与作答错误如何准备图像和问题。500 条执行与独立复核已完成。",
+      "en": "Explains how images and questions were prepared to separate reading errors from answering errors. The 500-request run and its independent re-check are complete."
+    },
+    "node.reports:R08.one_line": {
+      "ja": "同じページで書体を変えた画像をどう準備したかを説明する。700回の検索は実行済みで、難しさの条件が不成立。",
+      "zh": "说明如何准备同一页不同字体的图像。700 次检索已执行，难度条件不成立。",
+      "en": "Explains how same-page images in different typefaces were prepared. The 700 retrieval runs are done; the difficulty condition failed."
+    },
     "node.reports:R09.one_line": "文字の目立ちやすさと根拠選択に関する実験が、まだ始まっていないことを記録しています。モデルの結果も、効果についての結論もありません。",
     "node.reports:R10.one_line": "モデルの初回実行の失敗と、その後に実行できた小さな例を記録し、失効した条項を現行の条項として扱う可能性が今も残ることを説明します。",
     "node.reports:R11.one_line": "2つの記述の「現行」と「失効」のラベルを入れ替え、モデルがラベルに従って選ぶかを確認します。選択を間違えた例も残しています。",
@@ -210,8 +225,8 @@
       "steps": {
         "font-cards:P021": "取り消し線で消された文字を分けて認識する研究です。根拠として使えるかは未検証です。",
         "font-cards:P026": "取り消し線の見た目が文字認識に与える影響を比較します。正しく読めても、有効な根拠とは限りません。",
-        "temporary-rq:T1-RQ1": "無効であることを示す情報を残すと、検索順位が変わるかを問います。この段階では正式検証前です。",
-        "experiments:E06": "状態情報を残す場合と省く場合を小規模に比較します。この時点では開発段階の観察です。"
+        "temporary-rq:T1-RQ1": "無効であることを示す情報を残すと、検索順位が変わるかを問います。限定条件では「変わらない」という否定的な結論を登録しました（2026-10-25）。",
+        "experiments:E06": "状態情報を残す場合と省く場合を比較しました。独立に再計算した結果は53%→50%、差−3ポイント。限定条件の正式な結論です。"
       }
     },
     "story:T01-structure": {
@@ -232,24 +247,24 @@
         "font-cards:P011": "同じ内容のテキストと画像で理解の差を比べる研究です。差の原因は、まだ切り分ける必要があります。",
         "font-cards:P012": "内容をそろえたまま描画条件を変える研究です。生じた差がどの誤りに由来するかは、検討が必要です。",
         "font-cards:P013": "文字の読み取り・計算・推論の誤りを分ける研究です。読み取りと回答の誤りの量的な関係は、まだ解明されていません。",
-        "temporary-rq:T2-RQ1": "文字の読み取りの失敗が、回答の誤りにどうつながるかを問います。モデルの回答はまだありません。",
-        "experiments:E13": "入力画像と質問は準備済みです。モデルの結果はまだ得られていません。"
+        "temporary-rq:T2-RQ1": "文字の読み取りの失敗が、回答の誤りにどうつながるかを問います。500件の実行では両者の食い違いは0件で、材料を難しくする必要があります。",
+        "experiments:E13": "固定モデルで500件を一度だけ実行し、独立複核を終えました。全条件が100%で、問いにはまだ答えていません。"
       }
     },
     "story:T03": {
       "title": "同じページの書体だけを変えると、検索順位は動くのか",
       "steps": {
         "font-cards:P038": "ページのスクリーンショットを使う検索の研究です。書体の変化は系統的に統制していません。",
-        "temporary-rq:T3-RQ1": "同じページの書体を変えると順位が変わるかを問います。検索結果はまだありません。",
-        "experiments:E14": "この段階では、ページと入力の準備までです。埋め込みや順位の結果はまだありません。"
+        "temporary-rq:T3-RQ1": "同じページの書体を変えると順位が変わるかを問います。700回の検索を実行しましたが、難しさの条件が不成立で結論なしです。",
+        "experiments:E14": "50ページ×3書体で700回の検索計算を完了。基準の書体で46/50が最初から1位で、難しさの条件を満たしませんでした。"
       }
     },
     "story:T04": {
       "title": "どの根拠も読めるとき、目立ち方でモデルが使う根拠は変わるのか",
       "steps": {
         "font-cards:P047": "選んだ部分を拡大して読解を助ける研究です。文書にもともとある目立ち方の影響は未検証です。",
-        "temporary-rq:T4-RQ1": "もともとの文字の目立ち方で、規則と例外の使い方が変わるかを問います。実験は未着手です。",
-        "experiments:E15": "文書にもともとある目立ち方を比べる実験案です。観察や結論はまだありません。"
+        "temporary-rq:T4-RQ1": "もともとの文字の目立ち方で、規則と例外の使い方が変わるかを問います。開発段階を実行しましたが、門が不成立で本番は未実行です。",
+        "experiments:E15": "開発段階の130件を実行。純文字の問答が5/10で事前の門（9/10）に届かず、候補450件は未実行。字の太さの効果は結論なし。"
       }
     }
   },
